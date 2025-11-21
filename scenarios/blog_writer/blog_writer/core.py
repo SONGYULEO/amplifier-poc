@@ -6,7 +6,7 @@ Transforms brain dumps into polished blog posts using style profile.
 
 from typing import Any
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.utils.logger import get_logger
 
@@ -92,7 +92,7 @@ Return ONLY the blog post content in markdown format, starting with # Title."""
         )
 
         try:
-            async with ClaudeSession(options) as session:
+            async with GeminiSession(options) as session:
                 response = await session.query(prompt)
                 return response.content.strip()
         except Exception as e:
@@ -161,7 +161,7 @@ Return ONLY the revised blog post content in markdown format."""
         )
 
         try:
-            async with ClaudeSession(options) as session:
+            async with GeminiSession(options) as session:
                 response = await session.query(prompt)
                 return response.content.strip()
         except Exception as e:

@@ -148,7 +148,7 @@ install: ## Install all dependencies
 	@echo ""
 	@echo "Installing npm packages globally..."
 	@command -v pnpm >/dev/null 2>&1 || { echo "  Installing pnpm..."; npm install -g pnpm; }
-	@pnpm add -g @anthropic-ai/claude-code@latest || { \
+	@pnpm add -g @google/gemini-cli@latest || { \
 		echo "❌ Failed to install global packages."; \
 		echo "   This may be a permissions issue. Try:"; \
 		echo "   1. Run: pnpm setup && source ~/.bashrc (or ~/.zshrc)"; \

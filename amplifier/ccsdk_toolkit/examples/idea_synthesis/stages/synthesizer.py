@@ -12,7 +12,7 @@ from amplifier.ccsdk_toolkit.defensive import write_json_with_retry
 from ..models import CrossCuttingTheme
 from ..models import FileSummary
 from ..models import SynthesisState
-from ..utils import query_claude_with_timeout
+from ..utils import query_gemini_with_timeout
 
 
 class SynthesizerStage:
@@ -65,7 +65,7 @@ class SynthesizerStage:
                 return []
 
     async def _synthesize(self, summaries: list[FileSummary]) -> list[CrossCuttingTheme]:
-        """Perform theme synthesis using Claude.
+        """Perform theme synthesis using Gemini.
 
         Args:
             summaries: List of file summaries
@@ -73,7 +73,7 @@ class SynthesizerStage:
         Returns:
             List of themes
         """
-        # Prepare summary data for Claude
+        # Prepare summary data for Gemini
         summary_data = []
         for summary in summaries:
             summary_data.append(
@@ -118,7 +118,7 @@ Focus on themes that:
 - Could guide decision-making or architecture
 - Show evolution of thinking over time"""
 
-        response = await query_claude_with_timeout(prompt=prompt, system_prompt=system_prompt, parse_json=True)
+        response = await query_gemini_with_timeout(prompt=prompt, system_prompt=system_prompt, parse_json=True)
 
         themes = []
         # Ensure response is a list

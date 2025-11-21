@@ -1,0 +1,2 @@
+description = "Command converted from prime.md"
+prompt = "## Usage\n\n`/prime <ADDITIONAL_GUIDANCE>`\n\n## Process\n\nPerform all actions below.\n\nInstructions assume you are in the repo root directory, change there if needed before running.\n\nREAD (or RE-READ if already READ):\n@ai_context/IMPLEMENTATION_PHILOSOPHY.md\n@ai_context/MODULAR_DESIGN_PHILOSOPHY.md\n\nRUN:\nmake install\nsource .venv/bin/activate\nmake check\nmake test\n\n## Additional Guidance\n\n$ARGUMENTS\n"

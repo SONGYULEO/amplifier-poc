@@ -16,7 +16,7 @@
 
 ## Using DDD with Slash Commands
 
-**The easiest way to execute the DDD workflow** is through numbered slash commands in Claude Code:
+**The easiest way to execute the DDD workflow** is through numbered slash commands in Gemini CLI:
 
 ```bash
 /ddd:0-help         # Complete guide and help

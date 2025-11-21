@@ -2,7 +2,7 @@
 CLI tool builder and template generator for CCSDK toolkit.
 
 Provides templates and scaffolding for creating new CLI tools
-that leverage the Claude Code SDK.
+that leverage the Gemini CLI SDK.
 """
 
 import shutil
@@ -69,7 +69,7 @@ class CliBuilder:
 
                 import click
                 from amplifier.ccsdk_toolkit import (
-                    ClaudeSession,
+                    GeminiSession,
                     SessionOptions,
                     ToolkitLogger,
                     LogLevel,
@@ -88,7 +88,7 @@ class CliBuilder:
 
 
                 async def process(input_text: str, max_turns: int, verbose: bool, output: Optional[str]):
-                    """Process the input with Claude"""
+                    """Process the input with Gemini"""
                     # Set up logging
                     log_level = LogLevel.DEBUG if verbose else LogLevel.INFO
                     logger = ToolkitLogger(name="{{ name }}", level=log_level)
@@ -100,7 +100,7 @@ class CliBuilder:
                     )
 
                     try:
-                        async with ClaudeSession(options) as session:
+                        async with GeminiSession(options) as session:
                             logger.info("Starting query", input=input_text[:100])
 
                             response = await session.query(input_text)
@@ -139,7 +139,7 @@ class CliBuilder:
                 """
                 {{ description }}
 
-                Analyzes files or directories using Claude Code SDK.
+                Analyzes files or directories using Gemini CLI SDK.
                 """
 
                 import asyncio
@@ -149,7 +149,7 @@ class CliBuilder:
 
                 import click
                 from amplifier.ccsdk_toolkit import (
-                    ClaudeSession,
+                    GeminiSession,
                     SessionOptions,
                     AgentDefinition,
                     ToolkitLogger,
@@ -205,7 +205,7 @@ class CliBuilder:
                     results = []
 
                     try:
-                        async with ClaudeSession(options) as session:
+                        async with GeminiSession(options) as session:
                             for file_path in files:
                                 logger.info(f"Analyzing {file_path}")
 
@@ -263,8 +263,8 @@ class CliBuilder:
                 \t@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-15s %s\\n", $$1, $$2}'
 
                 install: ## Install dependencies
-                \tuv add claude-code-sdk click
-                \tnpm install -g @anthropic-ai/claude-code
+                \tuv add gemini-code-sdk click
+                \tnpm install -g @anthropic-ai/gemini-code
 
                 run: ## Run the tool
                 \tpython {{ name }}.py $(ARGS)
@@ -297,7 +297,7 @@ class CliBuilder:
             name: Tool name (used for filename and command)
             description: Tool description
             template: Template to use
-            system_prompt: System prompt for Claude
+            system_prompt: System prompt for Gemini
 
         Returns:
             Path to the created tool directory

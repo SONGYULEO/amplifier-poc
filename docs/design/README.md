@@ -39,11 +39,11 @@ Core design philosophy is located in `ai_context/` alongside software developmen
 - **`ai_context/design/DESIGN-FRAMEWORK.md`** - 9 Dimensions + 4 Layers methodology
 - **`ai_context/design/DESIGN-VISION.md`** - Beyond the artifact philosophy
 
-These are automatically imported via `@CLAUDE.md` for all Claude Code sessions.
+These are automatically imported via `@GEMINI.md` for all Gemini CLI sessions.
 
 ## Design Agents
 
-Seven specialist agents are available in `.claude/agents/`:
+Seven specialist agents are available in `.gemini/agents/`:
 
 1. **animation-choreographer** - Motion design and transitions
 2. **art-director** - Aesthetic strategy and visual direction

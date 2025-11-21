@@ -7,7 +7,7 @@ A modular tool that converts web pages to clean, organized markdown files with A
 - **Fetch & Convert**: Downloads web pages and converts HTML to clean markdown
 - **Paywall Detection**: Automatically detects and rejects content behind paywalls or authentication walls
 - **Image Handling**: Downloads and saves images locally with updated references
-- **AI Enhancement**: Uses Claude to improve markdown formatting and structure
+- **AI Enhancement**: Uses Gemini to improve markdown formatting and structure
 - **Domain Organization**: Automatically organizes pages by domain
 - **Resume Support**: Can resume interrupted sessions
 - **Index Generation**: Creates an index of all converted pages
@@ -126,7 +126,7 @@ The tool is built with a modular architecture where each module has a single res
 
 ## Markdown Enhancement
 
-When the Claude Code SDK is available, the tool will:
+When the Gemini CLI SDK is available, the tool will:
 
 1. Add YAML frontmatter with metadata
 2. Improve heading hierarchy

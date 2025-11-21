@@ -16,20 +16,20 @@ from memory.models import Memory
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Import Claude Code SDK - REQUIRED for memory extraction
+# Import Gemini CLI SDK - REQUIRED for memory extraction
 try:
-    from claude_code_sdk import ClaudeCodeOptions
-    from claude_code_sdk import ClaudeSDKClient
+    from gemini_code_sdk import GeminiCodeOptions
+    from gemini_code_sdk import GeminiSDKClient
 except ImportError:
     raise RuntimeError(
-        "Claude Code SDK not available. Memory extraction requires Claude Code SDK. "
-        "Install with: pip install claude-code-sdk"
+        "Gemini CLI SDK not available. Memory extraction requires Gemini CLI SDK. "
+        "Install with: pip install gemini-code-sdk"
     )
 
 # Import extraction configuration
 
 # Configuration (deprecated - use config module)
-CLAUDE_SDK_TIMEOUT = 120  # seconds
+GEMINI_SDK_TIMEOUT = 120  # seconds
 
 
 class MemoryExtractor:
@@ -43,24 +43,24 @@ class MemoryExtractor:
 
         self.config = get_config()
 
-        # Check if Claude CLI is installed and available
+        # Check if Gemini CLI is installed and available
         try:
-            result = subprocess.run(["which", "claude"], capture_output=True, text=True, timeout=2)
+            result = subprocess.run(["which", "gemini"], capture_output=True, text=True, timeout=2)
             if result.returncode != 0:
                 raise RuntimeError(
-                    "Claude CLI not found. Memory extraction requires Claude CLI. "
-                    "Install with: npm install -g @anthropic-ai/claude-code"
+                    "Gemini CLI not found. Memory extraction requires Gemini CLI. "
+                    "Install with: npm install -g @anthropic-ai/gemini-code"
                 )
         except (subprocess.TimeoutExpired, FileNotFoundError):
             raise RuntimeError(
-                "Claude CLI not found. Memory extraction requires Claude CLI. "
-                "Install with: npm install -g @anthropic-ai/claude-code"
+                "Gemini CLI not found. Memory extraction requires Gemini CLI. "
+                "Install with: npm install -g @anthropic-ai/gemini-code"
             )
 
-        logger.info("[EXTRACTION] Claude Code SDK and CLI verified - ready for extraction")
+        logger.info("[EXTRACTION] Gemini CLI SDK and CLI verified - ready for extraction")
 
     async def extract_memories(self, text: str, context: dict[str, Any] | None = None) -> list[Memory]:
-        """Extract memories from text using Claude Code SDK
+        """Extract memories from text using Gemini CLI SDK
 
         Args:
             text: Conversation text to analyze
@@ -70,15 +70,15 @@ class MemoryExtractor:
             List of extracted memories
 
         Raises:
-            RuntimeError: If Claude Code SDK extraction fails
+            RuntimeError: If Gemini CLI SDK extraction fails
         """
-        memories = await self._extract_with_claude(text, context)
+        memories = await self._extract_with_gemini(text, context)
         if not memories:
-            raise RuntimeError("Memory extraction failed - Claude Code SDK returned no results")
+            raise RuntimeError("Memory extraction failed - Gemini CLI SDK returned no results")
         return memories
 
     async def extract_from_messages(self, messages: list[dict[str, Any]], context: str | None = None) -> dict[str, Any]:
-        """Extract memories from conversation messages using Claude Code SDK
+        """Extract memories from conversation messages using Gemini CLI SDK
 
         Args:
             messages: List of conversation messages
@@ -95,16 +95,16 @@ class MemoryExtractor:
         if not messages:
             raise RuntimeError("No messages provided for memory extraction")
 
-        # Format messages for Claude Code SDK extraction
+        # Format messages for Gemini CLI SDK extraction
         conversation = self._format_messages(messages)
         if not conversation:
             raise RuntimeError("No valid conversation content found in messages")
 
-        logger.info("[EXTRACTION] Using Claude Code SDK for memory extraction")
-        result = await self._extract_with_claude_full(conversation, context)
+        logger.info("[EXTRACTION] Using Gemini CLI SDK for memory extraction")
+        result = await self._extract_with_gemini_full(conversation, context)
 
         if not result:
-            raise RuntimeError("Memory extraction failed - Claude Code SDK returned no results")
+            raise RuntimeError("Memory extraction failed - Gemini CLI SDK returned no results")
 
         logger.info(f"[EXTRACTION] Extraction completed: {len(result.get('memories', []))} memories")
         return result
@@ -143,8 +143,8 @@ class MemoryExtractor:
         logger.info(f"[EXTRACTION] Formatted {len(formatted)} messages for extraction")
         return "\n\n".join(formatted)
 
-    async def _extract_with_claude(self, text: str, context: dict[str, Any] | None) -> list[Memory]:
-        """Extract memories using Claude Code SDK"""
+    async def _extract_with_gemini(self, text: str, context: dict[str, Any] | None) -> list[Memory]:
+        """Extract memories using Gemini CLI SDK"""
         prompt = f"""Extract important memories from this conversation.
 
 Categories: learning, decision, issue_solved, preference, pattern
@@ -166,8 +166,8 @@ Context: {json.dumps(context or {})}
 
         try:
             async with asyncio.timeout(self.config.memory_extraction_timeout):
-                async with ClaudeSDKClient(  # type: ignore
-                    options=ClaudeCodeOptions(  # type: ignore
+                async with GeminiSDKClient(  # type: ignore
+                    options=GeminiCodeOptions(  # type: ignore
                         system_prompt="You extract memories from conversations.",
                         max_turns=1,
                         model=self.config.memory_extraction_model,
@@ -205,19 +205,19 @@ Context: {json.dumps(context or {})}
                             for item in data
                         ]
         except TimeoutError:
-            logger.warning(f"Claude Code SDK timed out after {self.config.memory_extraction_timeout} seconds")
+            logger.warning(f"Gemini CLI SDK timed out after {self.config.memory_extraction_timeout} seconds")
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse extraction response: {e}")
         except Exception as e:
-            logger.error(f"Claude Code SDK extraction error: {e}")
+            logger.error(f"Gemini CLI SDK extraction error: {e}")
 
         return []
 
-    async def _extract_with_claude_full(self, conversation: str, context: str | None) -> dict[str, Any] | None:
-        """Extract using Claude Code SDK with full response format"""
+    async def _extract_with_gemini_full(self, conversation: str, context: str | None) -> dict[str, Any] | None:
+        """Extract using Gemini CLI SDK with full response format"""
         from datetime import datetime
 
-        logger.info("[EXTRACTION] Starting Claude Code SDK full extraction")
+        logger.info("[EXTRACTION] Starting Gemini CLI SDK full extraction")
 
         context_str = f"\nContext: {context}" if context else ""
 
@@ -249,19 +249,19 @@ Return ONLY valid JSON."""
             logger.info(f"[EXTRACTION] Setting timeout to {self.config.memory_extraction_timeout} seconds")
             async with asyncio.timeout(self.config.memory_extraction_timeout):
                 logger.info(
-                    f"[EXTRACTION] Creating Claude Code SDK client with model: {self.config.memory_extraction_model}"
+                    f"[EXTRACTION] Creating Gemini CLI SDK client with model: {self.config.memory_extraction_model}"
                 )
-                async with ClaudeSDKClient(  # type: ignore
-                    options=ClaudeCodeOptions(  # type: ignore
+                async with GeminiSDKClient(  # type: ignore
+                    options=GeminiCodeOptions(  # type: ignore
                         system_prompt="You are a memory extraction expert. Extract key information from conversations.",
                         max_turns=1,
                         model=self.config.memory_extraction_model,
                     )
                 ) as client:
-                    logger.info("[EXTRACTION] Querying Claude Code SDK")
+                    logger.info("[EXTRACTION] Querying Gemini CLI SDK")
                     await client.query(prompt)
 
-                    logger.info("[EXTRACTION] Receiving response from Claude Code SDK")
+                    logger.info("[EXTRACTION] Receiving response from Gemini CLI SDK")
                     response = ""
                     async for message in client.receive_response():
                         if hasattr(message, "content"):
@@ -274,7 +274,7 @@ Return ONLY valid JSON."""
                     logger.info(f"[EXTRACTION] Received response length: {len(response)}")
 
                     if not response:
-                        logger.warning("[EXTRACTION] Empty response from Claude Code SDK")
+                        logger.warning("[EXTRACTION] Empty response from Gemini CLI SDK")
                         return None
 
                     # Clean and parse JSON
@@ -289,19 +289,19 @@ Return ONLY valid JSON."""
 
                     logger.info("[EXTRACTION] Parsing JSON response")
                     data = json.loads(cleaned)
-                    data["metadata"] = {"extraction_method": "claude_sdk", "timestamp": datetime.now().isoformat()}
+                    data["metadata"] = {"extraction_method": "gemini_sdk", "timestamp": datetime.now().isoformat()}
 
                     logger.info(f"[EXTRACTION] Successfully extracted: {len(data.get('memories', []))} memories")
                     return data
 
         except TimeoutError:
             logger.warning(
-                f"[EXTRACTION] Claude Code SDK timed out after {self.config.memory_extraction_timeout} seconds"
+                f"[EXTRACTION] Gemini CLI SDK timed out after {self.config.memory_extraction_timeout} seconds"
             )
         except json.JSONDecodeError as e:
             logger.error(f"[EXTRACTION] Failed to parse extraction response: {e}")
         except Exception as e:
-            logger.error(f"[EXTRACTION] Claude Code SDK extraction error: {e}")
+            logger.error(f"[EXTRACTION] Gemini CLI SDK extraction error: {e}")
             import traceback
 
             logger.error(f"[EXTRACTION] Traceback: {traceback.format_exc()}")
@@ -328,7 +328,7 @@ Return ONLY valid JSON."""
             r"^Post-hook for \w+ tool",
             r"^Using directory of",
             r"^Skipping.*make check",
-            r"^\$CLAUDE_PROJECT_DIR",
+            r"^\$GEMINI_PROJECT_DIR",
             r"^Extract key memories from this conversation",  # System prompts
             r"^Looking at the conversation context",  # Assistant meta-commentary
             r"^UNKNOWN:",  # Empty conversation markers
@@ -344,7 +344,7 @@ Return ONLY valid JSON."""
         # Technical terms
         tech_terms = re.findall(
             r"\b(?:Python|JavaScript|TypeScript|API|SDK|async|await|JSON|SQL|Git|Docker|"
-            r"React|Vue|Node|Express|FastAPI|Django|CLI|MCP|SSE|LLM|Claude|OpenAI)\b",
+            r"React|Vue|Node|Express|FastAPI|Django|CLI|MCP|SSE|LLM|Gemini|OpenAI)\b",
             text,
             re.IGNORECASE,
         )

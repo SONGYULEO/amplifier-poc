@@ -23,13 +23,13 @@ class MemoryExtractionConfig(BaseSettings):
 
     # Model configuration
     memory_extraction_model: str = Field(
-        default="claude-3-5-haiku-20241022",
+        default="gemini-3-5-haiku-20241022",
         description="Model for memory extraction (fast, efficient, cost-effective)",
     )
 
     # Extraction configuration
     memory_extraction_timeout: int = Field(
-        default=120, description="Timeout in seconds for Claude Code SDK extraction operations"
+        default=120, description="Timeout in seconds for Gemini CLI SDK extraction operations"
     )
 
     memory_extraction_max_messages: int = Field(
@@ -51,7 +51,7 @@ class MemoryExtractionConfig(BaseSettings):
 
     # API Keys (optional - SDK may provide these)
     anthropic_api_key: str | None = Field(
-        default=None, description="Anthropic API key (optional, Claude Code SDK may provide)"
+        default=None, description="Anthropic API key (optional, Gemini CLI SDK may provide)"
     )
 
     def ensure_storage_dir(self) -> Path:

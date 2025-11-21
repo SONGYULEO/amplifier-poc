@@ -62,7 +62,7 @@ If a new agent would help, pause work and create it first. This investment pays 
 
 ### Available Specialized Agents
 
-The project includes specialized agents for various tasks (see `.claude/AGENTS_CATALOG.md` for full details):
+The project includes specialized agents for various tasks (see `.gemini/AGENTS_CATALOG.md` for full details):
 
 - **Development**: zen-code-architect, architecture-reviewer, bug-hunter, test-coverage, modular-builder, refactor-architect, integration-specialist
 - **Knowledge Synthesis**: triage-specialist, analysis-expert, synthesis-master, content-researcher

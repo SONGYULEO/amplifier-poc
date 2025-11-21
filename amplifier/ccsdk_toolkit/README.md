@@ -1,6 +1,6 @@
-# Claude Code SDK Toolkit
+# Gemini CLI SDK Toolkit
 
-A comprehensive Python toolkit for building CLI tools and applications with the Claude Code SDK. Simplifies creating "mini-instances" of Claude Code for focused microtasks.
+A comprehensive Python toolkit for building CLI tools and applications with the Gemini CLI SDK. Simplifies creating "mini-instances" of Gemini CLI for focused microtasks.
 
 ## Quick Start: Building a New Tool
 
@@ -39,13 +39,13 @@ The template includes patterns proven through learnings from real failures. See 
 
 ```bash
 # Install Python package
-pip install claude-code-sdk
+pip install gemini-code-sdk
 
-# Install Claude CLI (required)
-npm install -g @anthropic-ai/claude-code
+# Install Gemini CLI (required)
+npm install -g @anthropic-ai/gemini-code
 
 # Or if using the amplifier project
-uv add claude-code-sdk
+uv add gemini-code-sdk
 ```
 
 ## Quick Start
@@ -56,7 +56,7 @@ uv add claude-code-sdk
 
 ```python
 import asyncio
-from amplifier.ccsdk_toolkit import ClaudeSession, SessionOptions
+from amplifier.ccsdk_toolkit import GeminiSession, SessionOptions
 
 async def main():
     # Create session with options
@@ -66,7 +66,7 @@ async def main():
         # Operations run to natural completion
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query("Write a Python hello world")
 
         if response.success:
@@ -92,19 +92,19 @@ response = await query_with_retry(
 
 ### 1. Core (`ccsdk_toolkit.core`)
 
-The foundation module providing Claude Code SDK integration:
+The foundation module providing Gemini CLI SDK integration:
 
 ```python
 from amplifier.ccsdk_toolkit import (
-    ClaudeSession,      # Main session class
+    GeminiSession,      # Main session class
     SessionOptions,     # Configuration options
-    check_claude_cli,   # Verify CLI installation
+    check_gemini_cli,   # Verify CLI installation
     query_with_retry,   # Retry logic wrapper
 )
 
 # Check CLI availability
-if check_claude_cli():
-    print("Claude CLI is available")
+if check_gemini_cli():
+    print("Gemini CLI is available")
 ```
 
 ### 2. Configuration (`ccsdk_toolkit.config`)
@@ -249,8 +249,8 @@ python -m amplifier.ccsdk_toolkit.examples.idea_synthesis docs/ --json-output
 A complete example tool included with the toolkit:
 
 ```bash
-# First ensure Claude CLI is installed
-which claude  # Should return a path
+# First ensure Gemini CLI is installed
+which gemini  # Should return a path
 
 # Run from project root directory
 cd /path/to/amplifier-ccsdk-sdk
@@ -295,7 +295,7 @@ python amplifier/ccsdk_toolkit/examples/code_complexity_analyzer.py src/ --recur
 import asyncio
 import click
 from amplifier.ccsdk_toolkit import (
-    ClaudeSession,
+    GeminiSession,
     SessionOptions,
     ToolkitLogger,
     LogLevel,
@@ -305,7 +305,7 @@ from amplifier.ccsdk_toolkit import (
 @click.argument("input_text")
 @click.option("--verbose", is_flag=True)
 def main(input_text: str, verbose: bool):
-    """Process input with Claude"""
+    """Process input with Gemini"""
     asyncio.run(process(input_text, verbose))
 
 async def process(input_text: str, verbose: bool):
@@ -321,7 +321,7 @@ async def process(input_text: str, verbose: bool):
         max_turns=1
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query(input_text)
         if response.success:
             print(response.content)
@@ -357,7 +357,7 @@ tool_permissions:
 Load and use:
 
 ```python
-from amplifier.ccsdk_toolkit import AgentDefinition, ClaudeSession
+from amplifier.ccsdk_toolkit import AgentDefinition, GeminiSession
 
 agent = AgentDefinition.from_file("agent.yaml")
 
@@ -366,7 +366,7 @@ options = SessionOptions(
     # Use other agent settings
 )
 
-async with ClaudeSession(options) as session:
+async with GeminiSession(options) as session:
     response = await session.query("Review main.py")
 ```
 
@@ -378,7 +378,7 @@ Process multiple items concurrently:
 import asyncio
 
 async def process_file(file_path: Path):
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         return await session.query(f"Analyze {file_path}")
 
 # Process files in parallel
@@ -435,8 +435,8 @@ Each module is:
 export ANTHROPIC_API_KEY="your-key"
 
 # Use alternative providers
-export CLAUDE_CODE_USE_BEDROCK=1  # Amazon Bedrock
-export CLAUDE_CODE_USE_VERTEX=1   # Google Vertex AI
+export GEMINI_CODE_USE_BEDROCK=1  # Amazon Bedrock
+export GEMINI_CODE_USE_VERTEX=1   # Google Vertex AI
 ```
 
 ### Toolkit Configuration
@@ -460,11 +460,11 @@ The toolkit provides clear error messages and recovery:
 from amplifier.ccsdk_toolkit import SDKNotAvailableError
 
 try:
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query("...")
 except SDKNotAvailableError as e:
     print(f"SDK not available: {e}")
-    print("Install with: npm install -g @anthropic-ai/claude-code")
+    print("Install with: npm install -g @anthropic-ai/gemini-code")
 except Exception as e:
     logger.error("Unexpected error", error=e)
 ```
@@ -480,19 +480,19 @@ The toolkit trusts operations to complete naturally. Use streaming for visibilit
 options = SessionOptions(stream_output=True)
 ```
 
-### Claude CLI Not Found
+### Gemini CLI Not Found
 
-The SDK requires the Claude CLI to be installed globally:
+The SDK requires the Gemini CLI to be installed globally:
 
 ```bash
 # Check if installed
-which claude
+which gemini
 
 # Install if missing
-npm install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/gemini-code
 
 # Or with bun
-bun install -g @anthropic-ai/claude-code
+bun install -g @anthropic-ai/gemini-code
 ```
 
 ### Session Not Found
@@ -536,8 +536,8 @@ make test   # Run tests
 For issues or questions:
 
 - GitHub Issues: [Project Issues]
-- Documentation: See `/ai_context/claude_code/` for SDK details
+- Documentation: See `/ai_context/gemini_code/` for SDK details
 
 ---
 
-Built with the Claude Code SDK and a commitment to ruthless simplicity.
+Built with the Gemini CLI SDK and a commitment to ruthless simplicity.

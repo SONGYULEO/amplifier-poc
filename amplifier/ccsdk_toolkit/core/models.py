@@ -8,7 +8,7 @@ from pydantic import Field
 
 
 class SessionOptions(BaseModel):
-    """Configuration options for Claude sessions.
+    """Configuration options for Gemini sessions.
 
     Attributes:
         system_prompt: System prompt for the session
@@ -43,7 +43,7 @@ class SessionOptions(BaseModel):
 
 
 class SessionResponse(BaseModel):
-    """Response from a Claude session query.
+    """Response from a Gemini session query.
 
     Attributes:
         content: The response text content
@@ -64,7 +64,7 @@ class SessionResponse(BaseModel):
         json_schema_extra = {
             "example": {
                 "content": "Here's the code review...",
-                "metadata": {"tokens": 150, "model": "claude-3"},
+                "metadata": {"tokens": 150, "model": "gemini-3"},
                 "error": None,
             }
         }

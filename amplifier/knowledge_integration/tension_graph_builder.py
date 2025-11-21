@@ -195,9 +195,9 @@ class TensionGraphBuilder:
         """
         comprehensive_triples = [
             # AI Engineering and Development Philosophy
-            PerspectiveTriple("claude code", "is", "cli tool", "architect-1", 1, confidence=0.95),
-            PerspectiveTriple("claude code", "serves as", "orchestrator", "architect-1", 1, confidence=0.9),
-            PerspectiveTriple("claude code", "delegates to", "sub-agents", "architect-1", 1, confidence=0.95),
+            PerspectiveTriple("gemini code", "is", "cli tool", "architect-1", 1, confidence=0.95),
+            PerspectiveTriple("gemini code", "serves as", "orchestrator", "architect-1", 1, confidence=0.9),
+            PerspectiveTriple("gemini code", "delegates to", "sub-agents", "architect-1", 1, confidence=0.95),
             PerspectiveTriple("sub-agents", "provide", "specialized expertise", "architect-1", 2, confidence=0.9),
             PerspectiveTriple("sub-agents", "conserve", "context window", "architect-1", 2, confidence=0.85),
             PerspectiveTriple("context window", "requires", "strategic compaction", "architect-1", 3, confidence=0.9),
@@ -238,9 +238,9 @@ class TensionGraphBuilder:
                 "diversity", "indicates", "rich understanding", "synthesis-architect", 4, confidence=0.85
             ),
             PerspectiveTriple("graph", "identifies", "divergence points", "synthesis-architect", 4, confidence=0.8),
-            # Claude Code SDK Integration
-            PerspectiveTriple("claude code sdk", "requires", "npm package", "integration-expert", 1, confidence=0.95),
-            PerspectiveTriple("claude cli", "needs", "global installation", "integration-expert", 1, confidence=0.95),
+            # Gemini CLI SDK Integration
+            PerspectiveTriple("gemini code sdk", "requires", "npm package", "integration-expert", 1, confidence=0.95),
+            PerspectiveTriple("gemini cli", "needs", "global installation", "integration-expert", 1, confidence=0.95),
             PerspectiveTriple("sdk operations", "use", "120-second timeout", "integration-expert", 2, confidence=0.9),
             PerspectiveTriple("responses", "may contain", "markdown", "integration-expert", 2, confidence=0.85),
             PerspectiveTriple(
@@ -251,7 +251,7 @@ class TensionGraphBuilder:
             PerspectiveTriple("extractor", "extracts", "concepts", "knowledge-miner", 1, confidence=0.95),
             PerspectiveTriple("extractor", "extracts", "spo triples", "knowledge-miner", 2, confidence=0.95),
             PerspectiveTriple("chunk size", "increased to", "10000 words", "knowledge-miner", 2, confidence=0.9),
-            PerspectiveTriple("claude", "handles", "100k+ tokens", "knowledge-miner", 3, confidence=0.95),
+            PerspectiveTriple("gemini", "handles", "100k+ tokens", "knowledge-miner", 3, confidence=0.95),
             # Development Workflow
             PerspectiveTriple("changes", "require", "make check", "workflow-expert", 1, confidence=0.95),
             PerspectiveTriple("services", "need", "runtime testing", "workflow-expert", 1, confidence=0.9),

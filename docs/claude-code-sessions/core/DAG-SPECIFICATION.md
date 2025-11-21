@@ -1,10 +1,10 @@
-# Claude Code DAG Specification
+# Gemini CLI DAG Specification
 
-This document specifies the Directed Acyclic Graph (DAG) structure that forms the foundation of Claude Code session files.
+This document specifies the Directed Acyclic Graph (DAG) structure that forms the foundation of Gemini CLI session files.
 
 ## Foundation: DAG as Core Data Structure
 
-Claude Code sessions are fundamentally a DAG where:
+Gemini CLI sessions are fundamentally a DAG where:
 - **Nodes** = Messages (user inputs, assistant responses, tool invocations/results)
 - **Edges** = Parent-child relationships via `parentUuid → uuid` mapping
 - **Roots** = Messages where `parentUuid = null`
@@ -103,7 +103,7 @@ Human Message (Sidechain Start):
   "parentUuid": "msg_task_123",  ← Points to Task message
   "type": "human",
   "isSidechain": true,
-  "userType": "external",  // Claude acting as user
+  "userType": "external",  // Gemini acting as user
   "message": {
     "content": "Find bugs in this code"
   }
@@ -213,8 +213,8 @@ Sidechains reverse the user/assistant roles:
 
 | Message Type | Main Conversation | Sidechain |
 |-------------|-------------------|-----------|
-| human | Human user | Claude delegating |
-| assistant | Claude response | Agent response |
+| human | Human user | Gemini delegating |
+| assistant | Gemini response | Agent response |
 
 **Key Indicator**: `userType = "external"` identifies the actual initiator
 

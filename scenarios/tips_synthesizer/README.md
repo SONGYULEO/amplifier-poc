@@ -242,7 +242,7 @@ All working files are saved to `.data/tips_synthesizer/<session>/`:
 
 ### "API key not found"
 
-**Problem**: The Claude API key isn't configured.
+**Problem**: The Gemini API key isn't configured.
 
 **Solution**: Follow the [Amplifier setup instructions](../../README.md#-step-by-step-setup) to configure your API key.
 

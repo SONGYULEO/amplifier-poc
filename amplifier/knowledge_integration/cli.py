@@ -150,7 +150,7 @@ def extract_directory(dir_path: str, pattern: str = "*.md") -> None:
                     logger.error(f"\n⚠ {e}")
                     logger.info(f"Successfully processed {files_processed} files before timeout")
                     logger.info(
-                        "Please ensure Claude CLI is installed globally: npm install -g @anthropic-ai/claude-code"
+                        "Please ensure Gemini CLI is installed globally: npm install -g @anthropic-ai/gemini-code"
                     )
                     break
                 # Empty response from interrupted SDK

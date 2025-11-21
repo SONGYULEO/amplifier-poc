@@ -120,7 +120,7 @@ write_json_with_retry(data, filepath)
 ### LLM Processing Pattern
 
 ```python
-async with ClaudeSession(options) as session:
+async with GeminiSession(options) as session:
     response = await session.query(prompt)
     result = parse_llm_json(response.content, default={})
 ```

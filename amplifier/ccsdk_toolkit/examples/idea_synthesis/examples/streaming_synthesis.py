@@ -11,7 +11,7 @@ Demonstrates:
 
 import asyncio
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 
 
@@ -33,7 +33,7 @@ async def run_streaming_synthesis():
         max_turns=1,
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query(
             "Analyze these key themes and count slowly from 1 to 10:\n"
             "- Trust through visibility\n"
@@ -67,7 +67,7 @@ async def run_streaming_synthesis():
         max_turns=150,  # High turn count for complex operations
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         print("Processing", end="")
         response = await session.query(
             "Briefly list 5 key principles of the 'trust through visibility' philosophy. "
@@ -78,14 +78,14 @@ async def run_streaming_synthesis():
         print(f"Chunks received: {len(chunks_received)}")
         print(f"Response:\n{response.content}")
 
-    # Example 3: Combining with the enhanced claude_helper
+    # Example 3: Combining with the enhanced gemini_helper
     print("\n\n3. Using enhanced query helper with streaming:")
     print("-" * 40)
 
-    from amplifier.ccsdk_toolkit.examples.idea_synthesis.utils import query_claude_streaming
+    from amplifier.ccsdk_toolkit.examples.idea_synthesis.utils import query_gemini_streaming
 
     print("Streaming synthesis:")
-    result = await query_claude_streaming(
+    result = await query_gemini_streaming(
         prompt="Create a brief synthesis of these concepts:\n"
         "1. Watching progress provides confidence\n"
         "2. Natural completion allows operations to finish\n"

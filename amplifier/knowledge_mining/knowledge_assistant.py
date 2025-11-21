@@ -121,7 +121,7 @@ class KnowledgeAssistant:
                 # Use intelligent classification if document type is general
                 file_type = document_type
                 if document_type == "general":
-                    # Use Claude Haiku for intelligent classification
+                    # Use Gemini Haiku for intelligent classification
                     file_type = self.extractor.classify_document(content, title)
                     logger.info(f"Classified {file_path.name} as: {file_type}")
 

@@ -1,7 +1,7 @@
 """
 Module: CCSDK Core
 
-Core wrapper around claude_code_sdk with robust error handling.
+Core wrapper around gemini_code_sdk with robust error handling.
 See README.md for full contract specification.
 
 Basic Usage:
@@ -12,20 +12,20 @@ Basic Usage:
 
 from .models import SessionOptions
 from .models import SessionResponse
-from .session import ClaudeSession
-from .session import ClaudeSession as CCSDKSession  # Alias for requested naming
+from .session import GeminiSession
+from .session import GeminiSession as CCSDKSession  # Alias for requested naming
 from .session import SDKNotAvailableError
 from .session import SessionError
-from .utils import check_claude_cli
+from .utils import check_gemini_cli
 from .utils import query_with_retry
 
 __all__ = [
     "CCSDKSession",
-    "ClaudeSession",
+    "GeminiSession",
     "SessionError",
     "SDKNotAvailableError",
     "SessionResponse",
     "SessionOptions",
-    "check_claude_cli",
+    "check_gemini_cli",
     "query_with_retry",
 ]

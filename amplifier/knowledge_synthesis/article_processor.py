@@ -199,7 +199,7 @@ class ArticleProcessor:
         }
 
     async def _classify_document(self, text: str, title: str = "") -> str:
-        """Classify document type using Claude Code SDK.
+        """Classify document type using Gemini CLI SDK.
 
         Args:
             text: Document text (first 1500 chars used)
@@ -268,7 +268,7 @@ class ArticleProcessor:
         truncated_content, original_tokens, final_tokens = truncate_to_tokens(article.content)
         self.extraction_logger.log_truncation(original_tokens, final_tokens)
 
-        # Classify document type using Claude Code SDK (fast model)
+        # Classify document type using Gemini CLI SDK (fast model)
         import threading
 
         # Set up for animated classification progress

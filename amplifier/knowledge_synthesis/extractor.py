@@ -1,5 +1,5 @@
 """
-Simple, direct knowledge extraction using Claude Code SDK.
+Simple, direct knowledge extraction using Gemini CLI SDK.
 Extracts concepts, relationships, insights, and patterns in a single pass.
 """
 
@@ -15,15 +15,15 @@ TimeoutError = asyncio.TimeoutError
 
 logger = logging.getLogger(__name__)
 
-# Try to import Claude Code SDK - it may not be available outside Claude Code environment
+# Try to import Gemini CLI SDK - it may not be available outside Gemini CLI environment
 try:
-    from claude_code_sdk import ClaudeCodeOptions
-    from claude_code_sdk import ClaudeSDKClient
+    from gemini_code_sdk import GeminiCodeOptions
+    from gemini_code_sdk import GeminiSDKClient
 
-    CLAUDE_SDK_AVAILABLE = True
+    GEMINI_SDK_AVAILABLE = True
 except ImportError:
-    CLAUDE_SDK_AVAILABLE = False
-    logger.warning("Claude Code SDK not available - extraction will return empty results")
+    GEMINI_SDK_AVAILABLE = False
+    logger.warning("Gemini CLI SDK not available - extraction will return empty results")
 
 
 class KnowledgeSynthesizer:
@@ -48,10 +48,10 @@ class KnowledgeSynthesizer:
         if not text:
             return self._empty_extraction(source_id, error_type="empty_input", error_detail="No text provided")
 
-        if not CLAUDE_SDK_AVAILABLE:
-            logger.warning("Claude Code SDK not available - returning empty extraction")
+        if not GEMINI_SDK_AVAILABLE:
+            logger.warning("Gemini CLI SDK not available - returning empty extraction")
             return self._empty_extraction(
-                source_id, error_type="sdk_unavailable", error_detail="Claude Code SDK not installed or not available"
+                source_id, error_type="sdk_unavailable", error_detail="Gemini CLI SDK not installed or not available"
             )
 
         prompt = self._build_prompt(text, title)
@@ -60,11 +60,11 @@ class KnowledgeSynthesizer:
         try:
             # Use 120-second timeout
             async with asyncio.timeout(120):
-                response = await self._call_claude(prompt)
+                response = await self._call_gemini(prompt)
                 if not response:
-                    logger.warning("Empty response from Claude Code SDK")
+                    logger.warning("Empty response from Gemini CLI SDK")
                     return self._empty_extraction(
-                        source_id, error_type="empty_response", error_detail="Claude SDK returned empty response"
+                        source_id, error_type="empty_response", error_detail="Gemini SDK returned empty response"
                     )
 
                 # Clean and parse response
@@ -82,7 +82,7 @@ class KnowledgeSynthesizer:
                 return extraction
 
         except TimeoutError:
-            error_msg = "Claude Code SDK timeout after 120s"
+            error_msg = "Gemini CLI SDK timeout after 120s"
             logger.error(error_msg)
             return self._empty_extraction(source_id, error_type="timeout", error_detail=error_msg)
         except json.JSONDecodeError as e:
@@ -148,15 +148,15 @@ Text to analyze:
 """
         return prompt
 
-    async def _call_claude(self, prompt: str) -> str:
-        """Call Claude Code SDK and collect response."""
-        if not CLAUDE_SDK_AVAILABLE:
+    async def _call_gemini(self, prompt: str) -> str:
+        """Call Gemini CLI SDK and collect response."""
+        if not GEMINI_SDK_AVAILABLE:
             return ""
 
         response = ""
 
-        async with ClaudeSDKClient(  # type: ignore
-            options=ClaudeCodeOptions(  # type: ignore
+        async with GeminiSDKClient(  # type: ignore
+            options=GeminiCodeOptions(  # type: ignore
                 system_prompt="You are a knowledge extraction system. Extract structured information and return ONLY valid JSON.",
                 max_turns=1,
             )

@@ -32,7 +32,7 @@ def main(query: str, limit: int, type: str, format: str):
 
     Examples:
         knowledge-query "machine learning"
-        knowledge-query "Claude" --type concept
+        knowledge-query "Gemini" --type concept
         knowledge-query "uses" --type relationship --limit 20
     """
     # Use paths.data_dir for the extractions file

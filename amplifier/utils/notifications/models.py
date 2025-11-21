@@ -22,7 +22,7 @@ class NotificationRequest(BaseModel):
     """Request model for sending notifications."""
 
     message: str = Field(..., description="Main notification message")
-    title: str = Field(default="Claude Code", description="Notification title")
+    title: str = Field(default="Gemini CLI", description="Notification title")
     subtitle: str | None = Field(default=None, description="Optional subtitle (e.g., project name)")
     session_id: str | None = Field(default=None, description="Session ID for tracking")
     debug: bool = Field(default=False, description="Enable debug mode")
@@ -38,8 +38,8 @@ class NotificationResponse(BaseModel):
     debug_log: str | None = Field(default=None, description="Debug information if debug mode enabled")
 
 
-class ClaudeCodeHookInput(BaseModel):
-    """Input model for Claude Code hook events."""
+class GeminiCodeHookInput(BaseModel):
+    """Input model for Gemini CLI hook events."""
 
     session_id: str | None = Field(default=None, description="Session ID")
     transcript_path: str | None = Field(default=None, description="Path to transcript file")

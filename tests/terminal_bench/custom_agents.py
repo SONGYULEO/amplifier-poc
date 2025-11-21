@@ -56,7 +56,7 @@ class CustomAmplifierAgent(AbstractInstalledAgent):
 
     @property
     def _install_agent_script_path(self) -> Path:
-        """Create the installation script for claude-code."""
+        """Create the installation script for gemini-code."""
         script_content = """#!/bin/bash
 
 apt-get update
@@ -86,9 +86,9 @@ cp -r -n /tmp/amplifier/. .
 
 make install
 
-# Modify Claude settings to use acceptEdits mode instead of bypassPermissions
-if [ -f .claude/settings.json ]; then
-    sed -i 's/"defaultMode": "bypassPermissions"/"defaultMode": "acceptEdits"/g' .claude/settings.json
+# Modify Gemini settings to use acceptEdits mode instead of bypassPermissions
+if [ -f .gemini/settings.json ]; then
+    sed -i 's/"defaultMode": "bypassPermissions"/"defaultMode": "acceptEdits"/g' .gemini/settings.json
 fi"""
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False) as temp_file:
@@ -103,7 +103,7 @@ fi"""
         escaped_instruction = shlex.quote(instruction)
         return [
             TerminalCommand(
-                command=f"claude --verbose --output-format stream-json "
+                command=f"gemini --verbose --output-format stream-json "
                 f"-p {escaped_instruction} --allowedTools "
                 f"{' '.join(self.ALLOWED_TOOLS)}",
                 min_timeout_sec=0.0,
@@ -114,10 +114,10 @@ fi"""
         ]
 
 
-class ClaudeCodeAgent(AbstractInstalledAgent):
+class GeminiCodeAgent(AbstractInstalledAgent):
     @staticmethod
     def name() -> str:
-        return AgentName.CLAUDE_CODE.value
+        return AgentName.GEMINI_CODE.value
 
     ALLOWED_TOOLS = [
         "Bash",
@@ -158,7 +158,7 @@ class ClaudeCodeAgent(AbstractInstalledAgent):
 
     @property
     def _install_agent_script_path(self) -> Path:
-        """Create the installation script for claude-code."""
+        """Create the installation script for gemini-code."""
         script_content = """#!/bin/bash
 
 apt-get update
@@ -171,7 +171,7 @@ source "$HOME/.nvm/nvm.sh"
 nvm install 22
 npm -v
 
-npm install -g @anthropic-ai/claude-code"""
+npm install -g @anthropic-ai/gemini-code"""
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False) as temp_file:
             temp_file.write(script_content)
@@ -184,7 +184,7 @@ npm install -g @anthropic-ai/claude-code"""
         escaped_instruction = shlex.quote(instruction)
         return [
             TerminalCommand(
-                command=f"claude --verbose --output-format stream-json "
+                command=f"gemini --verbose --output-format stream-json "
                 f"-p {escaped_instruction} --allowedTools "
                 f"{' '.join(self.ALLOWED_TOOLS)}",
                 min_timeout_sec=0.0,

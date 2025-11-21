@@ -8,11 +8,11 @@ All configuration options can be set via environment variables or in a `.env` fi
 
 ### Model Configuration
 
-- `KNOWLEDGE_MINING_MODEL` - Model for document classification (default: `claude-3-5-haiku-20241022`)
+- `KNOWLEDGE_MINING_MODEL` - Model for document classification (default: `gemini-3-5-haiku-20241022`)
 
   - Used for fast, efficient document type detection
 
-- `KNOWLEDGE_MINING_EXTRACTION_MODEL` - Model for knowledge extraction (default: `claude-sonnet-4-20250514`)
+- `KNOWLEDGE_MINING_EXTRACTION_MODEL` - Model for knowledge extraction (default: `gemini-sonnet-4-20250514`)
   - Used for deep, thorough knowledge extraction from documents
 
 ### Content Processing

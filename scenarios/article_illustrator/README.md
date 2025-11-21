@@ -321,7 +321,7 @@ Images render at 50% width for optimal readability.
 
 **Typical costs (2025 pricing)**:
 - Content analysis (GPT-4o-mini): ~$0.01 per article
-- Prompt generation (Claude Haiku): ~$0.01 per prompt
+- Prompt generation (Gemini Haiku): ~$0.01 per prompt
 - GPT-Image-1: $0.04 per image (1024x1024, auto quality)
 - DALL-E 3: $0.04 per image (1024x1024, standard quality)
 - Imagen 4: $0.03-$0.04 per image

@@ -158,7 +158,7 @@ if __name__ == "__main__":
         project_dir = session_file.parent
     else:
         # Default test case
-        project_dir = Path.home() / ".claude/projects/-home-brkrabac-repos-amplifier"
+        project_dir = Path.home() / ".gemini/projects/-home-brkrabac-repos-amplifier"
         session_file = project_dir / "856e3139-2a1b-4eb2-927a-5181a0bbfa88.jsonl"
 
     if not session_file.exists():

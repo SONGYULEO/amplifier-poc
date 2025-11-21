@@ -1,19 +1,19 @@
-# Claude Code Sessions Documentation
+# Gemini CLI Sessions Documentation
 
 ## Overview
 
-Claude Code generates session logs in JSONL format that capture the complete conversation history, including messages, tool invocations, and results. This documentation provides technical specifications for parsing and working with these session files.
+Gemini CLI generates session logs in JSONL format that capture the complete conversation history, including messages, tool invocations, and results. This documentation provides technical specifications for parsing and working with these session files.
 
 ## Session File Location
 
 Session logs are stored in:
 ```
-~/.claude/conversations/{project-name}/*.jsonl
+~/.gemini/conversations/{project-name}/*.jsonl
 ```
 
 Where `{project-name}` is derived from your working directory path with `/` replaced by `_` and `.` replaced by `_`.
 
-Example: Working in `/home/user/repos/my.project` creates logs in `~/.claude/conversations/home_user_repos_my_project/`
+Example: Working in `/home/user/repos/my.project` creates logs in `~/.gemini/conversations/home_user_repos_my_project/`
 
 ## Documentation Structure
 
@@ -108,7 +108,7 @@ def get_active_path(messages):
 ### Message Types
 
 - **human**: User messages
-- **assistant**: Claude's responses
+- **assistant**: Gemini's responses
 - **tool_result**: Results from tool executions
 - **compact_prelude**: Messages preserved during compaction
 - **compact_recap**: Summary of compacted messages
@@ -129,4 +129,4 @@ def get_active_path(messages):
 
 ## See Also
 
-- [Claude Code Desktop](https://claude.ai/download) - The Claude Code application
+- [Gemini CLI Desktop](https://gemini.ai/download) - The Gemini CLI application

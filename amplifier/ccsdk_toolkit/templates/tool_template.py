@@ -22,7 +22,7 @@ from typing import Any
 
 import click
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.ccsdk_toolkit.defensive import parse_llm_json
 from amplifier.ccsdk_toolkit.defensive.file_io import read_json_with_retry
@@ -73,7 +73,7 @@ class ToolProcessor:
             retry_attempts=2,
         )
 
-        async with ClaudeSession(options) as session:
+        async with GeminiSession(options) as session:
             prompt = f"Analyze this item: {item.name}"
             response = await session.query(prompt)
 

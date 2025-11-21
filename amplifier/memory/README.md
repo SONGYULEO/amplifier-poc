@@ -1,10 +1,10 @@
 # Memory Storage Module
 
-A persistent memory system for storing and retrieving contextual information from Claude Code sessions.
+A persistent memory system for storing and retrieving contextual information from Gemini CLI sessions.
 
 ## Purpose
 
-The memory module provides JSON-based persistence for memories extracted from conversations, enabling Claude to maintain context across sessions and learn from past interactions.
+The memory module provides JSON-based persistence for memories extracted from conversations, enabling Gemini to maintain context across sessions and learn from past interactions.
 
 ## Architecture
 
@@ -98,7 +98,7 @@ Memories are stored in JSON format at `.data/memory.json`:
 
 ### With Hook Scripts
 
-The memory module is used by Claude Code hooks:
+The memory module is used by Gemini CLI hooks:
 
 ```python
 # In hook_stop.py
@@ -188,4 +188,4 @@ Planned improvements:
 
 - [Search Module](../search/README.md) - Semantic memory search
 - [Validation Module](../validation/README.md) - Claim verification
-- [Memory CLI](../../.claude/tools/memory_cli.py) - Command-line interface
+- [Memory CLI](../../.gemini/tools/memory_cli.py) - Command-line interface

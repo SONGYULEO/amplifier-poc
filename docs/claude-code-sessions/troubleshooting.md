@@ -1,6 +1,6 @@
-# Claude Code Sessions Troubleshooting
+# Gemini CLI Sessions Troubleshooting
 
-This guide helps resolve common issues when parsing and working with Claude Code session files.
+This guide helps resolve common issues when parsing and working with Gemini CLI session files.
 
 ## Common Issues
 

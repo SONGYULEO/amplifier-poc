@@ -313,7 +313,7 @@ echo "Ready to work on $1!"
 Each worktree can use all Amplifier agents:
 ```bash
 cd ../amplifier.my-experiment
-claude  # Start Claude with all agents available
+gemini  # Start Gemini with all agents available
 # "Use zen-architect to design this experiment"
 ```
 
@@ -331,11 +331,11 @@ make knowledge-query Q="authentication patterns"
 Test multiple approaches while preserving conversation history:
 ```bash
 # In worktree 1
-claude  # Design approach A
+gemini  # Design approach A
 # /compact when needed (auto-saves transcript)
 
 # In worktree 2
-claude  # Design approach B
+gemini  # Design approach B
 # /compact when needed (separate transcript)
 
 # Later, compare transcripts

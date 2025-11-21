@@ -201,11 +201,11 @@ Check our patterns in IMPLEMENTATION_PHILOSOPHY.md
 
 ## 🛠️ Creating Custom Commands
 
-### Claude Code
+### Gemini CLI
 
 #### Command Structure
 
-Create a new file in `.claude/commands/your-command.md`:
+Create a new file in `.gemini/commands/your-command.md`:
 
 ```markdown
 ## Usage

@@ -1,6 +1,6 @@
-# Claude Code Session Examples
+# Gemini CLI Session Examples
 
-This directory contains working examples for parsing and processing Claude Code session files from real Claude Code sessions stored at `~/.claude/projects/`.
+This directory contains working examples for parsing and processing Gemini CLI session files from real Gemini CLI sessions stored at `~/.gemini/projects/`.
 
 ## Context-Aware Session Selection
 
@@ -10,13 +10,13 @@ When running the tools without arguments, they intelligently select sessions bas
 2. **Most specific match wins**: If multiple projects match your path, the most specific one is chosen
 3. **Fallback to most recent**: If not in a project directory, uses the most recent session across all projects
 
-For example, if you're working in `/home/user/repos/myproject` and have a corresponding Claude Code project, the tools will automatically use sessions from that project.
+For example, if you're working in `/home/user/repos/myproject` and have a corresponding Gemini CLI project, the tools will automatically use sessions from that project.
 
 ## Quick Start
 
 ### Using the Command-Line Tools
 
-The example tools now work with real Claude Code sessions by default and save outputs to organized directories:
+The example tools now work with real Gemini CLI sessions by default and save outputs to organized directories:
 
 ```bash
 # Parse the most recent session across all projects
@@ -68,7 +68,7 @@ from pathlib import Path
 import json
 
 def parse_session(file_path):
-    """Parse a Claude Code session file."""
+    """Parse a Gemini CLI session file."""
     messages = []
     with open(file_path, 'r') as f:
         for line in f:
@@ -77,7 +77,7 @@ def parse_session(file_path):
     return messages
 
 # Parse your session
-session_file = Path.home() / ".claude/projects/your-project/session.jsonl"
+session_file = Path.home() / ".gemini/projects/your-project/session.jsonl"
 messages = parse_session(session_file)
 print(f"Session contains {len(messages)} messages")
 ```
@@ -86,11 +86,11 @@ print(f"Session contains {len(messages)} messages")
 
 ### example_parser.py
 
-A parser that analyzes Claude Code sessions and saves comprehensive analysis.
+A parser that analyzes Gemini CLI sessions and saves comprehensive analysis.
 
 **Features:**
 
-- Auto-discovers Claude Code projects in `~/.claude/projects/`
+- Auto-discovers Gemini CLI projects in `~/.gemini/projects/`
 - Context-aware: automatically uses sessions from your current project directory
 - Parses the most recent session by default (with smart project matching)
 - Saves analysis to `{output}/{project}/{session}/analysis.md`
@@ -123,7 +123,7 @@ python example_parser.py /path/to/session.jsonl
 
 ### example_transcript_builder.py
 
-Builds readable transcripts from Claude Code session files.
+Builds readable transcripts from Gemini CLI session files.
 
 **Features:**
 
@@ -131,7 +131,7 @@ Builds readable transcripts from Claude Code session files.
 - Context-aware: automatically uses sessions from your current project directory
 - Saves transcript to `{output}/{project}/{session}/transcript.md`
 - Copies source JSONL to output directory
-- Proper attribution (User, Claude, Sub-agent, System)
+- Proper attribution (User, Gemini, Sub-agent, System)
 - Optional inclusion of system messages
 - Automatic output file naming
 - Configurable preview length
@@ -323,7 +323,7 @@ def extract_sidechains(messages):
 
 ### Real Session Format vs Documentation
 
-The actual Claude Code session format has some differences from the documented format:
+The actual Gemini CLI session format has some differences from the documented format:
 
 1. **Message structure**: Real sessions use nested `message` objects with `content` arrays
 2. **Tool results**: Appear as `user` messages with `tool_result` content items
@@ -332,10 +332,10 @@ The actual Claude Code session format has some differences from the documented f
 
 ### Session File Locations
 
-Claude Code sessions are stored at:
+Gemini CLI sessions are stored at:
 
 ```
-~/.claude/projects/<project-name>/<session-uuid>.jsonl
+~/.gemini/projects/<project-name>/<session-uuid>.jsonl
 ```
 
 Project names are sanitized versions of the working directory path with `-` separators.
@@ -389,7 +389,7 @@ Process all sessions in a project:
 ```python
 from pathlib import Path
 
-project_dir = Path.home() / ".claude/projects/-home-user-myproject"
+project_dir = Path.home() / ".gemini/projects/-home-user-myproject"
 
 for session_file in project_dir.glob("*.jsonl"):
     print(f"Processing {session_file.name}")
@@ -409,4 +409,4 @@ These examples are designed to be simple and educational. Feel free to:
 
 ## License
 
-These examples are provided as part of the Claude Code session documentation and are available for use in your own projects.
+These examples are provided as part of the Gemini CLI session documentation and are available for use in your own projects.

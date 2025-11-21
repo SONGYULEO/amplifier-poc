@@ -1,7 +1,7 @@
 """
 AI Evaluator Module
 
-Uses Claude Code SDK for test evaluation.
+Uses Gemini CLI SDK for test evaluation.
 """
 
 import asyncio
@@ -9,23 +9,23 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# Try to import Claude Code SDK - it may not be available outside Claude Code environment
+# Try to import Gemini CLI SDK - it may not be available outside Gemini CLI environment
 try:
-    from claude_code_sdk import ClaudeCodeOptions
-    from claude_code_sdk import ClaudeSDKClient
+    from gemini_code_sdk import GeminiCodeOptions
+    from gemini_code_sdk import GeminiSDKClient
 
-    CLAUDE_SDK_AVAILABLE = True
+    GEMINI_SDK_AVAILABLE = True
 except ImportError:
-    CLAUDE_SDK_AVAILABLE = False
-    logger.warning("Claude Code SDK not available - tests will pass without AI evaluation")
+    GEMINI_SDK_AVAILABLE = False
+    logger.warning("Gemini CLI SDK not available - tests will pass without AI evaluation")
 
 
 class AIEvaluator:
-    """Evaluate command outputs using Claude Code SDK."""
+    """Evaluate command outputs using Gemini CLI SDK."""
 
     def __init__(self):
         """Initialize the AI evaluator."""
-        self.sdk_available = CLAUDE_SDK_AVAILABLE
+        self.sdk_available = GEMINI_SDK_AVAILABLE
 
     async def evaluate(self, command: str, output: str, success_criteria: str, timeout: int = 30) -> tuple[bool, str]:
         """Evaluate command output against success criteria.
@@ -39,13 +39,13 @@ class AIEvaluator:
         Returns:
             Tuple of (passed, reasoning)
         """
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             # Skip evaluation when SDK unavailable
             from .config import config
 
             if config.skip_on_ai_unavailable:
-                return True, "Claude Code SDK unavailable - skipping evaluation"
-            return False, "Claude Code SDK not available"
+                return True, "Gemini CLI SDK unavailable - skipping evaluation"
+            return False, "Gemini CLI SDK not available"
 
         # Truncate output if needed
         from .config import config
@@ -70,9 +70,9 @@ Format: PASS|FAIL: Brief explanation"""
         try:
             # Use timeout for SDK operations
             async with asyncio.timeout(timeout):
-                response = await self._call_claude(prompt)
+                response = await self._call_gemini(prompt)
                 if not response:
-                    logger.warning("Empty response from Claude Code SDK")
+                    logger.warning("Empty response from Gemini CLI SDK")
                     if config.skip_on_ai_unavailable:
                         return True, "Empty AI response - skipping"
                     return False, "Empty AI response"
@@ -81,7 +81,7 @@ Format: PASS|FAIL: Brief explanation"""
                 return self._parse_response(response)
 
         except TimeoutError:
-            logger.warning("Claude Code SDK timeout - likely running outside Claude Code environment")
+            logger.warning("Gemini CLI SDK timeout - likely running outside Gemini CLI environment")
             from .config import config
 
             if config.skip_on_ai_unavailable:
@@ -95,14 +95,14 @@ Format: PASS|FAIL: Brief explanation"""
                 return True, f"AI error: {e}"
             return False, f"AI evaluation failed: {e}"
 
-    async def _call_claude(self, prompt: str) -> str:
-        """Call Claude Code SDK and collect response."""
-        if not CLAUDE_SDK_AVAILABLE:
+    async def _call_gemini(self, prompt: str) -> str:
+        """Call Gemini CLI SDK and collect response."""
+        if not GEMINI_SDK_AVAILABLE:
             return ""
 
         response = ""
-        async with ClaudeSDKClient(  # type: ignore
-            options=ClaudeCodeOptions(  # type: ignore
+        async with GeminiSDKClient(  # type: ignore
+            options=GeminiCodeOptions(  # type: ignore
                 system_prompt="You are evaluating if a command ran successfully. Respond with 'PASS' or 'FAIL' followed by a colon and brief reason.",
                 max_turns=1,
             )

@@ -1,6 +1,6 @@
-# Claude Code Operations Reference
+# Gemini CLI Operations Reference
 
-This document describes the operations that occur within Claude Code sessions and how they affect the DAG structure.
+This document describes the operations that occur within Gemini CLI sessions and how they affect the DAG structure.
 
 ## Core Operations
 
@@ -105,7 +105,7 @@ Main Conversation
 ```
 
 **Characteristics**:
-- Role reversal (human type = Claude delegating)
+- Role reversal (human type = Gemini delegating)
 - `userType: "external"` marks actual initiator
 - Can nest (agents invoking other agents)
 - Returns to main conversation via tool result

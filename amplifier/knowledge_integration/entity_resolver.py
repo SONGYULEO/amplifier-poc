@@ -59,7 +59,7 @@ class EntityResolver:
         Args:
             cache_path: Path to cache file for resolved entities
             fuzzy_threshold: Minimum score for fuzzy matching (0-100)
-            use_intelligent_matching: Use Claude Code SDK for intelligent entity matching
+            use_intelligent_matching: Use Gemini CLI SDK for intelligent entity matching
         """
         self.cache_path = cache_path or Path(".data/knowledge/entity_cache.json")
         self.fuzzy_threshold = fuzzy_threshold
@@ -125,18 +125,18 @@ class EntityResolver:
             "gpt4": "GPT-4",
             "gpt-3": "GPT-3",
             "gpt3": "GPT-3",
-            # Claude variations
-            "claude": "Claude",
-            "claude ai": "Claude",
-            "claude-ai": "Claude",
-            "anthropic claude": "Claude",
-            "claude 2": "Claude 2",
-            "claude 3": "Claude 3",
-            "claude-2": "Claude 2",
-            "claude-3": "Claude 3",
-            "claude opus": "Claude 3 Opus",
-            "claude sonnet": "Claude 3 Sonnet",
-            "claude haiku": "Claude 3 Haiku",
+            # Gemini variations
+            "gemini": "Gemini",
+            "gemini ai": "Gemini",
+            "gemini-ai": "Gemini",
+            "anthropic gemini": "Gemini",
+            "gemini 2": "Gemini 2",
+            "gemini 3": "Gemini 3",
+            "gemini-2": "Gemini 2",
+            "gemini-3": "Gemini 3",
+            "gemini opus": "Gemini 3 Opus",
+            "gemini sonnet": "Gemini 3 Sonnet",
+            "gemini haiku": "Gemini 3 Haiku",
             # Other AI models
             "gemini": "Gemini",
             "google gemini": "Gemini",

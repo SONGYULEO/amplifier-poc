@@ -54,11 +54,11 @@ class KnowledgeMiningConfig(BaseSettings):
 
     # Model configuration
     knowledge_mining_model: str = Field(
-        default="claude-3-5-haiku-20241022", description="Model for document classification (fast, efficient)"
+        default="gemini-3-5-haiku-20241022", description="Model for document classification (fast, efficient)"
     )
 
     knowledge_mining_extraction_model: str = Field(
-        default="claude-sonnet-4-20250514", description="Model for knowledge extraction (powerful, thorough)"
+        default="gemini-sonnet-4-20250514", description="Model for knowledge extraction (powerful, thorough)"
     )
 
     # Content limits
@@ -83,7 +83,7 @@ class KnowledgeMiningConfig(BaseSettings):
 
     # API Keys (optional - SDK may provide these)
     anthropic_api_key: str | None = Field(
-        default=None, description="Anthropic API key (optional, Claude Code SDK may provide)"
+        default=None, description="Anthropic API key (optional, Gemini CLI SDK may provide)"
     )
 
     def ensure_storage_dir(self) -> Path:

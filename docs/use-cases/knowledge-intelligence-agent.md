@@ -189,7 +189,7 @@ Built on Amplifier's modular architecture:
 - **Specialized Agents**: Each with focused expertise
 - **Knowledge Graph**: Neo4j-based persistent storage
 - **State Management**: Incremental processing support
-- **Claude Code SDK**: Powers conversational interaction
+- **Gemini CLI SDK**: Powers conversational interaction
 
 ### Privacy & Control
 

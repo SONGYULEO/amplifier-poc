@@ -40,10 +40,10 @@ EOF
 
 # 4. Start working
 cd ..
-claude
+gemini
 ```
 
-In Claude Code, start with:
+In Gemini CLI, start with:
 
 ```
 I'm working on the @my-project/ project within this Amplifier workspace.
@@ -62,7 +62,7 @@ But as projects grow, you'll hit friction points:
 
 **Version control gets messy.** Your project files mix with Amplifier's structure. When you pull Amplifier updates, you worry about conflicts. When you commit project changes, they're tangled with workspace changes.
 
-**Context doesn't persist.** Each new Claude session starts fresh. You find yourself re-explaining your project's architecture, conventions, and goals. The AI is helpful but forgetful.
+**Context doesn't persist.** Each new Gemini session starts fresh. You find yourself re-explaining your project's architecture, conventions, and goals. The AI is helpful but forgetful.
 
 **Boundaries blur.** Project-specific documentation ends up in Amplifier's docs. Project utilities creep into Amplifier's scripts. It becomes unclear what belongs where.
 
@@ -76,7 +76,7 @@ Think of it like a workshop. Amplifier is your workbench with all your tools org
 
 ```bash
 my-workspace/               # Your Amplifier workspace
-├── .claude/                # Agent + command definitions
+├── .gemini/                # Agent + command definitions
 ├── docs/                   # Amplifier docs
 ├── scenarios/              # Amplifier tools
 │
@@ -139,7 +139,7 @@ The key is that `my-project` maintains its own `.git` directory and history. Cha
 
 ### Create Your AGENTS.md
 
-This file is your project's persistent memory. Every time Claude starts working with your project, it reads this file first. Think of it as the onboarding document for a new team member—except this team member has perfect memory within a session but starts fresh each time.
+This file is your project's persistent memory. Every time Gemini starts working with your project, it reads this file first. Think of it as the onboarding document for a new team member—except this team member has perfect memory within a session but starts fresh each time.
 
 ```bash
 cd my-project
@@ -251,7 +251,7 @@ These philosophy documents act as decision filters. When the AI proposes somethi
 
 ### Starting a Session
 
-When you open Claude Code in your workspace, set context immediately:
+When you open Gemini CLI in your workspace, set context immediately:
 
 ```
 I'm working on the @my-blog/ project within this Amplifier workspace.
@@ -270,11 +270,11 @@ Reference files with their full workspace path:
 - `@my-blog/docs/DESIGN_PHILOSOPHY.md`
 - `@my-blog/content/posts/2024-01-15-hello.md`
 
-This prevents ambiguity. When Claude sees `@my-blog/`, it knows these files belong to your project, not to Amplifier.
+This prevents ambiguity. When Gemini sees `@my-blog/`, it knows these files belong to your project, not to Amplifier.
 
 ### Scoping File Operations
 
-Tell Claude explicitly when scoping matters:
+Tell Gemini explicitly when scoping matters:
 
 ```
 Please review all TypeScript files in @my-blog/src/ for type safety.
@@ -300,7 +300,7 @@ my-blog/
 └── content/                   # Real blog posts
 ```
 
-This keeps your project clean while giving Claude space to work. The `ai_working/` directory should be in your `.gitignore`.
+This keeps your project clean while giving Gemini space to work. The `ai_working/` directory should be in your `.gitignore`.
 
 ### Version Control Workflow
 
@@ -328,7 +328,7 @@ The workspace tracks which version of your project it expects, but your project'
 
 ## The AGENTS.md Contract
 
-Think of AGENTS.md as a contract between you and the AI. Each session, Claude reads this contract and agrees to work within its terms. The contract establishes:
+Think of AGENTS.md as a contract between you and the AI. Each session, Gemini reads this contract and agrees to work within its terms. The contract establishes:
 
 **What this project is.** Not just technically (a Next.js blog), but philosophically (a static-first, simplicity-focused platform). This shapes every suggestion the AI makes.
 
@@ -444,7 +444,7 @@ my-workspace/
     └── AGENTS.md           # "Experimental ML approaches..."
 ```
 
-When you switch projects, just tell Claude which context to load:
+When you switch projects, just tell Gemini which context to load:
 
 ```
 Switch to working on @client-portal/. Read @client-portal/AGENTS.md.
@@ -458,7 +458,7 @@ The AI instantly adapts to that project's conventions, technologies, and constra
 
 **Use philosophy docs for big decisions.** If you find yourself making the same architectural argument repeatedly, write it down in a philosophy document. Then reference it: "Review this against our principles at @my-project/docs/DESIGN_PHILOSOPHY.md."
 
-**Namespace with @.** Always use the `@project-name/` prefix in Claude conversations. It prevents ambiguity and makes transcripts clearer.
+**Namespace with @.** Always use the `@project-name/` prefix in Gemini conversations. It prevents ambiguity and makes transcripts clearer.
 
 **Separate concerns clearly.** Project code in the project directory. Amplifier customizations in the workspace. Temporary work in `ai_working/`. Clear boundaries prevent confusion.
 
@@ -502,10 +502,10 @@ Here's what a typical session looks like once you've internalized the pattern:
 
 ```bash
 cd my-workspace
-claude
+gemini
 ```
 
-In Claude:
+In Gemini:
 
 ```
 Working on @personal-blog/. Read @personal-blog/AGENTS.md.
@@ -515,7 +515,7 @@ for blog posts. This should happen at build time and follow our static-first
 philosophy. What's the best approach?
 ```
 
-Claude reads your AGENTS.md, understands your tech stack (Next.js) and principles (static-first, simple), and proposes a solution that fits your architecture. No need to re-explain your project every time.
+Gemini reads your AGENTS.md, understands your tech stack (Next.js) and principles (static-first, simple), and proposes a solution that fits your architecture. No need to re-explain your project every time.
 
 When you're done:
 

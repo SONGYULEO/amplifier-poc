@@ -1,7 +1,7 @@
 """
 Quote Extractor Core Implementation
 
-Uses Anthropic Claude to extract memorable quotes from transcripts.
+Uses Anthropic Gemini to extract memorable quotes from transcripts.
 """
 
 import json
@@ -31,14 +31,14 @@ class Quote:
 
 
 class QuoteExtractor:
-    """Extract memorable quotes from transcripts using Claude."""
+    """Extract memorable quotes from transcripts using Gemini."""
 
     def __init__(self, api_key: str | None = None, model: str | None = None):
         """Initialize quote extractor.
 
         Args:
             api_key: Anthropic API key. If not provided, reads from ANTHROPIC_API_KEY env var.
-            model: Model to use. If not provided, uses AMPLIFIER_MODEL_DEFAULT or claude-3-haiku-20240307.
+            model: Model to use. If not provided, uses AMPLIFIER_MODEL_DEFAULT or gemini-3-haiku-20240307.
         """
         if not ANTHROPIC_AVAILABLE:
             raise ImportError("anthropic package not available. Install with: pip install anthropic")
@@ -49,7 +49,7 @@ class QuoteExtractor:
             raise ValueError("ANTHROPIC_API_KEY not set. Please set it in your environment or pass it as a parameter.")
 
         # Get model from param or environment
-        self.model = model or os.getenv("AMPLIFIER_MODEL_DEFAULT", "claude-3-haiku-20240307")
+        self.model = model or os.getenv("AMPLIFIER_MODEL_DEFAULT", "gemini-3-haiku-20240307")
 
         # Initialize Anthropic client
         self.client = Anthropic(api_key=self.api_key)
@@ -166,10 +166,10 @@ Please respond in JSON format with an array of quotes:
         return "".join(formatted)
 
     def _parse_quotes_response(self, response_text: str) -> list[dict]:
-        """Parse Claude's response to extract quote data.
+        """Parse Gemini's response to extract quote data.
 
         Args:
-            response_text: Raw response from Claude
+            response_text: Raw response from Gemini
 
         Returns:
             List of quote dictionaries

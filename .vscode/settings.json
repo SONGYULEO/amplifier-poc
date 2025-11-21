@@ -98,7 +98,7 @@
   // === SPELL CHECKER CONFIGURATION ===
   // (Only include if using Code Spell Checker extension)
   "cSpell.ignorePaths": [
-    ".claude",
+    ".gemini",
     ".devcontainer",
     ".git",
     ".github",

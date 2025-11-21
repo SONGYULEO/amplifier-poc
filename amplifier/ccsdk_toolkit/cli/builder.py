@@ -6,7 +6,7 @@ from .templates import CliTemplate
 
 
 class CliBuilder:
-    """Builder for creating CLI tools with Claude Code SDK.
+    """Builder for creating CLI tools with Gemini CLI SDK.
 
     Provides methods to:
     - Generate CLI tool templates
@@ -168,7 +168,7 @@ def test_{name}_cli(runner):
             Template description
         """
         descriptions = {
-            "basic": "Basic CLI tool for processing files with Claude",
+            "basic": "Basic CLI tool for processing files with Gemini",
             "analyzer": "Code analysis tool with structured output",
         }
         return descriptions.get(template_type, "Unknown template")

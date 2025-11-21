@@ -1,10 +1,10 @@
-# Amplifier's Advanced Claude Code Leverage: A Comprehensive Analysis
+# Amplifier's Advanced Gemini CLI Leverage: A Comprehensive Analysis
 
 ## Executive Summary
 
-The Amplifier project represents a paradigm shift in how Claude Code can be used, transforming it from a simple coding assistant into a sophisticated development platform. Through strategic use of memory files, subagents, custom commands, hooks, and orchestration patterns, Amplifier creates a self-amplifying system that far exceeds vanilla Claude Code capabilities.
+The Amplifier project represents a paradigm shift in how Gemini CLI can be used, transforming it from a simple coding assistant into a sophisticated development platform. Through strategic use of memory files, subagents, custom commands, hooks, and orchestration patterns, Amplifier creates a self-amplifying system that far exceeds vanilla Gemini CLI capabilities.
 
-This document analyzes how Amplifier leverages every available Claude Code feature to create a cohesive, powerful development environment that embodies the principle of "amplification" - where the whole becomes exponentially greater than the sum of its parts.
+This document analyzes how Amplifier leverages every available Gemini CLI feature to create a cohesive, powerful development environment that embodies the principle of "amplification" - where the whole becomes exponentially greater than the sum of its parts.
 
 ## Table of Contents
 
@@ -21,16 +21,16 @@ This document analyzes how Amplifier leverages every available Claude Code featu
 
 ### Strategic Memory Files
 
-Amplifier uses three core memory files that fundamentally change how Claude Code operates:
+Amplifier uses three core memory files that fundamentally change how Gemini CLI operates:
 
-#### CLAUDE.md - The Auto-Loaded Foundation
+#### GEMINI.md - The Auto-Loaded Foundation
 ```markdown
 # Auto-loaded on every session start
-# Contains Claude Code-specific instructions
-# Acts as the "operating system" for Claude's behavior
+# Contains Gemini CLI-specific instructions
+# Acts as the "operating system" for Gemini's behavior
 ```
 
-**Strategic Value**: By being auto-loaded, CLAUDE.md ensures consistent behavior across all sessions. It imports other critical files using `@` syntax, creating a cascading context load:
+**Strategic Value**: By being auto-loaded, GEMINI.md ensures consistent behavior across all sessions. It imports other critical files using `@` syntax, creating a cascading context load:
 
 ```markdown
 # import the following files (using the `@` syntax):
@@ -46,10 +46,10 @@ This creates a **context dependency graph** where one file brings in an entire k
 ```markdown
 # Common project guidelines for all AI interactions
 # Build commands, code style, design philosophy
-# Referenced by both Claude and subagents
+# Referenced by both Gemini and subagents
 ```
 
-**Strategic Value**: Acts as a shared constitution that both the main Claude instance and all subagents follow. This ensures consistency across the entire agent ecosystem.
+**Strategic Value**: Acts as a shared constitution that both the main Gemini instance and all subagents follow. This ensures consistency across the entire agent ecosystem.
 
 #### DISCOVERIES.md - Evolving Knowledge Base
 ```markdown
@@ -62,10 +62,10 @@ This creates a **context dependency graph** where one file brings in an entire k
 
 ### The @Mention Force-Loading Pattern
 
-Amplifier exploits Claude Code's @mention system to create **context injection points**:
+Amplifier exploits Gemini CLI's @mention system to create **context injection points**:
 
 ```markdown
-# In any file viewed by Claude Code:
+# In any file viewed by Gemini CLI:
 "Please refer to @ai_context/SPECIFIC_CONTEXT.md for details"
 ```
 
@@ -272,7 +272,7 @@ This hook demonstrates:
 
 ### Tool Infrastructure
 
-The `.claude/tools/` directory contains the automation backbone:
+The `.gemini/tools/` directory contains the automation backbone:
 
 #### Python Hooks
 - **hook_session_start.py**: Memory system initialization
@@ -293,14 +293,14 @@ These tools create an **invisible automation layer** that ensures quality and tr
 
 ### The CCSDK Toolkit Integration
 
-Amplifier bridges Claude Code with the CCSDK toolkit, creating a **bi-directional amplification**:
+Amplifier bridges Gemini CLI with the CCSDK toolkit, creating a **bi-directional amplification**:
 
 ```python
-# Claude Code orchestrates CCSDK tools
-Claude Code → CCSDK CLI Tool → Mini Claude Instance → Task Completion
+# Gemini CLI orchestrates CCSDK tools
+Gemini CLI → CCSDK CLI Tool → Mini Gemini Instance → Task Completion
 
-# CCSDK tools can spawn new Claude sessions
-CCSDK Tool → ClaudeSession → Query → Response
+# CCSDK tools can spawn new Gemini sessions
+CCSDK Tool → GeminiSession → Query → Response
 ```
 
 ### The Memory + Agent + Command Trinity
@@ -397,7 +397,7 @@ Single @mention → Multiple File Loads → Entire Knowledge Domain
 
 ### Emergent Capabilities
 
-Through integration, Amplifier achieves capabilities impossible with vanilla Claude Code:
+Through integration, Amplifier achieves capabilities impossible with vanilla Gemini CLI:
 
 1. **Persistent Learning**: System remembers and applies past lessons
 2. **Parallel Processing**: Multiple specialized analyses simultaneously
@@ -407,7 +407,7 @@ Through integration, Amplifier achieves capabilities impossible with vanilla Cla
 
 ## Beyond Vanilla: The Amplifier Advantage
 
-### Vanilla Claude Code Limitations
+### Vanilla Gemini CLI Limitations
 
 1. **No Persistent Memory**: Each session starts fresh
 2. **Single Thread**: One line of thinking at a time
@@ -417,7 +417,7 @@ Through integration, Amplifier achieves capabilities impossible with vanilla Cla
 
 ### Amplifier Transformations
 
-| Vanilla Claude Code | Amplifier Enhancement |
+| Vanilla Gemini CLI | Amplifier Enhancement |
 |---------------------|----------------------|
 | Stateless sessions | Persistent memory system |
 | Single perspective | 25+ specialized agents |
@@ -433,7 +433,7 @@ Through integration, Amplifier achieves capabilities impossible with vanilla Cla
 Amplifier doesn't just add features - it multiplies capabilities:
 
 ```
-Base Claude Code = X
+Base Gemini CLI = X
 + Memory System = X × 2 (persistent context)
 + Agent Network = X × 25 (parallel specialization)
 + Commands = X × 10 (workflow automation)
@@ -448,7 +448,7 @@ Total Amplification = X × 10,000+
 ### The Hub-and-Spoke Model
 
 ```
-          CLAUDE.md (Hub)
+          GEMINI.md (Hub)
                |
     ┌──────────┼──────────┐
     |          |          |
@@ -457,7 +457,7 @@ AGENTS.md  Commands   Hooks
 Subagents  Workflows  Automation
 ```
 
-CLAUDE.md acts as the central hub, with spokes extending to different capability domains.
+GEMINI.md acts as the central hub, with spokes extending to different capability domains.
 
 ### The Layered Architecture
 
@@ -466,7 +466,7 @@ Layer 5: User Interface (Commands)
 Layer 4: Orchestration (Agents)
 Layer 3: Automation (Hooks)
 Layer 2: Context (Memory)
-Layer 1: Core (Claude Code)
+Layer 1: Core (Gemini CLI)
 ```
 
 Each layer builds on the one below, creating increasing sophistication.
@@ -522,7 +522,7 @@ Main Task → Agent A → Agent B → Agent C → Synthesis
 
 For those wanting to implement similar amplification:
 
-1. **Start with Memory**: Create CLAUDE.md with @imports for persistent context
+1. **Start with Memory**: Create GEMINI.md with @imports for persistent context
 2. **Add First Agent**: Build one specialized agent for your most common task
 3. **Create First Command**: Transform your most frequent workflow into /command
 4. **Implement First Hook**: Add post-code-change quality check
@@ -546,20 +546,20 @@ For those wanting to implement similar amplification:
 
 ## Conclusion
 
-Amplifier transforms Claude Code from a coding assistant into a comprehensive development platform through systematic exploitation of every available feature. By creating synergistic interactions between memory files, agents, commands, and hooks, it achieves capabilities that are orders of magnitude beyond vanilla Claude Code.
+Amplifier transforms Gemini CLI from a coding assistant into a comprehensive development platform through systematic exploitation of every available feature. By creating synergistic interactions between memory files, agents, commands, and hooks, it achieves capabilities that are orders of magnitude beyond vanilla Gemini CLI.
 
 The key insight is that **amplification comes not from individual features but from their orchestrated interaction**. Each component reinforces the others, creating a self-improving, self-organizing system that becomes more capable over time.
 
 ### The Amplification Formula
 
 ```
-Base Claude Code × Memory System × Agent Network × Commands × Hooks × Integration
+Base Gemini CLI × Memory System × Agent Network × Commands × Hooks × Integration
 = 10,000x+ Capability Multiplication
 ```
 
-For developers looking to maximize Claude Code's potential, Amplifier provides not just a set of features but a **philosophy of amplification** where every addition creates exponential value through its interaction with existing components.
+For developers looking to maximize Gemini CLI's potential, Amplifier provides not just a set of features but a **philosophy of amplification** where every addition creates exponential value through its interaction with existing components.
 
-The result is not just an enhanced Claude Code - it's a fundamentally different kind of AI development platform, one that truly amplifies human capability rather than simply assisting it.
+The result is not just an enhanced Gemini CLI - it's a fundamentally different kind of AI development platform, one that truly amplifies human capability rather than simply assisting it.
 
 ### Living Document
 

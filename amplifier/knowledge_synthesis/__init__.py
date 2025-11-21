@@ -1,7 +1,7 @@
 """
 Knowledge Synthesis Module
 
-Simple, direct knowledge extraction from text using Claude Code SDK.
+Simple, direct knowledge extraction from text using Gemini CLI SDK.
 Extracts concepts, relationships, insights, and patterns in a single pass.
 """
 

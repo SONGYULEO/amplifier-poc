@@ -78,7 +78,7 @@ python tools/build_git_collector_files.py
 Please read @ai_context/IMPLEMENTATION_PHILOSOPHY.md and follow these principles
 ```
 
-This can be skipped if the files are @mentioned in the root AGENTS.md or CLAUDE.md file or equivalent.
+This can be skipped if the files are @mentioned in the root AGENTS.md or GEMINI.md file or equivalent.
 
 ## 🧠 Philosophy Documents
 

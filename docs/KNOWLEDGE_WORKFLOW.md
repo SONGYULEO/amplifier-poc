@@ -43,7 +43,7 @@ make knowledge-stats
 make knowledge-export FORMAT=json > my_knowledge.json
 ```
 
-## For AI Assistants (Claude Code)
+## For AI Assistants (Gemini CLI)
 
 ### Leveraging Knowledge for Development
 
@@ -118,9 +118,9 @@ The system follows principles of **ruthless simplicity**:
 
 ## Troubleshooting
 
-### "No Claude Code SDK available"
-- Knowledge extraction requires Claude Code environment
-- Outside Claude Code, extraction returns empty results
+### "No Gemini CLI SDK available"
+- Knowledge extraction requires Gemini CLI environment
+- Outside Gemini CLI, extraction returns empty results
 
 ### "Content not found"
 ```bash
@@ -195,7 +195,7 @@ Query the graph with natural language:
 make knowledge-graph-search Q="AI agent patterns"
 
 # Find paths between concepts
-make knowledge-graph-path FROM="Claude Code" TO="Knowledge Graph"
+make knowledge-graph-path FROM="Gemini CLI" TO="Knowledge Graph"
 
 # Explore concept neighborhoods
 make knowledge-graph-neighbors CONCEPT="MCP" HOPS=2
@@ -255,7 +255,7 @@ make knowledge-graph-stats
 
 ## Performance
 
-- **Extraction**: ~10-30 seconds per file (depends on Claude Code SDK)
+- **Extraction**: ~10-30 seconds per file (depends on Gemini CLI SDK)
 - **Synthesis**: ~5 seconds for 100 files
 - **Query**: Instant (grep-speed on JSONL)
 - **Graph Build**: ~2 seconds for 200 files

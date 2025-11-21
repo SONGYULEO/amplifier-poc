@@ -6,11 +6,11 @@ This file documents non-obvious problems, solutions, and patterns discovered dur
 
 ### Issue
 
-Claude CLI was not reliably available in DevContainers, and there was no visibility into what tools were installed during container creation.
+Gemini CLI was not reliably available in DevContainers, and there was no visibility into what tools were installed during container creation.
 
 ### Root Cause
 
-1. **Custom installation approach**: Previously attempted to install Claude CLI via npm in post-create script (was commented out, indicating unreliability)
+1. **Custom installation approach**: Previously attempted to install Gemini CLI via npm in post-create script (was commented out, indicating unreliability)
 2. **Broken pipx feature URL**: Used `devcontainers-contrib` which was incorrect
 3. **No logging**: Post-create script had no output to help diagnose issues
 4. **No status reporting**: Users couldn't easily see what tools were available
@@ -24,11 +24,11 @@ Switched to declarative DevContainer features instead of custom installation scr
 // Fixed broken pipx feature URL
 "ghcr.io/devcontainers-extra/features/pipx-package:1": { ... }
 
-// Added official Claude Code feature
-"ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+// Added official Gemini CLI feature
+"ghcr.io/anthropics/devcontainer-features/gemini-code:1": {},
 
 // Added VSCode extension
-"extensions": ["anthropic.claude-code", ...]
+"extensions": ["anthropic.gemini-code", ...]
 
 // Named container for easier identification
 "runArgs": ["--name=amplifier_devcontainer"]
@@ -43,7 +43,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 # Added development environment status report
 echo "📋 Development Environment Ready:"
 echo "  • Python: $(python3 --version 2>&1 | cut -d' ' -f2)"
-echo "  • Claude CLI: $(claude --version 2>&1 || echo 'NOT INSTALLED')"
+echo "  • Gemini CLI: $(gemini --version 2>&1 || echo 'NOT INSTALLED')"
 # ... other tools
 ```
 

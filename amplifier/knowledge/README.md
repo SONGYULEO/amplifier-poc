@@ -62,7 +62,7 @@ gb.export_gexf(".data/knowledge/graph.gexf")
 ```
 
 ### graph_search.py
-**Purpose**: Semantic search interface for Claude Code
+**Purpose**: Semantic search interface for Gemini CLI
 
 **Key Features**:
 - Fuzzy concept matching with difflib
@@ -76,7 +76,7 @@ gb.export_gexf(".data/knowledge/graph.gexf")
 from amplifier.knowledge.graph_search import GraphSearch
 
 search = GraphSearch()
-results = search.query("what relates to Claude Code?")
+results = search.query("what relates to Gemini CLI?")
 path = search.find_path("AI Agents", "Knowledge Graph")
 neighbors = search.get_neighborhood("MCP", hops=2)
 ```
@@ -214,12 +214,12 @@ With 257 processed articles:
 - **49 productive tensions** discovered
 - **Average tension productivity**: 0.934
 
-## Integration with Claude Code
+## Integration with Gemini CLI
 
-The system is designed for programmatic use by Claude Code:
+The system is designed for programmatic use by Gemini CLI:
 
 ```python
-# Claude Code can query the knowledge graph
+# Gemini CLI can query the knowledge graph
 from amplifier.knowledge.graph_search import GraphSearch
 
 search = GraphSearch()

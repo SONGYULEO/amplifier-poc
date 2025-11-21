@@ -89,8 +89,8 @@ source .venv/bin/activate  # Linux/Mac/WSL
 ### Get Started
 
 ```bash
-# Start Claude Code
-claude
+# Start Gemini CLI
+gemini
 ```
 
 **Create your first tool in 5 steps:**
@@ -203,12 +203,12 @@ make install
 source .venv/bin/activate  # Linux/Mac/WSL
 # .venv\Scripts\Activate.ps1  # Windows PowerShell
 
-# Set up project context & start Claude
+# Set up project context & start Gemini
 echo "# Project-specific AI guidance" > my-project/AGENTS.md
-claude
+gemini
 ```
 
-_Tell Claude Code:_
+_Tell Gemini:_
 
 ```
 I'm working on @my-project/ with Amplifier.
@@ -228,7 +228,7 @@ Let's use /ddd:1-plan to design the architecture.
 
 Amplifier is designed so **you can create new AI-powered tools** just by describing how they should think. See the [Create Your Own Tools](docs/CREATE_YOUR_OWN_TOOLS.md) guide for more information.
 
-- _Tell Claude Code:_ `Walk me through creating my own scenario tool`
+- _Tell Gemini:_ `Walk me through creating my own scenario tool`
 
 - _View the documentation:_ [Scenario Creation Guide](docs/CREATE_YOUR_OWN_TOOLS.md)
 
@@ -236,7 +236,7 @@ Amplifier is designed so **you can create new AI-powered tools** just by describ
 
 Amplifier includes comprehensive design intelligence with 7 specialist agents, evidence-based design knowledge, and orchestrated design workflows:
 
-- _Tell Claude Code:_
+- _Tell Gemini:_
 
   `/designer create a button component with hover states and accessibility`
 
@@ -266,7 +266,7 @@ Amplifier includes comprehensive design intelligence with 7 specialist agents, e
 
 Try out one of the specialized experts:
 
-- _Tell Claude Code:_
+- _Tell Gemini:_
 
   `Use the zen-architect agent to design my application's caching layer`
 
@@ -274,7 +274,7 @@ Try out one of the specialized experts:
 
   `Have security-guardian review my API implementation for vulnerabilities`
 
-- _View the files:_ [Agents](.claude/agents/)
+- _View the files:_ [Agents](.gemini/agents/)
 
 ### 📝 Document-Driven Development
 
@@ -292,7 +292,7 @@ Execute a complete feature workflow with numbered slash commands:
 
 Each phase creates artifacts the next phase reads. You control all git operations with explicit authorization at every step. The workflow prevents expensive mistakes by catching design flaws before implementation.
 
-- _Tell Claude Code:_ `/ddd:0-help`
+- _Tell Gemini:_ `/ddd:0-help`
 
 - _View the documentation:_ [Document-Driven Development Guide](docs/document_driven_development/)
 
@@ -314,7 +314,7 @@ Each worktree is completely isolated with its own branch, environment, and conte
 
 See the [Worktree Guide](docs/WORKTREE_GUIDE.md) for advanced features, such as hiding worktrees from VSCode when not in use, adopting branches from other machines, and more.
 
-- _Tell Claude Code:_ `What make worktree commands are available to me?`
+- _Tell Gemini:_ `What make worktree commands are available to me?`
 
 - _View the documentation:_ [Worktree Guide](docs/WORKTREE_GUIDE.md)
 
@@ -333,12 +333,12 @@ Shows:
 Enable with:
 
 ```
-/statusline use the script at .claude/tools/statusline-example.sh
+/statusline use the script at .gemini/tools/statusline-example.sh
 ```
 
 ### 💬 Conversation Transcripts
 
-**Never lose context again.** Amplifier automatically exports your entire conversation before compaction, preserving all the details that would otherwise be lost. When Claude Code compacts your conversation to stay within token limits, you can instantly restore the full history.
+**Never lose context again.** Amplifier automatically exports your entire conversation before compaction, preserving all the details that would otherwise be lost. When Gemini compacts your conversation to stay within token limits, you can instantly restore the full history.
 
 **Automatic Export**: A PreCompact hook captures your conversation before any compaction event:
 
@@ -346,7 +346,7 @@ Enable with:
 - Timestamps and organizes transcripts in `.data/transcripts/`
 - Works for both manual (`/compact`) and auto-compact events
 
-**Easy Restoration**: Use the `/transcripts` command in Claude Code to restore your full conversation:
+**Easy Restoration**: Use the `/transcripts` command in Gemini to restore your full conversation:
 
 ```
 /transcripts  # Restores entire conversation history
@@ -387,7 +387,7 @@ Perfect for:
 
 The pattern inverts the typical relationship: instead of your project containing Amplifier, Amplifier becomes a dedicated workspace that hosts your projects. Each project gets persistent context through AGENTS.md (AI guidance), philosophy documents (decision filters), and clear namespace boundaries using `@project-name/` syntax.
 
-- _Tell Claude Code:_ `What are the recommended workspace patterns for serious projects?`
+- _Tell Gemini:_ `What are the recommended workspace patterns for serious projects?`
 
 - _View the documentation:_ [Workspace Pattern Guide](docs/WORKSPACE_PATTERN.md) - complete setup, usage patterns, and migration from `ai_working/`.
 
@@ -401,7 +401,7 @@ The pattern inverts the typical relationship: instead of your project containing
 - Demo-driven development patterns
 - Practical tips for effective AI-assisted development
 
-- _Tell Claude Code:_ `What are the best practices to get the MOST out of Amplifier?`
+- _Tell Gemini:_ `What are the best practices to get the MOST out of Amplifier?`
 
 - _View the documentation:_ [The Amplifier Way](docs/THIS_IS_THE_WAY.md)
 

@@ -19,7 +19,7 @@ def main(agent: str) -> None:
     task_ids = split_data["train"]
 
     agent_import_path = (
-        "custom_agents:CustomAmplifierAgent" if agent == "amplifier" else "custom_agents:ClaudeCodeAgent"
+        "custom_agents:CustomAmplifierAgent" if agent == "amplifier" else "custom_agents:GeminiCodeAgent"
     )
 
     harness = Harness(

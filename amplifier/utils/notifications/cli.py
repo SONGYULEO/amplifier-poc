@@ -7,7 +7,7 @@ import json
 import sys
 
 from .core import NotificationSender
-from .models import ClaudeCodeHookInput
+from .models import GeminiCodeHookInput
 from .models import NotificationRequest
 
 
@@ -15,11 +15,11 @@ def main():
     """Main entry point for CLI usage."""
     parser = argparse.ArgumentParser(description="Send desktop notifications")
     parser.add_argument("message", nargs="?", help="Notification message")
-    parser.add_argument("-t", "--title", default="Claude Code", help="Notification title")
+    parser.add_argument("-t", "--title", default="Gemini CLI", help="Notification title")
     parser.add_argument("-s", "--subtitle", help="Notification subtitle (e.g., project name)")
     parser.add_argument("--session-id", help="Session ID for tracking")
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
-    parser.add_argument("--hook", action="store_true", help="Read Claude Code hook JSON from stdin")
+    parser.add_argument("--hook", action="store_true", help="Read Gemini CLI hook JSON from stdin")
     parser.add_argument("--test", action="store_true", help="Test notification on current platform")
 
     args = parser.parse_args()
@@ -49,7 +49,7 @@ def main():
     if args.hook:
         try:
             json_input = sys.stdin.read()
-            hook_data = ClaudeCodeHookInput.model_validate_json(json_input)
+            hook_data = GeminiCodeHookInput.model_validate_json(json_input)
 
             # Extract project name from cwd
             sender = NotificationSender(debug=args.debug)
@@ -60,7 +60,7 @@ def main():
             # Create notification request
             request = NotificationRequest(
                 message=hook_data.message or "Notification",
-                title="Claude Code",
+                title="Gemini CLI",
                 subtitle=project_name,
                 session_id=hook_data.session_id,
                 debug=args.debug,

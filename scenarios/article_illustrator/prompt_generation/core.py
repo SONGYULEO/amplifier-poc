@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.ccsdk_toolkit.defensive.llm_parsing import parse_llm_json
 from amplifier.utils.logger import get_logger
@@ -14,7 +14,7 @@ logger = get_logger(__name__)
 
 
 class PromptGenerator:
-    """Generates image prompts using Claude for consistency."""
+    """Generates image prompts using Gemini for consistency."""
 
     def __init__(self, style_params: dict[str, str] | None = None):
         """Initialize prompt generator.
@@ -113,8 +113,8 @@ Return JSON with:
   }}
 }}"""
 
-        # Use ClaudeSession as async context manager
-        async with ClaudeSession(
+        # Use GeminiSession as async context manager
+        async with GeminiSession(
             options=SessionOptions(
                 system_prompt="You are an expert at creating image generation prompts. Respond with JSON only.",
                 stream_output=False,
@@ -123,10 +123,10 @@ Return JSON with:
             response = await session.query(prompt)
 
             if response.error:
-                raise RuntimeError(f"Claude query failed: {response.error}")
+                raise RuntimeError(f"Gemini query failed: {response.error}")
 
             if not response.content:
-                raise RuntimeError("Empty response from Claude")
+                raise RuntimeError("Empty response from Gemini")
 
             parsed = parse_llm_json(response.content)
 

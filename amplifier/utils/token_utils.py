@@ -12,7 +12,7 @@ def count_tokens(text: str, model: str = "cl100k_base") -> int:
 
     Args:
         text: The text to count tokens for
-        model: The tiktoken encoding model to use (default: cl100k_base for GPT-4/Claude)
+        model: The tiktoken encoding model to use (default: cl100k_base for GPT-4/Gemini)
 
     Returns:
         Number of tokens in the text

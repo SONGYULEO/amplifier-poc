@@ -1,4 +1,4 @@
-"""Core Claude session implementation with robust error handling."""
+"""Core Gemini session implementation with robust error handling."""
 
 import asyncio
 import os
@@ -15,14 +15,14 @@ class SessionError(Exception):
 
 
 class SDKNotAvailableError(SessionError):
-    """Raised when Claude CLI/SDK is not available."""
+    """Raised when Gemini CLI/SDK is not available."""
 
 
-class ClaudeSession:
-    """Async context manager for Claude Code SDK sessions.
+class GeminiSession:
+    """Async context manager for Gemini CLI SDK sessions.
 
-    This provides a robust wrapper around the claude_code_sdk with:
-    - Prerequisite checking for the claude CLI
+    This provides a robust wrapper around the gemini_code_sdk with:
+    - Prerequisite checking for the gemini CLI
     - Automatic retry with exponential backoff
     - Graceful degradation when SDK unavailable
     """
@@ -38,38 +38,38 @@ class ClaudeSession:
         self._check_prerequisites()
 
     def _check_prerequisites(self):
-        """Check if claude CLI is installed and accessible."""
-        # Check if claude CLI is available
-        claude_path = shutil.which("claude")
-        if not claude_path:
+        """Check if gemini CLI is installed and accessible."""
+        # Check if gemini CLI is available
+        gemini_path = shutil.which("gemini")
+        if not gemini_path:
             # Check common installation locations
             known_locations = [
-                Path.home() / ".local/share/reflex/bun/bin/claude",
-                Path.home() / ".npm-global/bin/claude",
-                Path("/usr/local/bin/claude"),
+                Path.home() / ".local/share/reflex/bun/bin/gemini",
+                Path.home() / ".npm-global/bin/gemini",
+                Path("/usr/local/bin/gemini"),
             ]
 
             for loc in known_locations:
                 if loc.exists() and os.access(loc, os.X_OK):
-                    claude_path = str(loc)
+                    gemini_path = str(loc)
                     break
 
-            if not claude_path:
+            if not gemini_path:
                 raise SDKNotAvailableError(
-                    "Claude CLI not found. Install with one of:\n"
-                    "  - npm install -g @anthropic-ai/claude-code\n"
-                    "  - bun install -g @anthropic-ai/claude-code"
+                    "Gemini CLI not found. Install with one of:\n"
+                    "  - npm install -g @anthropic-ai/gemini-code\n"
+                    "  - bun install -g @anthropic-ai/gemini-code"
                 )
 
     async def __aenter__(self):
         """Enter async context and initialize SDK client."""
         try:
             # Import SDK only when actually using it
-            from claude_code_sdk import ClaudeCodeOptions
-            from claude_code_sdk import ClaudeSDKClient
+            from gemini_code_sdk import GeminiCodeOptions
+            from gemini_code_sdk import GeminiSDKClient
 
-            self.client = ClaudeSDKClient(
-                options=ClaudeCodeOptions(
+            self.client = GeminiSDKClient(
+                options=GeminiCodeOptions(
                     system_prompt=self.options.system_prompt,
                     max_turns=self.options.max_turns,
                 )
@@ -79,7 +79,7 @@ class ClaudeSession:
 
         except ImportError:
             raise SDKNotAvailableError(
-                "claude_code_sdk Python package not installed. Install with: pip install claude-code-sdk"
+                "gemini_code_sdk Python package not installed. Install with: pip install gemini-code-sdk"
             )
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -88,10 +88,10 @@ class ClaudeSession:
             await self.client.__aexit__(exc_type, exc_val, exc_tb)
 
     async def query(self, prompt: str, stream: bool | None = None) -> SessionResponse:
-        """Send a query to Claude with automatic retry.
+        """Send a query to Gemini with automatic retry.
 
         Args:
-            prompt: The prompt to send to Claude
+            prompt: The prompt to send to Gemini
             stream: Override the session's stream_output setting
 
         Returns:

@@ -1,4 +1,4 @@
-"""Claude SDK helper with streaming, no-timeout, and progress tracking capabilities.
+"""Gemini SDK helper with streaming, no-timeout, and progress tracking capabilities.
 
 This example showcases best practices using the CCSDK defensive utilities for
 robust LLM response handling.
@@ -7,12 +7,12 @@ robust LLM response handling.
 from collections.abc import Callable
 from typing import Any
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.ccsdk_toolkit.defensive import parse_llm_json
 
 
-async def query_claude_with_timeout(
+async def query_gemini_with_timeout(
     prompt: str,
     system_prompt: str = "You are a helpful AI assistant.",
     parse_json: bool = False,
@@ -21,7 +21,7 @@ async def query_claude_with_timeout(
     max_turns: int = 1,
     verbose: bool = False,
 ) -> Any:
-    """Query Claude with streaming support.
+    """Query Gemini with streaming support.
 
     Args:
         prompt: The user prompt
@@ -36,8 +36,8 @@ async def query_claude_with_timeout(
         SessionResponse or parsed JSON dict
     """
     if verbose:
-        print(f"[Claude Query] Max turns: {max_turns}")
-        print(f"[Claude Query] Streaming: {stream_output}, Has callback: {progress_callback is not None}")
+        print(f"[Gemini Query] Max turns: {max_turns}")
+        print(f"[Gemini Query] Streaming: {stream_output}, Has callback: {progress_callback is not None}")
 
     options = SessionOptions(
         system_prompt=system_prompt,
@@ -47,19 +47,19 @@ async def query_claude_with_timeout(
         progress_callback=progress_callback,
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         # Query with optional streaming
         response = await session.query(prompt, stream=stream_output)
 
         if response.error:
-            raise RuntimeError(f"Claude query failed: {response.error}")
+            raise RuntimeError(f"Gemini query failed: {response.error}")
 
         if not response.content:
-            raise RuntimeError("Received empty response from Claude")
+            raise RuntimeError("Received empty response from Gemini")
 
         # Include metadata if available (for cost tracking, etc.)
         if verbose and response.metadata:
-            print(f"[Claude Query] Metadata: {response.metadata}")
+            print(f"[Gemini Query] Metadata: {response.metadata}")
 
         if parse_json:
             # Use defensive parsing with graceful fallback
@@ -70,7 +70,7 @@ async def query_claude_with_timeout(
 
 
 # New helper function for complex multi-stage operations
-async def query_claude_streaming(
+async def query_gemini_streaming(
     prompt: str,
     system_prompt: str = "You are a helpful AI assistant.",
     on_chunk: Callable[[str], None] | None = None,
@@ -92,8 +92,8 @@ async def query_claude_streaming(
         max_turns=1,
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query(prompt)
         if response.error:
-            raise RuntimeError(f"Claude query failed: {response.error}")
+            raise RuntimeError(f"Gemini query failed: {response.error}")
         return response.content

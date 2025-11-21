@@ -100,10 +100,10 @@ try {
     Write-Success "Docker image built successfully"
 }
 
-# Prepare environment variables for Claude Code configuration
+# Prepare environment variables for Gemini CLI configuration
 $EnvArgs = @()
 
-# Critical API keys that Claude Code needs
+# Critical API keys that Gemini CLI needs
 $ApiKeys = @(
     "ANTHROPIC_API_KEY",
     "AWS_ACCESS_KEY_ID",
@@ -131,7 +131,7 @@ foreach ($Key in $ApiKeys) {
 if (-not $HasAnthropicKey -and -not $HasAwsKeys) {
     Write-Error "❌ No valid API configuration found!"
     Write-Error ""
-    Write-Error "Claude Code requires one of the following:"
+    Write-Error "Gemini CLI requires one of the following:"
     Write-Error "  1. ANTHROPIC_API_KEY environment variable"
     Write-Error "  2. AWS credentials (AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY)"
     Write-Error ""
@@ -189,7 +189,7 @@ try {
     Write-Warning "Container will attempt to start anyway"
 }
 
-# Run the Docker container with Claude Code pre-configured
+# Run the Docker container with Gemini CLI pre-configured
 Write-Status "🚀 Starting Amplifier Docker container..."
 Write-Status "📁 Project: $DockerProjectPath → /workspace"
 Write-Status "💾 Data: $DockerDataPath → /app/amplifier-data"
@@ -200,7 +200,7 @@ if ($HasAnthropicKey) {
     Write-Status "🔗 API: AWS Bedrock"
 }
 
-Write-Warning "⚠️  IMPORTANT: When Claude starts, send this first message:"
+Write-Warning "⚠️  IMPORTANT: When Gemini starts, send this first message:"
 Write-Host "===========================================" -ForegroundColor Yellow
 Write-Host "I'm working in /workspace which contains my project files." -ForegroundColor White
 Write-Host "Please cd to /workspace and work there." -ForegroundColor White

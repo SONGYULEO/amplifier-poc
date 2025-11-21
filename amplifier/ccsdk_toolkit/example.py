@@ -3,7 +3,7 @@
 Example script demonstrating CCSDK Toolkit usage.
 
 This shows how to:
-1. Use the core ClaudeSession for queries
+1. Use the core GeminiSession for queries
 2. Manage configuration with AgentConfig
 3. Persist sessions with SessionManager
 4. Use structured logging
@@ -14,7 +14,7 @@ import asyncio
 from pathlib import Path
 
 from amplifier.ccsdk_toolkit import AgentConfig  # Config
-from amplifier.ccsdk_toolkit import ClaudeSession  # Core
+from amplifier.ccsdk_toolkit import GeminiSession  # Core
 from amplifier.ccsdk_toolkit import CliBuilder  # CLI
 from amplifier.ccsdk_toolkit import ConfigLoader
 from amplifier.ccsdk_toolkit import LogFormat
@@ -33,7 +33,7 @@ async def basic_session_example():
         # Create session with options
         options = SessionOptions(system_prompt="You are a helpful code assistant", max_turns=1)
 
-        async with ClaudeSession(options) as session:
+        async with GeminiSession(options) as session:
             response = await session.query("Write a Python hello world function")
 
             if response.success:
@@ -156,15 +156,15 @@ async def integrated_example():
     logger.info("Created session", session_id=session_state.metadata.session_id)
 
     try:
-        # Use Claude session
+        # Use Gemini session
         options = SessionOptions(system_prompt=config.system_prompt, max_turns=config.max_turns)
 
-        async with ClaudeSession(options) as claude:
-            # Query Claude
+        async with GeminiSession(options) as gemini:
+            # Query Gemini
             prompt = "What is the capital of France?"
             logger.info("Sending query", prompt=prompt)
 
-            response = await claude.query(prompt)
+            response = await gemini.query(prompt)
 
             if response.success:
                 # Add to session history

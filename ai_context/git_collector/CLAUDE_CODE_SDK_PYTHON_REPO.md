@@ -1,32 +1,32 @@
-# anthropics/claude-code-sdk-python/blob/main
+# anthropics/gemini-code-sdk-python/blob/main
 
 [git-collector-data]
 
-**URL:** https://github.com/anthropics/claude-code-sdk-python/blob/main/  
+**URL:** https://github.com/anthropics/gemini-code-sdk-python/blob/main/  
 **Date:** 10/9/2025, 3:55:28 AM  
 **Files:** 16  
 
 === File: README.md ===
-# Claude Agent SDK for Python
+# Gemini Agent SDK for Python
 
-Python SDK for Claude Agent. See the [Claude Agent SDK documentation](https://docs.anthropic.com/en/docs/claude-code/sdk/sdk-python) for more information.
+Python SDK for Gemini Agent. See the [Gemini Agent SDK documentation](https://docs.anthropic.com/en/docs/gemini-code/sdk/sdk-python) for more information.
 
 ## Installation
 
 ```bash
-pip install claude-agent-sdk
+pip install gemini-agent-sdk
 ```
 
 **Prerequisites:**
 - Python 3.10+
 - Node.js
-- Claude Code 2.0.0+: `npm install -g @anthropic-ai/claude-code`
+- Gemini CLI 2.0.0+: `npm install -g @anthropic-ai/gemini-code`
 
 ## Quick Start
 
 ```python
 import anyio
-from claude_agent_sdk import query
+from gemini_agent_sdk import query
 
 async def main():
     async for message in query(prompt="What is 2 + 2?"):
@@ -37,20 +37,20 @@ anyio.run(main)
 
 ## Basic Usage: query()
 
-`query()` is an async function for querying Claude Code. It returns an `AsyncIterator` of response messages. See [src/claude_agent_sdk/query.py](src/claude_agent_sdk/query.py).
+`query()` is an async function for querying Gemini CLI. It returns an `AsyncIterator` of response messages. See [src/gemini_agent_sdk/query.py](src/gemini_agent_sdk/query.py).
 
 ```python
-from claude_agent_sdk import query, ClaudeAgentOptions, AssistantMessage, TextBlock
+from gemini_agent_sdk import query, GeminiAgentOptions, AssistantMessage, TextBlock
 
 # Simple query
-async for message in query(prompt="Hello Claude"):
+async for message in query(prompt="Hello Gemini"):
     if isinstance(message, AssistantMessage):
         for block in message.content:
             if isinstance(block, TextBlock):
                 print(block.text)
 
 # With options
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     system_prompt="You are a helpful assistant",
     max_turns=1
 )
@@ -62,7 +62,7 @@ async for message in query(prompt="Tell me a joke", options=options):
 ### Using Tools
 
 ```python
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     allowed_tools=["Read", "Write", "Bash"],
     permission_mode='acceptEdits'  # auto-accept file edits
 )
@@ -80,21 +80,21 @@ async for message in query(
 ```python
 from pathlib import Path
 
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     cwd="/path/to/project"  # or Path("/path/to/project")
 )
 ```
 
-## ClaudeSDKClient
+## GeminiSDKClient
 
-`ClaudeSDKClient` supports bidirectional, interactive conversations with Claude
-Code. See [src/claude_agent_sdk/client.py](src/claude_agent_sdk/client.py).
+`GeminiSDKClient` supports bidirectional, interactive conversations with Gemini
+Code. See [src/gemini_agent_sdk/client.py](src/gemini_agent_sdk/client.py).
 
-Unlike `query()`, `ClaudeSDKClient` additionally enables **custom tools** and **hooks**, both of which can be defined as Python functions.
+Unlike `query()`, `GeminiSDKClient` additionally enables **custom tools** and **hooks**, both of which can be defined as Python functions.
 
 ### Custom Tools (as In-Process SDK MCP Servers)
 
-A **custom tool** is a Python function that you can offer to Claude, for Claude to invoke as needed.
+A **custom tool** is a Python function that you can offer to Gemini, for Gemini to invoke as needed.
 
 Custom tools are implemented in-process MCP servers that run directly within your Python application, eliminating the need for separate processes that regular MCP servers require.
 
@@ -103,7 +103,7 @@ For an end-to-end example, see [MCP Calculator](examples/mcp_calculator.py).
 #### Creating a Simple Tool
 
 ```python
-from claude_agent_sdk import tool, create_sdk_mcp_server, ClaudeAgentOptions, ClaudeSDKClient
+from gemini_agent_sdk import tool, create_sdk_mcp_server, GeminiAgentOptions, GeminiSDKClient
 
 # Define a tool using the @tool decorator
 @tool("greet", "Greet a user", {"name": str})
@@ -121,13 +121,13 @@ server = create_sdk_mcp_server(
     tools=[greet_user]
 )
 
-# Use it with Claude
-options = ClaudeAgentOptions(
+# Use it with Gemini
+options = GeminiAgentOptions(
     mcp_servers={"tools": server},
     allowed_tools=["mcp__tools__greet"]
 )
 
-async with ClaudeSDKClient(options=options) as client:
+async with GeminiSDKClient(options=options) as client:
     await client.query("Greet Alice")
 
     # Extract and print response
@@ -147,7 +147,7 @@ async with ClaudeSDKClient(options=options) as client:
 
 ```python
 # BEFORE: External MCP server (separate process)
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     mcp_servers={
         "calculator": {
             "type": "stdio",
@@ -165,7 +165,7 @@ calculator = create_sdk_mcp_server(
     tools=[add, subtract]
 )
 
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     mcp_servers={"calculator": calculator}
 )
 ```
@@ -175,7 +175,7 @@ options = ClaudeAgentOptions(
 You can use both SDK and external MCP servers together:
 
 ```python
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     mcp_servers={
         "internal": sdk_server,      # In-process SDK server
         "external": {                # External subprocess server
@@ -188,14 +188,14 @@ options = ClaudeAgentOptions(
 
 ### Hooks
 
-A **hook** is a Python function that the Claude Code *application* (*not* Claude) invokes at specific points of the Claude agent loop. Hooks can provide deterministic processing and automated feedback for Claude. Read more in [Claude Code Hooks Reference](https://docs.anthropic.com/en/docs/claude-code/hooks).
+A **hook** is a Python function that the Gemini CLI *application* (*not* Gemini) invokes at specific points of the Gemini agent loop. Hooks can provide deterministic processing and automated feedback for Gemini. Read more in [Gemini CLI Hooks Reference](https://docs.anthropic.com/en/docs/gemini-code/hooks).
 
 For more examples, see examples/hooks.py.
 
 #### Example
 
 ```python
-from claude_agent_sdk import ClaudeAgentOptions, ClaudeSDKClient, HookMatcher
+from gemini_agent_sdk import GeminiAgentOptions, GeminiSDKClient, HookMatcher
 
 async def check_bash_command(input_data, tool_use_id, context):
     tool_name = input_data["tool_name"]
@@ -215,7 +215,7 @@ async def check_bash_command(input_data, tool_use_id, context):
             }
     return {}
 
-options = ClaudeAgentOptions(
+options = GeminiAgentOptions(
     allowed_tools=["Bash"],
     hooks={
         "PreToolUse": [
@@ -224,7 +224,7 @@ options = ClaudeAgentOptions(
     }
 )
 
-async with ClaudeSDKClient(options=options) as client:
+async with GeminiSDKClient(options=options) as client:
     # Test 1: Command with forbidden pattern (will be blocked)
     await client.query("Run the bash command: ./foo.sh --help")
     async for msg in client.receive_response():
@@ -241,17 +241,17 @@ async with ClaudeSDKClient(options=options) as client:
 
 ## Types
 
-See [src/claude_agent_sdk/types.py](src/claude_agent_sdk/types.py) for complete type definitions:
-- `ClaudeAgentOptions` - Configuration options
+See [src/gemini_agent_sdk/types.py](src/gemini_agent_sdk/types.py) for complete type definitions:
+- `GeminiAgentOptions` - Configuration options
 - `AssistantMessage`, `UserMessage`, `SystemMessage`, `ResultMessage` - Message types
 - `TextBlock`, `ToolUseBlock`, `ToolResultBlock` - Content blocks
 
 ## Error Handling
 
 ```python
-from claude_agent_sdk import (
-    ClaudeSDKError,      # Base error
-    CLINotFoundError,    # Claude Code not installed
+from gemini_agent_sdk import (
+    GeminiSDKError,      # Base error
+    CLINotFoundError,    # Gemini CLI not installed
     CLIConnectionError,  # Connection issues
     ProcessError,        # Process failed
     CLIJSONDecodeError,  # JSON parsing issues
@@ -261,30 +261,30 @@ try:
     async for message in query(prompt="Hello"):
         pass
 except CLINotFoundError:
-    print("Please install Claude Code")
+    print("Please install Gemini CLI")
 except ProcessError as e:
     print(f"Process failed with exit code: {e.exit_code}")
 except CLIJSONDecodeError as e:
     print(f"Failed to parse response: {e}")
 ```
 
-See [src/claude_agent_sdk/_errors.py](src/claude_agent_sdk/_errors.py) for all error types.
+See [src/gemini_agent_sdk/_errors.py](src/gemini_agent_sdk/_errors.py) for all error types.
 
 ## Available Tools
 
-See the [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code/settings#tools-available-to-claude) for a complete list of available tools.
+See the [Gemini CLI documentation](https://docs.anthropic.com/en/docs/gemini-code/settings#tools-available-to-gemini) for a complete list of available tools.
 
 ## Examples
 
 See [examples/quick_start.py](examples/quick_start.py) for a complete working example.
 
-See [examples/streaming_mode.py](examples/streaming_mode.py) for comprehensive examples involving `ClaudeSDKClient`. You can even run interactive examples in IPython from [examples/streaming_mode_ipython.py](examples/streaming_mode_ipython.py).
+See [examples/streaming_mode.py](examples/streaming_mode.py) for comprehensive examples involving `GeminiSDKClient`. You can even run interactive examples in IPython from [examples/streaming_mode_ipython.py](examples/streaming_mode_ipython.py).
 
-## Migrating from Claude Code SDK
+## Migrating from Gemini CLI SDK
 
-If you're upgrading from the Claude Code SDK (versions < 0.1.0), please see the [CHANGELOG.md](CHANGELOG.md#010) for details on breaking changes and new features, including:
+If you're upgrading from the Gemini CLI SDK (versions < 0.1.0), please see the [CHANGELOG.md](CHANGELOG.md#010) for details on breaking changes and new features, including:
 
-- `ClaudeCodeOptions` → `ClaudeAgentOptions` rename
+- `GeminiCodeOptions` → `GeminiAgentOptions` rename
 - Merged system prompt configuration
 - Settings isolation and explicit control
 - New programmatic subagents and session forking features
@@ -296,13 +296,13 @@ MIT
 
 === File: examples/quick_start.py ===
 #!/usr/bin/env python3
-"""Quick start example for Claude Code SDK."""
+"""Quick start example for Gemini CLI SDK."""
 
 import anyio
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
+    GeminiAgentOptions,
     ResultMessage,
     TextBlock,
     query,
@@ -317,7 +317,7 @@ async def basic_example():
         if isinstance(message, AssistantMessage):
             for block in message.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
     print()
 
 
@@ -325,7 +325,7 @@ async def with_options_example():
     """Example with custom options."""
     print("=== With Options Example ===")
 
-    options = ClaudeAgentOptions(
+    options = GeminiAgentOptions(
         system_prompt="You are a helpful assistant that explains things simply.",
         max_turns=1,
     )
@@ -336,7 +336,7 @@ async def with_options_example():
         if isinstance(message, AssistantMessage):
             for block in message.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
     print()
 
 
@@ -344,7 +344,7 @@ async def with_tools_example():
     """Example using tools."""
     print("=== With Tools Example ===")
 
-    options = ClaudeAgentOptions(
+    options = GeminiAgentOptions(
         allowed_tools=["Read", "Write"],
         system_prompt="You are a helpful file assistant.",
     )
@@ -356,7 +356,7 @@ async def with_tools_example():
         if isinstance(message, AssistantMessage):
             for block in message.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
         elif isinstance(message, ResultMessage) and message.total_cost_usd > 0:
             print(f"\nCost: ${message.total_cost_usd:.4f}")
     print()
@@ -376,13 +376,13 @@ if __name__ == "__main__":
 === File: examples/streaming_mode.py ===
 #!/usr/bin/env python3
 """
-Comprehensive examples of using ClaudeSDKClient for streaming mode.
+Comprehensive examples of using GeminiSDKClient for streaming mode.
 
 This file demonstrates various patterns for building applications with
-the ClaudeSDKClient streaming interface.
+the GeminiSDKClient streaming interface.
 
 The queries are intentionally simplistic. In reality, a query can be a more
-complex task that Claude SDK uses its agentic capabilities and tools (e.g. run
+complex task that Gemini SDK uses its agentic capabilities and tools (e.g. run
 bash commands, edit files, search the web, fetch web content) to accomplish.
 
 Usage:
@@ -395,10 +395,10 @@ import asyncio
 import contextlib
 import sys
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
-    ClaudeSDKClient,
+    GeminiAgentOptions,
+    GeminiSDKClient,
     CLIConnectionError,
     ResultMessage,
     SystemMessage,
@@ -413,7 +413,7 @@ def display_message(msg):
     """Standardized message display function.
 
     - UserMessage: "User: <content>"
-    - AssistantMessage: "Claude: <content>"
+    - AssistantMessage: "Gemini: <content>"
     - SystemMessage: ignored
     - ResultMessage: "Result ended" + cost if available
     """
@@ -424,7 +424,7 @@ def display_message(msg):
     elif isinstance(msg, AssistantMessage):
         for block in msg.content:
             if isinstance(block, TextBlock):
-                print(f"Claude: {block.text}")
+                print(f"Gemini: {block.text}")
     elif isinstance(msg, SystemMessage):
         # Ignore system messages
         pass
@@ -436,7 +436,7 @@ async def example_basic_streaming():
     """Basic streaming with context manager."""
     print("=== Basic Streaming Example ===")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         print("User: What is 2+2?")
         await client.query("What is 2+2?")
 
@@ -451,7 +451,7 @@ async def example_multi_turn_conversation():
     """Multi-turn conversation using receive_response helper."""
     print("=== Multi-Turn Conversation Example ===")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         # First turn
         print("User: What's the capital of France?")
         await client.query("What's the capital of France?")
@@ -474,7 +474,7 @@ async def example_concurrent_responses():
     """Handle responses while sending new messages."""
     print("=== Concurrent Send/Receive Example ===")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         # Background task to continuously receive messages
         async def receive_messages():
             async for message in client.receive_messages():
@@ -511,7 +511,7 @@ async def example_with_interrupt():
     print("=== Interrupt Example ===")
     print("IMPORTANT: Interrupts require active message consumption.")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         # Start a long-running task
         print("\nUser: Count from 1 to 100 slowly")
         await client.query(
@@ -553,7 +553,7 @@ async def example_manual_message_handling():
     """Manually handle message stream for custom logic."""
     print("=== Manual Message Handling Example ===")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         await client.query("List 5 programming languages and their main use cases")
 
         # Manually process messages with custom logic
@@ -564,7 +564,7 @@ async def example_manual_message_handling():
                 for block in message.content:
                     if isinstance(block, TextBlock):
                         text = block.text
-                        print(f"Claude: {text}")
+                        print(f"Gemini: {text}")
                         # Custom logic: extract language names
                         for lang in [
                             "Python",
@@ -587,19 +587,19 @@ async def example_manual_message_handling():
 
 
 async def example_with_options():
-    """Use ClaudeAgentOptions to configure the client."""
+    """Use GeminiAgentOptions to configure the client."""
     print("=== Custom Options Example ===")
 
     # Configure options
-    options = ClaudeAgentOptions(
+    options = GeminiAgentOptions(
         allowed_tools=["Read", "Write"],  # Allow file operations
         system_prompt="You are a helpful coding assistant.",
         env={
-            "ANTHROPIC_MODEL": "claude-sonnet-4-5",
+            "ANTHROPIC_MODEL": "gemini-sonnet-4-5",
         },
     )
 
-    async with ClaudeSDKClient(options=options) as client:
+    async with GeminiSDKClient(options=options) as client:
         print("User: Create a simple hello.txt file with a greeting message")
         await client.query("Create a simple hello.txt file with a greeting message")
 
@@ -654,7 +654,7 @@ async def example_async_iterable_prompt():
             "session_id": "qa-session",
         }
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         # Send async iterable of messages
         await client.query(create_message_stream())
 
@@ -673,7 +673,7 @@ async def example_bash_command():
     """Example showing tool use blocks when running bash commands."""
     print("=== Bash Command Example ===")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         print("User: Run a bash echo command")
         await client.query("Run a bash echo command that says 'Hello from bash!'")
 
@@ -697,7 +697,7 @@ async def example_bash_command():
                 # Assistant messages can contain tool use blocks
                 for block in msg.content:
                     if isinstance(block, TextBlock):
-                        print(f"Claude: {block.text}")
+                        print(f"Gemini: {block.text}")
                     elif isinstance(block, ToolUseBlock):
                         print(f"Tool Use: {block.name} (id: {block.id})")
                         if block.name == "Bash":
@@ -720,7 +720,7 @@ async def example_control_protocol():
     print("=== Control Protocol Example ===")
     print("Shows server info retrieval and interrupt capability\n")
 
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         # 1. Get server initialization info
         print("1. Getting server info...")
         server_info = await client.get_server_info()
@@ -760,7 +760,7 @@ async def example_control_protocol():
                     for block in msg.content:
                         if isinstance(block, TextBlock):
                             # Print first 50 chars to show progress
-                            print(f"Claude: {block.text[:50]}...")
+                            print(f"Gemini: {block.text[:50]}...")
                             break
                 if isinstance(msg, ResultMessage):
                     break
@@ -789,7 +789,7 @@ async def example_control_protocol():
             if isinstance(msg, AssistantMessage):
                 for block in msg.content:
                     if isinstance(block, TextBlock):
-                        print(f"Claude: {block.text}")
+                        print(f"Gemini: {block.text}")
 
     print("\n")
 
@@ -798,7 +798,7 @@ async def example_error_handling():
     """Demonstrate proper error handling."""
     print("=== Error Handling Example ===")
 
-    client = ClaudeSDKClient()
+    client = GeminiSDKClient()
 
     try:
         await client.connect()
@@ -816,7 +816,7 @@ async def example_error_handling():
                     if isinstance(msg, AssistantMessage):
                         for block in msg.content:
                             if isinstance(block, TextBlock):
-                                print(f"Claude: {block.text[:50]}...")
+                                print(f"Gemini: {block.text[:50]}...")
                     elif isinstance(msg, ResultMessage):
                         display_message(msg)
                         break
@@ -890,13 +890,13 @@ if __name__ == "__main__":
 === File: examples/streaming_mode_ipython.py ===
 #!/usr/bin/env python3
 """
-IPython-friendly code snippets for ClaudeSDKClient streaming mode.
+IPython-friendly code snippets for GeminiSDKClient streaming mode.
 
 These examples are designed to be copy-pasted directly into IPython.
 Each example is self-contained and can be run independently.
 
 The queries are intentionally simplistic. In reality, a query can be a more
-complex task that Claude SDK uses its agentic capabilities and tools (e.g. run
+complex task that Gemini SDK uses its agentic capabilities and tools (e.g. run
 bash commands, edit files, search the web, fetch web content) to accomplish.
 """
 
@@ -904,9 +904,9 @@ bash commands, edit files, search the web, fetch web content) to accomplish.
 # BASIC STREAMING
 # ============================================================================
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, ResultMessage, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, ResultMessage, TextBlock
 
-async with ClaudeSDKClient() as client:
+async with GeminiSDKClient() as client:
     print("User: What is 2+2?")
     await client.query("What is 2+2?")
 
@@ -914,7 +914,7 @@ async with ClaudeSDKClient() as client:
         if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
 
 
 # ============================================================================
@@ -923,9 +923,9 @@ async with ClaudeSDKClient() as client:
 
 import asyncio
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
-async with ClaudeSDKClient() as client:
+async with GeminiSDKClient() as client:
     async def send_and_receive(prompt):
         print(f"User: {prompt}")
         await client.query(prompt)
@@ -933,7 +933,7 @@ async with ClaudeSDKClient() as client:
             if isinstance(msg, AssistantMessage):
                 for block in msg.content:
                     if isinstance(block, TextBlock):
-                        print(f"Claude: {block.text}")
+                        print(f"Gemini: {block.text}")
 
     await send_and_receive("Tell me a short joke")
     print("\n---\n")
@@ -944,10 +944,10 @@ async with ClaudeSDKClient() as client:
 # PERSISTENT CLIENT FOR MULTIPLE QUESTIONS
 # ============================================================================
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
 # Create client
-client = ClaudeSDKClient()
+client = GeminiSDKClient()
 await client.connect()
 
 
@@ -957,7 +957,7 @@ async def get_response():
         if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
 
 
 # Use it multiple times
@@ -979,9 +979,9 @@ await client.disconnect()
 # IMPORTANT: Interrupts require active message consumption. You must be
 # consuming messages from the client for the interrupt to be processed.
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
-async with ClaudeSDKClient() as client:
+async with GeminiSDKClient() as client:
     print("\n--- Sending initial message ---\n")
 
     # Send a long-running task
@@ -998,7 +998,7 @@ async with ClaudeSDKClient() as client:
             if isinstance(msg, AssistantMessage):
                 for block in msg.content:
                     if isinstance(block, TextBlock):
-                        print(f"Claude: {block.text}")
+                        print(f"Gemini: {block.text}")
 
             # Check if we got a result after interrupt
             if isinstance(msg, ResultMessage) and interrupt_sent:
@@ -1024,17 +1024,17 @@ async with ClaudeSDKClient() as client:
         if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
 
 
 # ============================================================================
 # ERROR HANDLING PATTERN
 # ============================================================================
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
 try:
-    async with ClaudeSDKClient() as client:
+    async with GeminiSDKClient() as client:
         print("User: Run a bash sleep command for 60 seconds")
         await client.query("Run a bash sleep command for 60 seconds")
 
@@ -1046,7 +1046,7 @@ try:
                 if isinstance(msg, AssistantMessage):
                     for block in msg.content:
                         if isinstance(block, TextBlock):
-                            print(f"Claude: {block.text}")
+                            print(f"Gemini: {block.text}")
 
 except asyncio.TimeoutError:
     print("Request timed out after 20 seconds")
@@ -1058,7 +1058,7 @@ except Exception as e:
 # SENDING ASYNC ITERABLE OF MESSAGES
 # ============================================================================
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
 
 async def message_generator():
@@ -1085,7 +1085,7 @@ async def message_generator():
         "session_id": "math-session"
     }
 
-async with ClaudeSDKClient() as client:
+async with GeminiSDKClient() as client:
     # Send async iterable instead of string
     await client.query(message_generator())
 
@@ -1093,16 +1093,16 @@ async with ClaudeSDKClient() as client:
         if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
 
 
 # ============================================================================
 # COLLECTING ALL MESSAGES INTO A LIST
 # ============================================================================
 
-from claude_agent_sdk import AssistantMessage, ClaudeSDKClient, TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiSDKClient, TextBlock
 
-async with ClaudeSDKClient() as client:
+async with GeminiSDKClient() as client:
     print("User: What are the primary colors?")
     await client.query("What are the primary colors?")
 
@@ -1114,7 +1114,7 @@ async with ClaudeSDKClient() as client:
         if isinstance(msg, AssistantMessage):
             for block in msg.content:
                 if isinstance(block, TextBlock):
-                    print(f"Claude: {block.text}")
+                    print(f"Gemini: {block.text}")
         elif isinstance(msg, ResultMessage):
             print(f"Total messages: {len(messages)}")
 
@@ -1122,19 +1122,19 @@ async with ClaudeSDKClient() as client:
 === File: examples/streaming_mode_trio.py ===
 #!/usr/bin/env python3
 """
-Example of multi-turn conversation using trio with the Claude SDK.
+Example of multi-turn conversation using trio with the Gemini SDK.
 
-This demonstrates how to use the ClaudeSDKClient with trio for interactive,
+This demonstrates how to use the GeminiSDKClient with trio for interactive,
 stateful conversations where you can send follow-up messages based on
-Claude's responses.
+Gemini's responses.
 """
 
 import trio
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
-    ClaudeSDKClient,
+    GeminiAgentOptions,
+    GeminiSDKClient,
     ResultMessage,
     SystemMessage,
     TextBlock,
@@ -1146,7 +1146,7 @@ def display_message(msg):
     """Standardized message display function.
 
     - UserMessage: "User: <content>"
-    - AssistantMessage: "Claude: <content>"
+    - AssistantMessage: "Gemini: <content>"
     - SystemMessage: ignored
     - ResultMessage: "Result ended" + cost if available
     """
@@ -1157,7 +1157,7 @@ def display_message(msg):
     elif isinstance(msg, AssistantMessage):
         for block in msg.content:
             if isinstance(block, TextBlock):
-                print(f"Claude: {block.text}")
+                print(f"Gemini: {block.text}")
     elif isinstance(msg, SystemMessage):
         # Ignore system messages
         pass
@@ -1167,8 +1167,8 @@ def display_message(msg):
 
 async def multi_turn_conversation():
     """Example of a multi-turn conversation using trio."""
-    async with ClaudeSDKClient(
-        options=ClaudeAgentOptions(model="claude-sonnet-4-5")
+    async with GeminiSDKClient(
+        options=GeminiAgentOptions(model="gemini-sonnet-4-5")
     ) as client:
         print("=== Multi-turn Conversation with Trio ===\n")
 
@@ -1208,9 +1208,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "claude-agent-sdk"
+name = "gemini-agent-sdk"
 version = "0.1.1"
-description = "Python SDK for Claude Code"
+description = "Python SDK for Gemini CLI"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -1228,7 +1228,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
 ]
-keywords = ["claude", "ai", "sdk", "anthropic"]
+keywords = ["gemini", "ai", "sdk", "anthropic"]
 dependencies = [
     "anyio>=4.0.0",
     "typing_extensions>=4.0.0; python_version<'3.11'",
@@ -1246,12 +1246,12 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/anthropics/claude-agent-sdk-python"
-Documentation = "https://docs.anthropic.com/en/docs/claude-code/sdk"
-Issues = "https://github.com/anthropics/claude-agent-sdk-python/issues"
+Homepage = "https://github.com/anthropics/gemini-agent-sdk-python"
+Documentation = "https://docs.anthropic.com/en/docs/gemini-code/sdk"
+Issues = "https://github.com/anthropics/gemini-agent-sdk-python/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/claude_agent_sdk"]
+packages = ["src/gemini_agent_sdk"]
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -1310,7 +1310,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["claude_agent_sdk"]
+known-first-party = ["gemini_agent_sdk"]
 
 === File: tests/conftest.py ===
 """Pytest configuration for tests."""
@@ -1408,14 +1408,14 @@ class TestChangelog:
 
 
 === File: tests/test_client.py ===
-"""Tests for Claude SDK client functionality."""
+"""Tests for Gemini SDK client functionality."""
 
 from unittest.mock import AsyncMock, Mock, patch
 
 import anyio
 
-from claude_agent_sdk import AssistantMessage, ClaudeAgentOptions, query
-from claude_agent_sdk.types import TextBlock
+from gemini_agent_sdk import AssistantMessage, GeminiAgentOptions, query
+from gemini_agent_sdk.types import TextBlock
 
 
 class TestQueryFunction:
@@ -1426,12 +1426,12 @@ class TestQueryFunction:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.InternalClient.process_query"
+                "gemini_agent_sdk._internal.client.InternalClient.process_query"
             ) as mock_process:
                 # Mock the async generator
                 async def mock_generator():
                     yield AssistantMessage(
-                        content=[TextBlock(text="4")], model="claude-opus-4-1-20250805"
+                        content=[TextBlock(text="4")], model="gemini-opus-4-1-20250805"
                     )
 
                 mock_process.return_value = mock_generator()
@@ -1451,18 +1451,18 @@ class TestQueryFunction:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.InternalClient.process_query"
+                "gemini_agent_sdk._internal.client.InternalClient.process_query"
             ) as mock_process:
 
                 async def mock_generator():
                     yield AssistantMessage(
                         content=[TextBlock(text="Hello!")],
-                        model="claude-opus-4-1-20250805",
+                        model="gemini-opus-4-1-20250805",
                     )
 
                 mock_process.return_value = mock_generator()
 
-                options = ClaudeAgentOptions(
+                options = GeminiAgentOptions(
                     allowed_tools=["Read", "Write"],
                     system_prompt="You are helpful",
                     permission_mode="acceptEdits",
@@ -1486,7 +1486,7 @@ class TestQueryFunction:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.client.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = AsyncMock()
                 mock_transport_class.return_value = mock_transport
@@ -1498,7 +1498,7 @@ class TestQueryFunction:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "Done"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -1519,7 +1519,7 @@ class TestQueryFunction:
                 mock_transport.write = AsyncMock()
                 mock_transport.is_ready = Mock(return_value=True)
 
-                options = ClaudeAgentOptions(cwd="/custom/path")
+                options = GeminiAgentOptions(cwd="/custom/path")
                 messages = []
                 async for msg in query(prompt="test", options=options):
                     messages.append(msg)
@@ -1534,10 +1534,10 @@ class TestQueryFunction:
 
 
 === File: tests/test_errors.py ===
-"""Tests for Claude SDK error handling."""
+"""Tests for Gemini SDK error handling."""
 
-from claude_agent_sdk import (
-    ClaudeSDKError,
+from gemini_agent_sdk import (
+    GeminiSDKError,
     CLIConnectionError,
     CLIJSONDecodeError,
     CLINotFoundError,
@@ -1549,21 +1549,21 @@ class TestErrorTypes:
     """Test error types and their properties."""
 
     def test_base_error(self):
-        """Test base ClaudeSDKError."""
-        error = ClaudeSDKError("Something went wrong")
+        """Test base GeminiSDKError."""
+        error = GeminiSDKError("Something went wrong")
         assert str(error) == "Something went wrong"
         assert isinstance(error, Exception)
 
     def test_cli_not_found_error(self):
         """Test CLINotFoundError."""
-        error = CLINotFoundError("Claude Code not found")
-        assert isinstance(error, ClaudeSDKError)
-        assert "Claude Code not found" in str(error)
+        error = CLINotFoundError("Gemini CLI not found")
+        assert isinstance(error, GeminiSDKError)
+        assert "Gemini CLI not found" in str(error)
 
     def test_connection_error(self):
         """Test CLIConnectionError."""
         error = CLIConnectionError("Failed to connect to CLI")
-        assert isinstance(error, ClaudeSDKError)
+        assert isinstance(error, GeminiSDKError)
         assert "Failed to connect to CLI" in str(error)
 
     def test_process_error(self):
@@ -1589,7 +1589,7 @@ class TestErrorTypes:
 
 
 === File: tests/test_integration.py ===
-"""Integration tests for Claude SDK.
+"""Integration tests for Gemini SDK.
 
 These tests verify end-to-end functionality with mocked CLI responses.
 """
@@ -1599,14 +1599,14 @@ from unittest.mock import AsyncMock, Mock, patch
 import anyio
 import pytest
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
+    GeminiAgentOptions,
     CLINotFoundError,
     ResultMessage,
     query,
 )
-from claude_agent_sdk.types import ToolUseBlock
+from gemini_agent_sdk.types import ToolUseBlock
 
 
 class TestIntegration:
@@ -1617,7 +1617,7 @@ class TestIntegration:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.client.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = AsyncMock()
                 mock_transport_class.return_value = mock_transport
@@ -1629,7 +1629,7 @@ class TestIntegration:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "2 + 2 equals 4"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -1675,7 +1675,7 @@ class TestIntegration:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.client.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = AsyncMock()
                 mock_transport_class.return_value = mock_transport
@@ -1698,7 +1698,7 @@ class TestIntegration:
                                     "input": {"file_path": "/test.txt"},
                                 },
                             ],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -1723,7 +1723,7 @@ class TestIntegration:
                 messages = []
                 async for msg in query(
                     prompt="Read /test.txt",
-                    options=ClaudeAgentOptions(allowed_tools=["Read"]),
+                    options=GeminiAgentOptions(allowed_tools=["Read"]),
                 ):
                     messages.append(msg)
 
@@ -1752,7 +1752,7 @@ class TestIntegration:
                 async for _ in query(prompt="test"):
                     pass
 
-            assert "Claude Code not found" in str(exc_info.value)
+            assert "Gemini CLI not found" in str(exc_info.value)
 
         anyio.run(_test)
 
@@ -1761,7 +1761,7 @@ class TestIntegration:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.client.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.client.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = AsyncMock()
                 mock_transport_class.return_value = mock_transport
@@ -1778,7 +1778,7 @@ class TestIntegration:
                                     "text": "Continuing from previous conversation",
                                 }
                             ],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
 
@@ -1793,7 +1793,7 @@ class TestIntegration:
                 messages = []
                 async for msg in query(
                     prompt="Continue",
-                    options=ClaudeAgentOptions(continue_conversation=True),
+                    options=GeminiAgentOptions(continue_conversation=True),
                 ):
                     messages.append(msg)
 
@@ -1810,9 +1810,9 @@ class TestIntegration:
 
 import pytest
 
-from claude_agent_sdk._errors import MessageParseError
-from claude_agent_sdk._internal.message_parser import parse_message
-from claude_agent_sdk.types import (
+from gemini_agent_sdk._errors import MessageParseError
+from gemini_agent_sdk._internal.message_parser import parse_message
+from gemini_agent_sdk.types import (
     AssistantMessage,
     ResultMessage,
     SystemMessage,
@@ -1963,7 +1963,7 @@ class TestMessageParser:
                         "input": {"file_path": "/test.txt"},
                     },
                 ],
-                "model": "claude-opus-4-1-20250805",
+                "model": "gemini-opus-4-1-20250805",
             },
         }
         message = parse_message(data)
@@ -1985,7 +1985,7 @@ class TestMessageParser:
                     },
                     {"type": "text", "text": "Here's my response"},
                 ],
-                "model": "claude-opus-4-1-20250805",
+                "model": "gemini-opus-4-1-20250805",
             },
         }
         message = parse_message(data)
@@ -2018,7 +2018,7 @@ class TestMessageParser:
                         "input": {"file_path": "/test.txt"},
                     },
                 ],
-                "model": "claude-opus-4-1-20250805",
+                "model": "gemini-opus-4-1-20250805",
             },
             "parent_tool_use_id": "toolu_01Xrwd5Y13sEHtzScxR77So8",
         }
@@ -2093,7 +2093,7 @@ class TestMessageParser:
 
 
 === File: tests/test_streaming_client.py ===
-"""Tests for ClaudeSDKClient streaming functionality and query() with async iterables."""
+"""Tests for GeminiSDKClient streaming functionality and query() with async iterables."""
 
 import asyncio
 import json
@@ -2105,17 +2105,17 @@ from unittest.mock import AsyncMock, Mock, patch
 import anyio
 import pytest
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
-    ClaudeSDKClient,
+    GeminiAgentOptions,
+    GeminiSDKClient,
     CLIConnectionError,
     ResultMessage,
     TextBlock,
     UserMessage,
     query,
 )
-from claude_agent_sdk._internal.transport.subprocess_cli import SubprocessCLITransport
+from gemini_agent_sdk._internal.transport.subprocess_cli import SubprocessCLITransport
 
 
 def create_mock_transport(with_init_response=True):
@@ -2202,20 +2202,20 @@ def create_mock_transport(with_init_response=True):
     return mock_transport
 
 
-class TestClaudeSDKClientStreaming:
-    """Test ClaudeSDKClient streaming functionality."""
+class TestGeminiSDKClientStreaming:
+    """Test GeminiSDKClient streaming functionality."""
 
     def test_auto_connect_with_context_manager(self):
         """Test automatic connection when using context manager."""
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     # Verify connect was called
                     mock_transport.connect.assert_called_once()
                     assert client._transport is mock_transport
@@ -2230,12 +2230,12 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                client = ClaudeSDKClient()
+                client = GeminiSDKClient()
                 await client.connect()
 
                 # Verify connect was called
@@ -2254,17 +2254,17 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                client = ClaudeSDKClient()
-                await client.connect("Hello Claude")
+                client = GeminiSDKClient()
+                await client.connect("Hello Gemini")
 
                 # Verify transport was created with string prompt
                 call_kwargs = mock_transport_class.call_args.kwargs
-                assert call_kwargs["prompt"] == "Hello Claude"
+                assert call_kwargs["prompt"] == "Hello Gemini"
 
         anyio.run(_test)
 
@@ -2273,7 +2273,7 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
@@ -2285,7 +2285,7 @@ class TestClaudeSDKClientStreaming:
                         "message": {"role": "user", "content": "Bye"},
                     }
 
-                client = ClaudeSDKClient()
+                client = GeminiSDKClient()
                 stream = message_stream()
                 await client.connect(stream)
 
@@ -2301,12 +2301,12 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     await client.query("Test message")
 
                     # Verify write was called with correct format
@@ -2335,12 +2335,12 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     await client.query("Test", session_id="custom-session")
 
                     # Find the user message with custom session ID
@@ -2363,7 +2363,7 @@ class TestClaudeSDKClientStreaming:
         """Test sending message when not connected raises error."""
 
         async def _test():
-            client = ClaudeSDKClient()
+            client = GeminiSDKClient()
             with pytest.raises(CLIConnectionError, match="Not connected"):
                 await client.query("Test")
 
@@ -2374,7 +2374,7 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
@@ -2412,7 +2412,7 @@ class TestClaudeSDKClientStreaming:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "Hello!"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -2422,7 +2422,7 @@ class TestClaudeSDKClientStreaming:
 
                 mock_transport.read_messages = mock_receive
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     messages = []
                     async for msg in client.receive_messages():
                         messages.append(msg)
@@ -2443,7 +2443,7 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
@@ -2481,7 +2481,7 @@ class TestClaudeSDKClientStreaming:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "Answer"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -2503,12 +2503,12 @@ class TestClaudeSDKClientStreaming:
                                 {"type": "text", "text": "Should not see this"}
                             ],
                         },
-                        "model": "claude-opus-4-1-20250805",
+                        "model": "gemini-opus-4-1-20250805",
                     }
 
                 mock_transport.read_messages = mock_receive
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     messages = []
                     async for msg in client.receive_response():
                         messages.append(msg)
@@ -2525,12 +2525,12 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     # Interrupt is now handled via control protocol
                     await client.interrupt()
                     # Check that a control request was sent via write
@@ -2556,7 +2556,7 @@ class TestClaudeSDKClientStreaming:
         """Test interrupt when not connected raises error."""
 
         async def _test():
-            client = ClaudeSDKClient()
+            client = GeminiSDKClient()
             with pytest.raises(CLIConnectionError, match="Not connected"):
                 await client.interrupt()
 
@@ -2566,19 +2566,19 @@ class TestClaudeSDKClientStreaming:
         """Test client initialization with options."""
 
         async def _test():
-            options = ClaudeAgentOptions(
+            options = GeminiAgentOptions(
                 cwd="/custom/path",
                 allowed_tools=["Read", "Write"],
                 system_prompt="Be helpful",
             )
 
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
-                client = ClaudeSDKClient(options=options)
+                client = GeminiSDKClient(options=options)
                 await client.connect()
 
                 # Verify options were passed to transport
@@ -2592,7 +2592,7 @@ class TestClaudeSDKClientStreaming:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
@@ -2632,7 +2632,7 @@ class TestClaudeSDKClientStreaming:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "Response 1"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     await asyncio.sleep(0.1)
@@ -2649,7 +2649,7 @@ class TestClaudeSDKClientStreaming:
 
                 mock_transport.read_messages = mock_receive
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     # Helper to get next message
                     async def get_next_message():
                         return await client.receive_response().__anext__()
@@ -2771,14 +2771,14 @@ print('{"type": "result", "subtype": "success", "duration_ms": 100, "duration_ap
         anyio.run(_test)
 
 
-class TestClaudeSDKClientEdgeCases:
+class TestGeminiSDKClientEdgeCases:
     """Test edge cases and error scenarios."""
 
     def test_receive_messages_not_connected(self):
         """Test receiving messages when not connected."""
 
         async def _test():
-            client = ClaudeSDKClient()
+            client = GeminiSDKClient()
             with pytest.raises(CLIConnectionError, match="Not connected"):
                 async for _ in client.receive_messages():
                     pass
@@ -2789,7 +2789,7 @@ class TestClaudeSDKClientEdgeCases:
         """Test receive_response when not connected."""
 
         async def _test():
-            client = ClaudeSDKClient()
+            client = GeminiSDKClient()
             with pytest.raises(CLIConnectionError, match="Not connected"):
                 async for _ in client.receive_response():
                     pass
@@ -2801,7 +2801,7 @@ class TestClaudeSDKClientEdgeCases:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 # Create a new mock transport for each call
                 mock_transport_class.side_effect = [
@@ -2809,7 +2809,7 @@ class TestClaudeSDKClientEdgeCases:
                     create_mock_transport(),
                 ]
 
-                client = ClaudeSDKClient()
+                client = GeminiSDKClient()
                 await client.connect()
                 # Second connect should create new transport
                 await client.connect()
@@ -2823,7 +2823,7 @@ class TestClaudeSDKClientEdgeCases:
         """Test disconnecting without connecting first."""
 
         async def _test():
-            client = ClaudeSDKClient()
+            client = GeminiSDKClient()
             # Should not raise error
             await client.disconnect()
 
@@ -2834,13 +2834,13 @@ class TestClaudeSDKClientEdgeCases:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
 
                 with pytest.raises(ValueError):
-                    async with ClaudeSDKClient():
+                    async with GeminiSDKClient():
                         raise ValueError("Test error")
 
                 # Disconnect should still be called
@@ -2853,7 +2853,7 @@ class TestClaudeSDKClientEdgeCases:
 
         async def _test():
             with patch(
-                "claude_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
+                "gemini_agent_sdk._internal.transport.subprocess_cli.SubprocessCLITransport"
             ) as mock_transport_class:
                 mock_transport = create_mock_transport()
                 mock_transport_class.return_value = mock_transport
@@ -2892,7 +2892,7 @@ class TestClaudeSDKClientEdgeCases:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "Hello"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -2900,7 +2900,7 @@ class TestClaudeSDKClientEdgeCases:
                         "message": {
                             "role": "assistant",
                             "content": [{"type": "text", "text": "World"}],
-                            "model": "claude-opus-4-1-20250805",
+                            "model": "gemini-opus-4-1-20250805",
                         },
                     }
                     yield {
@@ -2916,7 +2916,7 @@ class TestClaudeSDKClientEdgeCases:
 
                 mock_transport.read_messages = mock_receive
 
-                async with ClaudeSDKClient() as client:
+                async with GeminiSDKClient() as client:
                     # Test list comprehension pattern from docstring
                     messages = [msg async for msg in client.receive_response()]
 
@@ -2941,12 +2941,12 @@ from unittest.mock import AsyncMock, MagicMock
 import anyio
 import pytest
 
-from claude_agent_sdk._errors import CLIJSONDecodeError
-from claude_agent_sdk._internal.transport.subprocess_cli import (
+from gemini_agent_sdk._errors import CLIJSONDecodeError
+from gemini_agent_sdk._internal.transport.subprocess_cli import (
     _DEFAULT_MAX_BUFFER_SIZE,
     SubprocessCLITransport,
 )
-from claude_agent_sdk.types import ClaudeAgentOptions
+from gemini_agent_sdk.types import GeminiAgentOptions
 
 
 class MockTextReceiveStream:
@@ -2984,7 +2984,7 @@ class TestSubprocessBuffering:
             buffered_line = json.dumps(json_obj1) + "\n" + json.dumps(json_obj2)
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3019,7 +3019,7 @@ class TestSubprocessBuffering:
             buffered_line = json.dumps(json_obj1) + "\n" + json.dumps(json_obj2)
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3049,7 +3049,7 @@ class TestSubprocessBuffering:
             buffered_line = json.dumps(json_obj1) + "\n\n\n" + json.dumps(json_obj2)
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3095,7 +3095,7 @@ class TestSubprocessBuffering:
             part3 = complete_json[250:]
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3143,7 +3143,7 @@ class TestSubprocessBuffering:
             ]
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3173,7 +3173,7 @@ class TestSubprocessBuffering:
             huge_incomplete = '{"data": "' + "x" * (_DEFAULT_MAX_BUFFER_SIZE + 1000)
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3202,8 +3202,8 @@ class TestSubprocessBuffering:
 
             transport = SubprocessCLITransport(
                 prompt="test",
-                options=ClaudeAgentOptions(max_buffer_size=custom_limit),
-                cli_path="/usr/bin/claude",
+                options=GeminiAgentOptions(max_buffer_size=custom_limit),
+                cli_path="/usr/bin/gemini",
             )
 
             mock_process = MagicMock()
@@ -3243,7 +3243,7 @@ class TestSubprocessBuffering:
             ]
 
             transport = SubprocessCLITransport(
-                prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+                prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
             )
 
             mock_process = MagicMock()
@@ -3269,7 +3269,7 @@ class TestSubprocessBuffering:
 
 
 === File: tests/test_transport.py ===
-"""Tests for Claude SDK transport layer."""
+"""Tests for Gemini SDK transport layer."""
 
 import os
 import uuid
@@ -3278,8 +3278,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import anyio
 import pytest
 
-from claude_agent_sdk._internal.transport.subprocess_cli import SubprocessCLITransport
-from claude_agent_sdk.types import ClaudeAgentOptions
+from gemini_agent_sdk._internal.transport.subprocess_cli import SubprocessCLITransport
+from gemini_agent_sdk.types import GeminiAgentOptions
 
 
 class TestSubprocessCLITransport:
@@ -3287,25 +3287,25 @@ class TestSubprocessCLITransport:
 
     def test_find_cli_not_found(self):
         """Test CLI not found error."""
-        from claude_agent_sdk._errors import CLINotFoundError
+        from gemini_agent_sdk._errors import CLINotFoundError
 
         with (
             patch("shutil.which", return_value=None),
             patch("pathlib.Path.exists", return_value=False),
             pytest.raises(CLINotFoundError) as exc_info,
         ):
-            SubprocessCLITransport(prompt="test", options=ClaudeAgentOptions())
+            SubprocessCLITransport(prompt="test", options=GeminiAgentOptions())
 
-        assert "Claude Code not found" in str(exc_info.value)
+        assert "Gemini CLI not found" in str(exc_info.value)
 
     def test_build_command_basic(self):
         """Test building basic CLI command."""
         transport = SubprocessCLITransport(
-            prompt="Hello", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+            prompt="Hello", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
         )
 
         cmd = transport._build_command()
-        assert cmd[0] == "/usr/bin/claude"
+        assert cmd[0] == "/usr/bin/gemini"
         assert "--output-format" in cmd
         assert "stream-json" in cmd
         assert "--print" in cmd
@@ -3315,10 +3315,10 @@ class TestSubprocessCLITransport:
         """Test that cli_path accepts pathlib.Path objects."""
         from pathlib import Path
 
-        path = Path("/usr/bin/claude")
+        path = Path("/usr/bin/gemini")
         transport = SubprocessCLITransport(
             prompt="Hello",
-            options=ClaudeAgentOptions(),
+            options=GeminiAgentOptions(),
             cli_path=path,
         )
 
@@ -3329,10 +3329,10 @@ class TestSubprocessCLITransport:
         """Test building CLI command with system prompt as string."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(
+            options=GeminiAgentOptions(
                 system_prompt="Be helpful",
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3343,10 +3343,10 @@ class TestSubprocessCLITransport:
         """Test building CLI command with system prompt preset."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(
-                system_prompt={"type": "preset", "preset": "claude_code"},
+            options=GeminiAgentOptions(
+                system_prompt={"type": "preset", "preset": "gemini_code"},
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3357,14 +3357,14 @@ class TestSubprocessCLITransport:
         """Test building CLI command with system prompt preset and append."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(
+            options=GeminiAgentOptions(
                 system_prompt={
                     "type": "preset",
-                    "preset": "claude_code",
+                    "preset": "gemini_code",
                     "append": "Be concise.",
                 },
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3376,14 +3376,14 @@ class TestSubprocessCLITransport:
         """Test building CLI command with options."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(
+            options=GeminiAgentOptions(
                 allowed_tools=["Read", "Write"],
                 disallowed_tools=["Bash"],
-                model="claude-sonnet-4-5",
+                model="gemini-sonnet-4-5",
                 permission_mode="acceptEdits",
                 max_turns=5,
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3392,7 +3392,7 @@ class TestSubprocessCLITransport:
         assert "--disallowedTools" in cmd
         assert "Bash" in cmd
         assert "--model" in cmd
-        assert "claude-sonnet-4-5" in cmd
+        assert "gemini-sonnet-4-5" in cmd
         assert "--permission-mode" in cmd
         assert "acceptEdits" in cmd
         assert "--max-turns" in cmd
@@ -3406,8 +3406,8 @@ class TestSubprocessCLITransport:
         dir2 = Path("/path/to/dir2")
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(add_dirs=[dir1, dir2]),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(add_dirs=[dir1, dir2]),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3426,10 +3426,10 @@ class TestSubprocessCLITransport:
         """Test session continuation options."""
         transport = SubprocessCLITransport(
             prompt="Continue from before",
-            options=ClaudeAgentOptions(
+            options=GeminiAgentOptions(
                 continue_conversation=True, resume="session-123"
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3446,7 +3446,7 @@ class TestSubprocessCLITransport:
                 mock_version_process = MagicMock()
                 mock_version_process.stdout = MagicMock()
                 mock_version_process.stdout.receive = AsyncMock(
-                    return_value=b"2.0.0 (Claude Code)"
+                    return_value=b"2.0.0 (Gemini CLI)"
                 )
                 mock_version_process.terminate = MagicMock()
                 mock_version_process.wait = AsyncMock()
@@ -3469,8 +3469,8 @@ class TestSubprocessCLITransport:
 
                 transport = SubprocessCLITransport(
                     prompt="test",
-                    options=ClaudeAgentOptions(),
-                    cli_path="/usr/bin/claude",
+                    options=GeminiAgentOptions(),
+                    cli_path="/usr/bin/gemini",
                 )
 
                 await transport.connect()
@@ -3487,23 +3487,23 @@ class TestSubprocessCLITransport:
         # This test is simplified to just test the transport creation
         # The full async stream handling is tested in integration tests
         transport = SubprocessCLITransport(
-            prompt="test", options=ClaudeAgentOptions(), cli_path="/usr/bin/claude"
+            prompt="test", options=GeminiAgentOptions(), cli_path="/usr/bin/gemini"
         )
 
         # The transport now just provides raw message reading via read_messages()
         # So we just verify the transport can be created and basic structure is correct
         assert transport._prompt == "test"
-        assert transport._cli_path == "/usr/bin/claude"
+        assert transport._cli_path == "/usr/bin/gemini"
 
     def test_connect_with_nonexistent_cwd(self):
         """Test that connect raises CLIConnectionError when cwd doesn't exist."""
-        from claude_agent_sdk._errors import CLIConnectionError
+        from gemini_agent_sdk._errors import CLIConnectionError
 
         async def _test():
             transport = SubprocessCLITransport(
                 prompt="test",
-                options=ClaudeAgentOptions(cwd="/this/directory/does/not/exist"),
-                cli_path="/usr/bin/claude",
+                options=GeminiAgentOptions(cwd="/this/directory/does/not/exist"),
+                cli_path="/usr/bin/gemini",
             )
 
             with pytest.raises(CLIConnectionError) as exc_info:
@@ -3517,8 +3517,8 @@ class TestSubprocessCLITransport:
         """Test building CLI command with settings as file path."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(settings="/path/to/settings.json"),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(settings="/path/to/settings.json"),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3530,8 +3530,8 @@ class TestSubprocessCLITransport:
         settings_json = '{"permissions": {"allow": ["Bash(ls:*)"]}}'
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(settings=settings_json),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(settings=settings_json),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3542,14 +3542,14 @@ class TestSubprocessCLITransport:
         """Test building CLI command with extra_args for future flags."""
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(
+            options=GeminiAgentOptions(
                 extra_args={
                     "new-flag": "value",
                     "boolean-flag": None,
                     "another-option": "test-value",
                 }
             ),
-            cli_path="/usr/bin/claude",
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3580,8 +3580,8 @@ class TestSubprocessCLITransport:
 
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(mcp_servers=mcp_servers),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(mcp_servers=mcp_servers),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3604,8 +3604,8 @@ class TestSubprocessCLITransport:
         string_path = "/path/to/mcp-config.json"
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(mcp_servers=string_path),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(mcp_servers=string_path),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3617,8 +3617,8 @@ class TestSubprocessCLITransport:
         path_obj = Path("/path/to/mcp-config.json")
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(mcp_servers=path_obj),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(mcp_servers=path_obj),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3632,8 +3632,8 @@ class TestSubprocessCLITransport:
         json_config = '{"mcpServers": {"server": {"type": "stdio", "command": "test"}}}'
         transport = SubprocessCLITransport(
             prompt="test",
-            options=ClaudeAgentOptions(mcp_servers=json_config),
-            cli_path="/usr/bin/claude",
+            options=GeminiAgentOptions(mcp_servers=json_config),
+            cli_path="/usr/bin/gemini",
         )
 
         cmd = transport._build_command()
@@ -3650,7 +3650,7 @@ class TestSubprocessCLITransport:
                 "MY_TEST_VAR": test_value,
             }
 
-            options = ClaudeAgentOptions(env=custom_env)
+            options = GeminiAgentOptions(env=custom_env)
 
             # Mock the subprocess to capture the env argument
             with patch(
@@ -3660,7 +3660,7 @@ class TestSubprocessCLITransport:
                 mock_version_process = MagicMock()
                 mock_version_process.stdout = MagicMock()
                 mock_version_process.stdout.receive = AsyncMock(
-                    return_value=b"2.0.0 (Claude Code)"
+                    return_value=b"2.0.0 (Gemini CLI)"
                 )
                 mock_version_process.terminate = MagicMock()
                 mock_version_process.wait = AsyncMock()
@@ -3679,7 +3679,7 @@ class TestSubprocessCLITransport:
                 transport = SubprocessCLITransport(
                     prompt="test",
                     options=options,
-                    cli_path="/usr/bin/claude",
+                    cli_path="/usr/bin/gemini",
                 )
 
                 await transport.connect()
@@ -3696,8 +3696,8 @@ class TestSubprocessCLITransport:
                 assert env_passed["MY_TEST_VAR"] == test_value
 
                 # Verify SDK identifier is present
-                assert "CLAUDE_CODE_ENTRYPOINT" in env_passed
-                assert env_passed["CLAUDE_CODE_ENTRYPOINT"] == "sdk-py"
+                assert "GEMINI_CODE_ENTRYPOINT" in env_passed
+                assert env_passed["GEMINI_CODE_ENTRYPOINT"] == "sdk-py"
 
                 # Verify system env vars are also included with correct values
                 if "PATH" in os.environ:
@@ -3710,8 +3710,8 @@ class TestSubprocessCLITransport:
         """Test connect as different user."""
 
         async def _test():
-            custom_user = "claude"
-            options = ClaudeAgentOptions(user=custom_user)
+            custom_user = "gemini"
+            options = GeminiAgentOptions(user=custom_user)
 
             # Mock the subprocess to capture the env argument
             with patch(
@@ -3721,7 +3721,7 @@ class TestSubprocessCLITransport:
                 mock_version_process = MagicMock()
                 mock_version_process.stdout = MagicMock()
                 mock_version_process.stdout.receive = AsyncMock(
-                    return_value=b"2.0.0 (Claude Code)"
+                    return_value=b"2.0.0 (Gemini CLI)"
                 )
                 mock_version_process.terminate = MagicMock()
                 mock_version_process.wait = AsyncMock()
@@ -3740,7 +3740,7 @@ class TestSubprocessCLITransport:
                 transport = SubprocessCLITransport(
                     prompt="test",
                     options=options,
-                    cli_path="/usr/bin/claude",
+                    cli_path="/usr/bin/gemini",
                 )
 
                 await transport.connect()
@@ -3754,20 +3754,20 @@ class TestSubprocessCLITransport:
                 user_passed = second_call_kwargs["user"]
 
                 # Check that user was passed
-                assert user_passed == "claude"
+                assert user_passed == "gemini"
 
         anyio.run(_test)
 
 
 === File: tests/test_types.py ===
-"""Tests for Claude SDK type definitions."""
+"""Tests for Gemini SDK type definitions."""
 
-from claude_agent_sdk import (
+from gemini_agent_sdk import (
     AssistantMessage,
-    ClaudeAgentOptions,
+    GeminiAgentOptions,
     ResultMessage,
 )
-from claude_agent_sdk.types import (
+from gemini_agent_sdk.types import (
     TextBlock,
     ThinkingBlock,
     ToolResultBlock,
@@ -3781,13 +3781,13 @@ class TestMessageTypes:
 
     def test_user_message_creation(self):
         """Test creating a UserMessage."""
-        msg = UserMessage(content="Hello, Claude!")
-        assert msg.content == "Hello, Claude!"
+        msg = UserMessage(content="Hello, Gemini!")
+        assert msg.content == "Hello, Gemini!"
 
     def test_assistant_message_with_text(self):
         """Test creating an AssistantMessage with text content."""
         text_block = TextBlock(text="Hello, human!")
-        msg = AssistantMessage(content=[text_block], model="claude-opus-4-1-20250805")
+        msg = AssistantMessage(content=[text_block], model="gemini-opus-4-1-20250805")
         assert len(msg.content) == 1
         assert msg.content[0].text == "Hello, human!"
 
@@ -3795,7 +3795,7 @@ class TestMessageTypes:
         """Test creating an AssistantMessage with thinking content."""
         thinking_block = ThinkingBlock(thinking="I'm thinking...", signature="sig-123")
         msg = AssistantMessage(
-            content=[thinking_block], model="claude-opus-4-1-20250805"
+            content=[thinking_block], model="gemini-opus-4-1-20250805"
         )
         assert len(msg.content) == 1
         assert msg.content[0].thinking == "I'm thinking..."
@@ -3840,75 +3840,75 @@ class TestOptions:
 
     def test_default_options(self):
         """Test Options with default values."""
-        options = ClaudeAgentOptions()
+        options = GeminiAgentOptions()
         assert options.allowed_tools == []
         assert options.system_prompt is None
         assert options.permission_mode is None
         assert options.continue_conversation is False
         assert options.disallowed_tools == []
 
-    def test_claude_code_options_with_tools(self):
+    def test_gemini_code_options_with_tools(self):
         """Test Options with built-in tools."""
-        options = ClaudeAgentOptions(
+        options = GeminiAgentOptions(
             allowed_tools=["Read", "Write", "Edit"], disallowed_tools=["Bash"]
         )
         assert options.allowed_tools == ["Read", "Write", "Edit"]
         assert options.disallowed_tools == ["Bash"]
 
-    def test_claude_code_options_with_permission_mode(self):
+    def test_gemini_code_options_with_permission_mode(self):
         """Test Options with permission mode."""
-        options = ClaudeAgentOptions(permission_mode="bypassPermissions")
+        options = GeminiAgentOptions(permission_mode="bypassPermissions")
         assert options.permission_mode == "bypassPermissions"
 
-        options_plan = ClaudeAgentOptions(permission_mode="plan")
+        options_plan = GeminiAgentOptions(permission_mode="plan")
         assert options_plan.permission_mode == "plan"
 
-        options_default = ClaudeAgentOptions(permission_mode="default")
+        options_default = GeminiAgentOptions(permission_mode="default")
         assert options_default.permission_mode == "default"
 
-        options_accept = ClaudeAgentOptions(permission_mode="acceptEdits")
+        options_accept = GeminiAgentOptions(permission_mode="acceptEdits")
         assert options_accept.permission_mode == "acceptEdits"
 
-    def test_claude_code_options_with_system_prompt_string(self):
+    def test_gemini_code_options_with_system_prompt_string(self):
         """Test Options with system prompt as string."""
-        options = ClaudeAgentOptions(
+        options = GeminiAgentOptions(
             system_prompt="You are a helpful assistant.",
         )
         assert options.system_prompt == "You are a helpful assistant."
 
-    def test_claude_code_options_with_system_prompt_preset(self):
+    def test_gemini_code_options_with_system_prompt_preset(self):
         """Test Options with system prompt preset."""
-        options = ClaudeAgentOptions(
-            system_prompt={"type": "preset", "preset": "claude_code"},
+        options = GeminiAgentOptions(
+            system_prompt={"type": "preset", "preset": "gemini_code"},
         )
-        assert options.system_prompt == {"type": "preset", "preset": "claude_code"}
+        assert options.system_prompt == {"type": "preset", "preset": "gemini_code"}
 
-    def test_claude_code_options_with_system_prompt_preset_and_append(self):
+    def test_gemini_code_options_with_system_prompt_preset_and_append(self):
         """Test Options with system prompt preset and append."""
-        options = ClaudeAgentOptions(
+        options = GeminiAgentOptions(
             system_prompt={
                 "type": "preset",
-                "preset": "claude_code",
+                "preset": "gemini_code",
                 "append": "Be concise.",
             },
         )
         assert options.system_prompt == {
             "type": "preset",
-            "preset": "claude_code",
+            "preset": "gemini_code",
             "append": "Be concise.",
         }
 
-    def test_claude_code_options_with_session_continuation(self):
+    def test_gemini_code_options_with_session_continuation(self):
         """Test Options with session continuation."""
-        options = ClaudeAgentOptions(continue_conversation=True, resume="session-123")
+        options = GeminiAgentOptions(continue_conversation=True, resume="session-123")
         assert options.continue_conversation is True
         assert options.resume == "session-123"
 
-    def test_claude_code_options_with_model_specification(self):
+    def test_gemini_code_options_with_model_specification(self):
         """Test Options with model specification."""
-        options = ClaudeAgentOptions(
-            model="claude-sonnet-4-5", permission_prompt_tool_name="CustomTool"
+        options = GeminiAgentOptions(
+            model="gemini-sonnet-4-5", permission_prompt_tool_name="CustomTool"
         )
-        assert options.model == "claude-sonnet-4-5"
+        assert options.model == "gemini-sonnet-4-5"
         assert options.permission_prompt_tool_name == "CustomTool"
 

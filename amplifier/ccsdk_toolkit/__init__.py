@@ -1,13 +1,13 @@
 """
-Claude Code SDK Toolkit
+Gemini CLI SDK Toolkit
 
-A comprehensive toolkit for building robust applications with the Claude Code SDK.
+A comprehensive toolkit for building robust applications with the Gemini CLI SDK.
 Provides core functionality, configuration management, session persistence,
 structured logging, and CLI tool generation.
 
 Quick Start:
-    >>> from amplifier.ccsdk_toolkit import ClaudeSession, SessionOptions
-    >>> async with ClaudeSession() as session:
+    >>> from amplifier.ccsdk_toolkit import GeminiSession, SessionOptions
+    >>> async with GeminiSession() as session:
     ...     response = await session.query("Hello!")
     ...     print(response.content)
 
@@ -34,12 +34,12 @@ from .config import ToolConfig
 from .config import ToolkitConfig
 from .config import ToolPermissions
 from .core import CCSDKSession
-from .core import ClaudeSession
+from .core import GeminiSession
 from .core import SDKNotAvailableError
 from .core import SessionError
 from .core import SessionOptions
 from .core import SessionResponse
-from .core import check_claude_cli
+from .core import check_gemini_cli
 from .core import query_with_retry
 from .logger import LogEvent
 from .logger import LogFormat
@@ -57,12 +57,12 @@ __version__ = "0.1.0"
 __all__ = [
     # Core
     "CCSDKSession",
-    "ClaudeSession",
+    "GeminiSession",
     "SessionOptions",
     "SessionResponse",
     "SessionError",
     "SDKNotAvailableError",
-    "check_claude_cli",
+    "check_gemini_cli",
     "query_with_retry",
     # Config
     "AgentConfig",

@@ -11,30 +11,30 @@ from typing import TypeVar
 T = TypeVar("T")
 
 
-def check_claude_cli() -> tuple[bool, str]:
-    """Check if Claude CLI is installed and accessible.
+def check_gemini_cli() -> tuple[bool, str]:
+    """Check if Gemini CLI is installed and accessible.
 
     Returns:
         Tuple of (is_available, path_or_error_message)
 
     Example:
-        >>> available, info = check_claude_cli()
+        >>> available, info = check_gemini_cli()
         >>> if available:
-        ...     print(f"Claude CLI found at: {info}")
+        ...     print(f"Gemini CLI found at: {info}")
         ... else:
-        ...     print(f"Claude CLI not available: {info}")
+        ...     print(f"Gemini CLI not available: {info}")
     """
-    # Check if claude CLI is available in PATH
-    claude_path = shutil.which("claude")
-    if claude_path:
-        return True, claude_path
+    # Check if gemini CLI is available in PATH
+    gemini_path = shutil.which("gemini")
+    if gemini_path:
+        return True, gemini_path
 
     # Check common installation locations
     known_locations = [
-        Path.home() / ".local/share/reflex/bun/bin/claude",
-        Path.home() / ".npm-global/bin/claude",
-        Path("/usr/local/bin/claude"),
-        Path.home() / ".nvm/versions/node" / "*" / "bin/claude",  # Pattern for nvm
+        Path.home() / ".local/share/reflex/bun/bin/gemini",
+        Path.home() / ".npm-global/bin/gemini",
+        Path("/usr/local/bin/gemini"),
+        Path.home() / ".nvm/versions/node" / "*" / "bin/gemini",  # Pattern for nvm
     ]
 
     for loc in known_locations:
@@ -52,9 +52,9 @@ def check_claude_cli() -> tuple[bool, str]:
                 return True, str(loc)
 
     return False, (
-        "Claude CLI not found. Install with one of:\n"
-        "  - npm install -g @anthropic-ai/claude-code\n"
-        "  - bun install -g @anthropic-ai/claude-code"
+        "Gemini CLI not found. Install with one of:\n"
+        "  - npm install -g @anthropic-ai/gemini-code\n"
+        "  - bun install -g @anthropic-ai/gemini-code"
     )
 
 

@@ -25,7 +25,7 @@ Build a **Proof of Concept (PoC)** with mock/hard-coded implementation first to:
    - Agreed the approach was valuable
 
 3. **Implemented Real System** (Day 3)
-   - Replaced mock with Claude Code SDK integration
+   - Replaced mock with Gemini CLI SDK integration
    - Kept exact same interfaces (the "studs")
    - All existing code continued to work
    - Real semantic extraction now functioning
@@ -106,7 +106,7 @@ class KnowledgeExtractor:
 class KnowledgeExtractor:
     def extract(self, text: str) -> Extraction:
         # Real LLM extraction
-        response = await claude_sdk.extract(text)
+        response = await gemini_sdk.extract(text)
         return Extraction(
             concepts=parse_concepts(response),
             insights=parse_insights(response)

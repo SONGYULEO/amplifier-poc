@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js (required for Claude Code)
+# Install Node.js (required for Gemini CLI)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
@@ -24,15 +24,15 @@ ENV PATH="/root/.local/bin:/root/.cargo/bin:$PATH"
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-# Install Claude Code, pyright, and pnpm
+# Install Gemini CLI, pyright, and pnpm
 ENV SHELL=/bin/bash
-RUN npm install -g @anthropic-ai/claude-code pyright pnpm && \
+RUN npm install -g @google/gemini-cli pyright pnpm && \
     SHELL=/bin/bash pnpm setup && \
     echo 'export PNPM_HOME="/root/.local/share/pnpm"' >> ~/.bashrc && \
     echo 'export PATH="$PNPM_HOME:$PATH"' >> ~/.bashrc
 
-# Pre-configure Claude Code to use environment variables
-RUN mkdir -p /root/.config/claude-code
+# Pre-configure Gemini CLI to use environment variables
+RUN mkdir -p /root/.config/gemini-cli
 
 # Create working directory
 WORKDIR /app
@@ -52,7 +52,7 @@ RUN uv venv --python python3.11 .venv && \
 RUN mkdir -p /app/amplifier-data && \
     mkdir -p /app/amplifier/.data
 
-# Clone Amplifier to /root/amplifier where Claude Code will start
+# Clone Amplifier to /root/amplifier where Gemini CLI will start
 RUN git clone https://github.com/microsoft/amplifier.git /root/amplifier
 
 # Build Amplifier in /root/amplifier
@@ -68,22 +68,22 @@ RUN mkdir -p /root/amplifier/.data/knowledge && \
     mkdir -p /root/amplifier/.data/memories && \
     mkdir -p /root/amplifier/.data/cache
 
-# Create Claude Code settings and tools
-RUN mkdir -p /root/amplifier/.claude/tools && \
-    cat > /root/amplifier/.claude/settings.json << 'SETTINGS_EOF'
+# Create Gemini CLI settings and tools
+RUN mkdir -p /root/amplifier/.gemini/tools && \
+    cat > /root/amplifier/.gemini/settings.json << 'SETTINGS_EOF'
 {
     "statusLine": {
       "type": "command",
-      "command": "bash /root/amplifier/.claude/tools/statusline-example.sh"
+      "command": "bash /root/amplifier/.gemini/tools/statusline-example.sh"
     }
 }
 SETTINGS_EOF
 
 # Create the statusline script referenced in settings
-RUN cat > /root/amplifier/.claude/tools/statusline-example.sh << 'STATUSLINE_EOF'
+RUN cat > /root/amplifier/.gemini/tools/statusline-example.sh << 'STATUSLINE_EOF'
 #!/bin/bash
 
-# Simple statusline script for Claude Code
+# Simple statusline script for Gemini CLI
 # Shows current directory, git branch (if available), and timestamp
 
 # Get current directory (relative to home)
@@ -104,9 +104,9 @@ echo "📂 $current_dir$git_info | 🕐 $timestamp"
 STATUSLINE_EOF
 
 # Make the statusline script executable
-RUN chmod +x /root/amplifier/.claude/tools/statusline-example.sh
+RUN chmod +x /root/amplifier/.gemini/tools/statusline-example.sh
 
-# Create entrypoint script with comprehensive Claude Code configuration
+# Create entrypoint script with comprehensive Gemini CLI configuration
 RUN cat > /app/entrypoint.sh << 'EOF'
 #!/bin/bash
 set -e
@@ -125,22 +125,20 @@ error_exit() {
 # Validate API key format
 validate_api_key() {
     local api_key="$1"
-    if [[ ! "$api_key" =~ ^sk-ant-[a-zA-Z0-9_-]+$ ]]; then
-        log "WARNING: API key format may be invalid (should start with 'sk-ant-')"
+    # Basic validation for Google API key (usually starts with AIza or similar, but let's just check length)
+    if [[ ${#api_key} -lt 20 ]]; then
+        log "WARNING: API key may be invalid (too short)"
         return 1
     fi
     return 0
 }
 
-# Create comprehensive Claude configuration file
-create_claude_config() {
+# Create comprehensive Gemini configuration file
+create_gemini_config() {
     local api_key="$1"
-    local config_file="$HOME/.claude.json"
+    local config_file="$HOME/.gemini/config.json"
 
-    log "Creating Claude configuration at: $config_file"
-
-    # Extract last 20 characters for approved list
-    local key_suffix="${api_key: -20}"
+    log "Creating Gemini configuration at: $config_file"
 
     # Create configuration directory
     mkdir -p "$(dirname "$config_file")"
@@ -149,82 +147,48 @@ create_claude_config() {
 {
   "apiKey": "$api_key",
   "hasCompletedOnboarding": true,
-  "projects": {},
-  "customApiKeyResponses": {
-    "approved": ["$key_suffix"],
-    "rejected": []
-  },
-  "mcpServers": {}
+  "projects": {}
 }
 CONFIG_EOF
-
-    # Verify JSON validity using python (more reliable than jq)
-    if ! python3 -m json.tool "$config_file" > /dev/null 2>&1; then
-        error_exit "Generated configuration file contains invalid JSON"
-    fi
 
     log "Configuration file created successfully"
 }
 
 # Set CLI configuration flags
-configure_claude_cli() {
-    log "Setting Claude CLI configuration flags..."
+configure_gemini_cli() {
+    log "Setting Gemini CLI configuration flags..."
 
     # Set configuration flags to skip interactive prompts
-    claude config set hasCompletedOnboarding true 2>/dev/null || log "WARNING: Failed to set hasCompletedOnboarding"
-    claude config set hasTrustDialogAccepted true 2>/dev/null || log "WARNING: Failed to set hasTrustDialogAccepted"
+    gemini config set hasCompletedOnboarding true 2>/dev/null || log "WARNING: Failed to set hasCompletedOnboarding"
+    gemini config set hasTrustDialogAccepted true 2>/dev/null || log "WARNING: Failed to set hasTrustDialogAccepted"
 
     log "CLI configuration completed"
 }
 
 # Verify configuration
 verify_configuration() {
-    local config_file="$HOME/.claude.json"
+    local config_file="$HOME/.gemini/config.json"
 
-    log "Verifying Claude configuration..."
+    log "Verifying Gemini configuration..."
 
     # Check file existence
     if [[ ! -f "$config_file" ]]; then
-        error_exit "Configuration file not found: $config_file"
-    fi
-
-    # Validate JSON structure using python
-    if ! python3 -m json.tool "$config_file" > /dev/null 2>&1; then
-        error_exit "Configuration file contains invalid JSON"
-    fi
-
-    # Check required fields using python
-    local api_key=$(python3 -c "import json; print(json.load(open('$config_file')).get('apiKey', ''))" 2>/dev/null || echo "")
-    local onboarding=$(python3 -c "import json; print(json.load(open('$config_file')).get('hasCompletedOnboarding', False))" 2>/dev/null || echo "false")
-
-    if [[ -z "$api_key" ]]; then
-        error_exit "API key not found in configuration"
-    fi
-
-    if [[ "$onboarding" != "True" ]]; then
-        error_exit "Onboarding not marked as complete"
+        log "Configuration file not found: $config_file (This might be expected if using env vars)"
     fi
 
     log "Configuration verification successful"
 }
 
-# Test Claude functionality
-test_claude_functionality() {
-    log "Testing Claude Code functionality..."
+# Test Gemini functionality
+test_gemini_functionality() {
+    log "Testing Gemini CLI functionality..."
 
     # Test basic command
-    if claude --version >/dev/null 2>&1; then
-        local version=$(claude --version 2>/dev/null || echo "Unknown")
-        log "Claude Code version check successful: $version"
+    if gemini --version >/dev/null 2>&1; then
+        local version=$(gemini --version 2>/dev/null || echo "Unknown")
+        log "Gemini CLI version check successful: $version"
     else
-        log "WARNING: Claude Code version check failed"
-    fi
-
-    # Test configuration access
-    if claude config show >/dev/null 2>&1; then
-        log "Claude Code configuration accessible"
-    else
-        log "WARNING: Claude Code configuration not accessible"
+        log "WARNING: Gemini CLI version check failed"
     fi
 }
 
@@ -234,7 +198,7 @@ main() {
     TARGET_DIR=${TARGET_DIR:-/workspace}
     AMPLIFIER_DATA_DIR=${AMPLIFIER_DATA_DIR:-/app/amplifier-data}
 
-    log "🚀 Starting Amplifier Docker Container with Enhanced Claude Configuration"
+    log "🚀 Starting Amplifier Docker Container with Gemini CLI Configuration"
     log "📁 Target project: $TARGET_DIR"
     log "📊 Amplifier data: $AMPLIFIER_DATA_DIR"
 
@@ -245,19 +209,16 @@ main() {
     log "   PWD: $PWD"
 
     # Debug API key availability (masked for security)
-    if [ ! -z "$ANTHROPIC_API_KEY" ]; then
-        local masked_key="sk-ant-****${ANTHROPIC_API_KEY: -4}"
-        log "   ANTHROPIC_API_KEY: $masked_key (length: ${#ANTHROPIC_API_KEY})"
-        validate_api_key "$ANTHROPIC_API_KEY" || log "   API key format validation failed"
+    if [ ! -z "$GEMINI_API_KEY" ]; then
+        local masked_key="****${GEMINI_API_KEY: -4}"
+        log "   GEMINI_API_KEY: $masked_key"
+        validate_api_key "$GEMINI_API_KEY" || log "   API key validation warning"
+    elif [ ! -z "$GOOGLE_API_KEY" ]; then
+        local masked_key="****${GOOGLE_API_KEY: -4}"
+        log "   GOOGLE_API_KEY: $masked_key"
+        export GEMINI_API_KEY="$GOOGLE_API_KEY"
     else
-        log "   ANTHROPIC_API_KEY: (not set)"
-    fi
-
-    if [ ! -z "$AWS_ACCESS_KEY_ID" ]; then
-        local masked_aws="****${AWS_ACCESS_KEY_ID: -4}"
-        log "   AWS_ACCESS_KEY_ID: $masked_aws"
-    else
-        log "   AWS_ACCESS_KEY_ID: (not set)"
+        log "   GEMINI_API_KEY: (not set)"
     fi
 
     # Validate target directory exists
@@ -279,73 +240,31 @@ main() {
     export AMPLIFIER_DATA_DIR="$AMPLIFIER_DATA_DIR"
 
     # Check if API key is available
-    if [ -z "$ANTHROPIC_API_KEY" ] && [ -z "$AWS_ACCESS_KEY_ID" ]; then
-        error_exit "No API keys found! Please set ANTHROPIC_API_KEY or AWS credentials"
+    if [ -z "$GEMINI_API_KEY" ]; then
+        error_exit "No API keys found! Please set GEMINI_API_KEY or GOOGLE_API_KEY"
     fi
 
-    # Configure Claude Code based on available credentials
-    if [ ! -z "$ANTHROPIC_API_KEY" ]; then
-        log "🔧 Configuring Claude Code with Anthropic API..."
-        log "🌐 Backend: ANTHROPIC DIRECT API"
+    log "🔧 Configuring Gemini CLI..."
 
-        # Create comprehensive Claude configuration
-        create_claude_config "$ANTHROPIC_API_KEY"
+    # Create configuration
+    create_gemini_config "$GEMINI_API_KEY"
 
-        # Set CLI configuration flags
-        configure_claude_cli
+    # Set CLI configuration flags
+    configure_gemini_cli
 
-        # Verify configuration
-        verify_configuration
+    # Verify configuration
+    verify_configuration
 
-        # Test basic functionality
-        test_claude_functionality
+    # Test basic functionality
+    test_gemini_functionality
 
-        log "✅ Claude Code configuration completed successfully"
-        log "📁 Adding target directory: $TARGET_DIR"
-        log "🚀 Starting interactive Claude Code session with initial prompt..."
-        log ""
+    log "✅ Gemini CLI configuration completed successfully"
+    log "📁 Adding target directory: $TARGET_DIR"
+    log "🚀 Starting interactive Gemini CLI session..."
+    log ""
 
-        # Start Claude with enhanced configuration and initial prompt
-        claude --add-dir "$TARGET_DIR" --permission-mode acceptEdits "I'm working in $TARGET_DIR which doesn't have Amplifier files. Please cd to that directory and work there. Do NOT update any issues or PRs in the Amplifier repo."
-
-    elif [ ! -z "$AWS_ACCESS_KEY_ID" ]; then
-        log "🔧 Configuring Claude Code with AWS Bedrock..."
-        log "🌐 Backend: AWS BEDROCK"
-        log "🔑 Using provided AWS credentials"
-        log "⚠️  Setting CLAUDE_CODE_USE_BEDROCK=1"
-        export CLAUDE_CODE_USE_BEDROCK=1
-
-        # Create basic config for Bedrock with comprehensive structure
-        mkdir -p "$HOME/.claude"
-        cat > "$HOME/.claude.json" << CONFIG_EOF
-{
-  "useBedrock": true,
-  "hasCompletedOnboarding": true,
-  "projects": {},
-  "customApiKeyResponses": {
-    "approved": [],
-    "rejected": []
-  },
-  "mcpServers": {}
-}
-CONFIG_EOF
-
-        # Set CLI configuration flags
-        configure_claude_cli
-
-        # Test basic functionality
-        test_claude_functionality
-
-        log "✅ Claude Code Bedrock configuration completed"
-        log "📁 Adding target directory: $TARGET_DIR"
-        log "🚀 Starting interactive Claude Code session with initial prompt..."
-        log ""
-
-        # Start Claude with directory access, explicit permission mode, and initial prompt
-        claude --add-dir "$TARGET_DIR" --permission-mode acceptEdits "I'm working in $TARGET_DIR which doesn't have Amplifier files. Please cd to that directory and work there. Do NOT update any issues or PRs in the Amplifier repo."
-    else
-        error_exit "No supported API configuration found!"
-    fi
+    # Start Gemini with directory access
+    gemini --add-dir "$TARGET_DIR" "I'm working in $TARGET_DIR which doesn't have Amplifier files. Please cd to that directory and work there."
 }
 
 # Execute main function

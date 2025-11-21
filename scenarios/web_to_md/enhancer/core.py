@@ -18,13 +18,13 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 try:
-    from amplifier.ccsdk import claude_code_tool  # type: ignore
+    from amplifier.ccsdk import gemini_code_tool  # type: ignore
 
     CCSDK_AVAILABLE = True
 except ImportError:
     CCSDK_AVAILABLE = False
-    claude_code_tool = None  # type: ignore
-    logger.warning("Claude Code SDK not available - enhancement will be limited")
+    gemini_code_tool = None  # type: ignore
+    logger.warning("Gemini CLI SDK not available - enhancement will be limited")
 
 
 def enhance_markdown(markdown: str, context: dict[str, Any]) -> str:
@@ -40,7 +40,7 @@ def enhance_markdown(markdown: str, context: dict[str, Any]) -> str:
     # Add YAML frontmatter
     frontmatter = create_frontmatter(context)
 
-    # If Claude Code SDK is available, use it for enhancement
+    # If Gemini CLI SDK is available, use it for enhancement
     if CCSDK_AVAILABLE and len(markdown) > 100:
         try:
             enhanced = asyncio.run(ai_enhance(markdown, context))
@@ -139,7 +139,7 @@ async def ai_enhance(markdown: str, context: dict[str, Any]) -> str:
     Returns:
         AI-enhanced markdown
     """
-    if claude_code_tool is None:
+    if gemini_code_tool is None:
         # Should never happen if CCSDK_AVAILABLE check is done first
         return markdown
 
@@ -162,7 +162,7 @@ Please:
 Return only the enhanced markdown, no explanation."""
 
     try:
-        result = await claude_code_tool(prompt=prompt, tool_name="markdown_enhancer")
+        result = await gemini_code_tool(prompt=prompt, tool_name="markdown_enhancer")
 
         # Extract markdown from response if wrapped
         if "```" in result:

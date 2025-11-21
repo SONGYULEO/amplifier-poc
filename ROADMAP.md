@@ -22,7 +22,7 @@ For the above workstreams, here is a _partial_ list of some of the observed chal
 
 ### Amplifier agentic loop
 
-Today, Amplifier depends on Claude Code for an agentic loop. That enforces directory structures and hooks that complicate context and modularity our own plumbing to express our patterns, systems, etc. have to fit into. We are exploring what it would take to provide our own agentic loop that for increased flexibility. There are also unknowns to be discovered along this path.
+Today, Amplifier depends on Gemini CLI for an agentic loop. That enforces directory structures and hooks that complicate context and modularity our own plumbing to express our patterns, systems, etc. have to fit into. We are exploring what it would take to provide our own agentic loop that for increased flexibility. There are also unknowns to be discovered along this path.
 
 ### Multi-Amplifier and “modes”
 

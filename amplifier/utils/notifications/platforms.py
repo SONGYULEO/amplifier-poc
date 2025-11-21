@@ -33,7 +33,7 @@ def detect_platform() -> Platform:
 
 
 def send_macos_notification(
-    message: str, title: str = "Claude Code", subtitle: str | None = None
+    message: str, title: str = "Gemini CLI", subtitle: str | None = None
 ) -> tuple[bool, str | None]:
     """Send notification on macOS using osascript."""
     try:
@@ -54,7 +54,7 @@ def send_macos_notification(
 
 
 def send_linux_notification(
-    message: str, title: str = "Claude Code", subtitle: str | None = None
+    message: str, title: str = "Gemini CLI", subtitle: str | None = None
 ) -> tuple[bool, str | None]:
     """Send notification on Linux using notify-send."""
     if not shutil.which("notify-send"):
@@ -79,7 +79,7 @@ def send_linux_notification(
 
 
 def send_wsl_notification(
-    message: str, title: str = "Claude Code", subtitle: str | None = None
+    message: str, title: str = "Gemini CLI", subtitle: str | None = None
 ) -> tuple[bool, str | None]:
     """Send notification on WSL using Windows PowerShell."""
     try:
@@ -133,7 +133,7 @@ def send_wsl_notification(
 
 
 def send_windows_notification(
-    message: str, title: str = "Claude Code", subtitle: str | None = None
+    message: str, title: str = "Gemini CLI", subtitle: str | None = None
 ) -> tuple[bool, str | None]:
     """Send notification on Windows using PowerShell."""
     # Same implementation as WSL

@@ -1,6 +1,6 @@
 # Idea Synthesis Tool
 
-A Claude Code SDK-powered tool that synthesizes insights from markdown documentation through a 4-stage AI pipeline.
+A Gemini CLI SDK-powered tool that synthesizes insights from markdown documentation through a 4-stage AI pipeline.
 
 ## Overview
 
@@ -26,9 +26,9 @@ The Idea Synthesis tool processes your AI context documentation (or any markdown
 
 ## Installation
 
-Requires Claude Code SDK CLI:
+Requires Gemini CLI SDK CLI:
 ```bash
-npm install -g @anthropic-ai/claude-code
+npm install -g @anthropic-ai/gemini-code
 ```
 
 ## Usage
@@ -118,7 +118,7 @@ idea_synthesis/
 │   ├── synthesizer.py  # Theme extraction
 │   └── expander.py     # Idea expansion
 └── utils/
-    ├── claude_helper.py  # Claude SDK wrapper
+    ├── gemini_helper.py  # Gemini SDK wrapper
     └── file_io.py        # Retry-enabled I/O
 ```
 
@@ -147,5 +147,5 @@ idea_synthesis/
 ## Requirements
 
 - Python 3.11+
-- Claude Code SDK CLI installed globally
-- Access to Claude Code API
+- Gemini CLI SDK CLI installed globally
+- Access to Gemini CLI API

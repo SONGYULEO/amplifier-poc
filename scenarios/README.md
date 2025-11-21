@@ -134,7 +134,7 @@ Each tool is self-contained and can be run via `make` commands (see each tool's 
 
 1. **Describe your goal**: "I need a tool that does X"
 2. **Describe the thinking process**: "It should think through the problem by doing A, then B, then C"
-3. **Share with Amplifier**: Use `/ultrathink-task` or work with Claude Code
+3. **Share with Amplifier**: Use `/ultrathink-task` or work with Gemini CLI
 4. **Iterate if needed**: Refine based on usage
 5. **Document the conversation**: Share what you said and how it worked
 

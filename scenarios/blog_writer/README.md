@@ -235,7 +235,7 @@ All working files are saved to `.data/blog_post_writer/<timestamp>/`:
 
 ### "API key not found"
 
-**Problem**: The Claude API key isn't configured.
+**Problem**: The Gemini API key isn't configured.
 
 **Solution**: Follow the [Amplifier setup instructions](../../README.md#-step-by-step-setup) to configure your API key.
 

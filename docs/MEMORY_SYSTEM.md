@@ -2,12 +2,12 @@
 
 ## Overview
 
-The Amplifier Memory System provides persistent memory extraction and retrieval capabilities for Claude Code conversations. It automatically extracts key learnings, decisions, and solutions from conversations and makes them available in future sessions.
+The Amplifier Memory System provides persistent memory extraction and retrieval capabilities for Gemini CLI conversations. It automatically extracts key learnings, decisions, and solutions from conversations and makes them available in future sessions.
 
 ## Features
 
 - **Automatic extraction** of memories from conversations
-- **Pattern-based extraction** for reliable operation outside Claude Code environment
+- **Pattern-based extraction** for reliable operation outside Gemini CLI environment
 - **Session persistence** across multiple conversations
 - **Relevance search** for contextual memory retrieval
 - **Opt-in system** via environment variable
@@ -33,7 +33,7 @@ All configuration options can be set via environment variables:
 MEMORY_SYSTEM_ENABLED=false  # true/1/yes to enable, false/0/no to disable
 
 # Model for memory extraction (fast model recommended)
-MEMORY_EXTRACTION_MODEL=claude-3-5-haiku-20241022
+MEMORY_EXTRACTION_MODEL=gemini-3-5-haiku-20241022
 
 # Extraction settings
 MEMORY_EXTRACTION_TIMEOUT=120          # Timeout in seconds
@@ -49,14 +49,14 @@ MEMORY_STORAGE_DIR=.data/memories
 
 ### Components
 
-1. **Claude Code Hooks** (`.claude/tools/`)
+1. **Gemini CLI Hooks** (`.gemini/tools/`)
    - `hook_stop.py` - Extracts memories at conversation end
    - `hook_session_start.py` - Retrieves relevant memories at start
    - `hook_post_tool_use.py` - Validates claims against memories
 
 2. **Memory Extraction** (`amplifier/extraction/`)
    - Pattern-based extraction fallback
-   - Claude Code SDK support when available
+   - Gemini CLI SDK support when available
    - Quality filtering and validation
 
 3. **Memory Storage** (`amplifier/memory/`)
@@ -89,7 +89,7 @@ At conversation start (SessionStart event), the system:
 1. Checks if memory system is enabled
 2. Searches for relevant memories based on user prompt
 3. Retrieves recent memories for context
-4. Provides memories as additional context to Claude
+4. Provides memories as additional context to Gemini
 
 ### 3. Claim Validation
 
@@ -109,7 +109,7 @@ Memories are stored in JSON format at `.data/memory.json`:
       "content": "Memory content text",
       "category": "learning",
       "metadata": {
-        "tags": ["sdk", "claude"],
+        "tags": ["sdk", "gemini"],
         "importance": 0.8,
         "extraction_method": "pattern_fallback"
       },
@@ -134,7 +134,7 @@ Memories are stored in JSON format at `.data/memory.json`:
 
 ### Log Files
 
-When enabled, the memory system logs to `.claude/logs/`:
+When enabled, the memory system logs to `.gemini/logs/`:
 - `stop_hook_YYYYMMDD.log` - Stop hook logs
 - `session_start_YYYYMMDD.log` - Session start logs  
 - `post_tool_use_YYYYMMDD.log` - Post tool use logs
@@ -145,7 +145,7 @@ Logs are automatically rotated after 7 days.
 
 1. **Memory system not activating**
    - Ensure `MEMORY_SYSTEM_ENABLED=true` is set
-   - Check logs in `.claude/logs/` for errors
+   - Check logs in `.gemini/logs/` for errors
 
 2. **No memories being extracted**
    - Verify conversation has substantive content

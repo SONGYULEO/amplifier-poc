@@ -110,7 +110,7 @@ Not the code, the **thinking**. How should the tool approach the problem?
 In your Amplifier environment:
 
 ```bash
-claude
+gemini
 ```
 
 Then describe your goal using `/ultrathink-task`:

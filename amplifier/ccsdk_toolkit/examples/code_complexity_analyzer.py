@@ -2,7 +2,7 @@
 """
 Code Complexity Analyzer
 
-A CLI tool that uses Claude Code SDK to analyze code complexity and provide
+A CLI tool that uses Gemini CLI SDK to analyze code complexity and provide
 suggestions for simplification. Demonstrates the CCSDK toolkit capabilities.
 """
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 import click
 
 from amplifier.ccsdk_toolkit import AgentDefinition
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import LogFormat
 from amplifier.ccsdk_toolkit import LogLevel
 from amplifier.ccsdk_toolkit import SessionManager
@@ -53,7 +53,7 @@ def main(
     notify: bool,
 ):
     """
-    Analyze code complexity using Claude Code SDK.
+    Analyze code complexity using Gemini CLI SDK.
 
     This tool examines code files and provides:
     - Complexity metrics
@@ -211,7 +211,7 @@ Provide specific recommendations for simplification.""",
     results = []
 
     try:
-        async with ClaudeSession(options) as claude:
+        async with GeminiSession(options) as gemini:
             logger.set_session(session_state.metadata.session_id)
 
             for i, file_path in enumerate(files_to_analyze, 1):
@@ -235,9 +235,9 @@ Please provide:
 
 Focus on actionable improvements following ruthless simplicity principles."""
 
-                # Query Claude
+                # Query Gemini
                 logger.log_query(prompt)
-                response = await claude.query(prompt)
+                response = await gemini.query(prompt)
 
                 if response.success:
                     result = {

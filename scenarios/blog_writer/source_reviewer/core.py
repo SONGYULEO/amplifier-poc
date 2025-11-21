@@ -9,7 +9,7 @@ from typing import Any
 from pydantic import BaseModel
 from pydantic import Field
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.ccsdk_toolkit.defensive import parse_llm_json
 from amplifier.ccsdk_toolkit.defensive import retry_with_feedback
@@ -110,7 +110,7 @@ Return JSON with:
         )
 
         try:
-            async with ClaudeSession(options) as session:
+            async with GeminiSession(options) as session:
                 # Use retry_with_feedback for robust JSON extraction
                 async def query_with_parsing(enhanced_prompt: str):
                     response = await session.query(enhanced_prompt)

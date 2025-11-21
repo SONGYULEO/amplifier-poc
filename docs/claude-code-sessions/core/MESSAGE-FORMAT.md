@@ -1,12 +1,12 @@
-# Claude Code Message Format Specification
+# Gemini CLI Message Format Specification
 
-This document provides the technical specification for the JSONL message format used in Claude Code session files.
+This document provides the technical specification for the JSONL message format used in Gemini CLI session files.
 
 ## File Format
 
 ### JSONL Structure
 
-Claude Code sessions use JSONL (JSON Lines) format:
+Gemini CLI sessions use JSONL (JSON Lines) format:
 - One JSON object per line
 - No commas between lines
 - Each line independently parseable
@@ -16,7 +16,7 @@ Claude Code sessions use JSONL (JSON Lines) format:
 ### File Location
 
 ```
-~/.claude/conversations/{project-name}/*.jsonl
+~/.gemini/conversations/{project-name}/*.jsonl
 ```
 
 Where:
@@ -51,7 +51,7 @@ Every message contains these fields:
 | `sessionId` | string | Yes | Groups messages within a session |
 | `type` | string | Yes | Message type (see Message Types section) |
 | `timestamp` | number | Yes | Unix timestamp in milliseconds |
-| `version` | string | Yes* | Claude Code app version |
+| `version` | string | Yes* | Gemini CLI app version |
 | `message` | object | Yes | Message content object |
 
 *Note: `version` field may be absent in special messages
@@ -93,7 +93,7 @@ User input messages:
 
 ### Assistant Message
 
-Claude responses with tool invocations:
+Gemini responses with tool invocations:
 
 ```json
 {
@@ -260,8 +260,8 @@ Messages in subagent conversations:
 
 **Key Indicators**:
 - `isSidechain: true` - Marks sidechain conversation
-- `userType: "external"` - Actual initiator (Claude in sidechains)
-- Role reversal: In sidechains, human type = Claude delegating, assistant = agent responding
+- `userType: "external"` - Actual initiator (Gemini in sidechains)
+- Role reversal: In sidechains, human type = Gemini delegating, assistant = agent responding
 
 ### Compact Messages
 
@@ -346,7 +346,7 @@ This ID-based correlation is the definitive method for matching invocations with
 
 ```
 1. Assistant: "Delegating to specialist" + tool_use(Task, bug-hunter)
-2. Sidechain Human (Claude): "Find bugs in auth module"
+2. Sidechain Human (Gemini): "Find bugs in auth module"
 3. Sidechain Assistant (Agent): "Analyzing..." + tool_use(Read, auth.py)
 4. Sidechain Tool Result: File contents
 5. Sidechain Assistant: "Found 3 issues..."
@@ -374,4 +374,4 @@ This ID-based correlation is the definitive method for matching invocations with
 - Parsers must handle unknown fields gracefully
 - New fields may be added in future versions
 - Existing field semantics will be preserved
-- Version field indicates Claude Code app version, not format version
+- Version field indicates Gemini CLI app version, not format version

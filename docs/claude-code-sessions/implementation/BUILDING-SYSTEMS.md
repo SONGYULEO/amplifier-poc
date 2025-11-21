@@ -1,14 +1,14 @@
-# Building Systems with Claude Code Sessions
+# Building Systems with Gemini CLI Sessions
 
-This guide covers building tools and systems that work with Claude Code session files.
+This guide covers building tools and systems that work with Gemini CLI session files.
 
 ## System Architecture
 
 ### Core Components
 
 ```python
-class ClaudeCodeSystem:
-    """Base system for working with Claude Code sessions."""
+class GeminiCodeSystem:
+    """Base system for working with Gemini CLI sessions."""
 
     def __init__(self, session_dir: Path):
         self.session_dir = session_dir
@@ -106,7 +106,7 @@ Analyze session patterns and statistics:
 
 ```python
 class SessionAnalyzer:
-    """Analyze Claude Code sessions."""
+    """Analyze Gemini CLI sessions."""
 
     def __init__(self, dag: SessionDAG):
         self.dag = dag
@@ -258,7 +258,7 @@ class SessionExporter:
 
     def to_markdown(self) -> str:
         """Export to Markdown format."""
-        lines = ["# Claude Code Session\n"]
+        lines = ["# Gemini CLI Session\n"]
 
         path = get_active_path(self.dag)
         for msg in path:
@@ -413,10 +413,10 @@ class SessionMonitor(FileSystemEventHandler):
 
 ```python
 # Initialize system
-system = ClaudeCodeSystem(Path("~/.claude/conversations/project"))
+system = GeminiCodeSystem(Path("~/.gemini/conversations/project"))
 
 # Load session
-session_file = Path("~/.claude/conversations/project/session.jsonl")
+session_file = Path("~/.gemini/conversations/project/session.jsonl")
 dag = system.load_session(session_file)
 
 # Generate transcript

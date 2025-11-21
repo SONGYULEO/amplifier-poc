@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Test parallel execution behavior in Claude Code agents."""
+"""Test parallel execution behavior in Gemini CLI agents."""
 
 from dataclasses import dataclass
 from datetime import datetime

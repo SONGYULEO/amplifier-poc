@@ -1,7 +1,7 @@
 """
 Summary Generator Core Implementation
 
-Uses Anthropic Claude to generate concise summaries from transcripts.
+Uses Anthropic Gemini to generate concise summaries from transcripts.
 """
 
 import os
@@ -29,14 +29,14 @@ class Summary:
 
 
 class SummaryGenerator:
-    """Generate concise summaries from transcripts using Claude."""
+    """Generate concise summaries from transcripts using Gemini."""
 
     def __init__(self, api_key: str | None = None, model: str | None = None):
         """Initialize summary generator.
 
         Args:
             api_key: Anthropic API key. If not provided, reads from ANTHROPIC_API_KEY env var.
-            model: Model to use. If not provided, uses AMPLIFIER_MODEL_DEFAULT or claude-3-haiku-20240307.
+            model: Model to use. If not provided, uses AMPLIFIER_MODEL_DEFAULT or gemini-3-haiku-20240307.
         """
         if not ANTHROPIC_AVAILABLE:
             raise ImportError("anthropic package not available. Install with: pip install anthropic")
@@ -47,7 +47,7 @@ class SummaryGenerator:
             raise ValueError("ANTHROPIC_API_KEY not set. Please set it in your environment or pass it as a parameter.")
 
         # Get model from param or environment
-        self.model = model or os.getenv("AMPLIFIER_MODEL_DEFAULT", "claude-3-haiku-20240307")
+        self.model = model or os.getenv("AMPLIFIER_MODEL_DEFAULT", "gemini-3-haiku-20240307")
 
         # Initialize Anthropic client
         self.client = Anthropic(api_key=self.api_key)
@@ -123,10 +123,10 @@ THEMES:
             )
 
     def _parse_summary(self, response_text: str) -> Summary:
-        """Parse Claude's response into a Summary object.
+        """Parse Gemini's response into a Summary object.
 
         Args:
-            response_text: Raw response from Claude
+            response_text: Raw response from Gemini
 
         Returns:
             Parsed Summary object

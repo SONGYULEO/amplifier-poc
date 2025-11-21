@@ -134,7 +134,7 @@ Run: amplifier profile use dev
 
 ```markdown
 # docs/USER_GUIDE.md
-The --model flag is optional. Defaults to claude-sonnet-4-5.
+The --model flag is optional. Defaults to gemini-sonnet-4-5.
 
 # docs/API.md
 The --model flag is required. Command fails without it.
@@ -149,7 +149,7 @@ The --model flag is required. Command fails without it.
 amplifier provider use anthropic
 
 # docs/USER_GUIDE.md
-amplifier provider use anthropic --model claude-opus-4
+amplifier provider use anthropic --model gemini-opus-4
 
 # POISON: Which example is correct?
 ```

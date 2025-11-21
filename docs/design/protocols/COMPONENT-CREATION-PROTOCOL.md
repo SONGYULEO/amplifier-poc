@@ -285,7 +285,7 @@ npm run build
 
 ## Integration with AI Workflow
 
-**For Claude/AI Assistant:**
+**For Gemini/AI Assistant:**
 
 Before creating any component, internally run through this checklist. If any check fails:
 1. **STOP** - Do not proceed with code generation

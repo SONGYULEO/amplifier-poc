@@ -108,11 +108,11 @@ if __name__ == "__main__":
     print("Document Type Support Examples")
     print("=" * 50)
 
-    # Note: These examples require Claude Code SDK to be configured
+    # Note: These examples require Gemini CLI SDK to be configured
     try:
         demo_document_types()
         print("\n" + "=" * 50)
         process_directory_by_type()
     except RuntimeError as e:
         print(f"\nNote: {e}")
-        print("Configure Claude Code SDK to run these examples.")
+        print("Configure Gemini CLI SDK to run these examples.")

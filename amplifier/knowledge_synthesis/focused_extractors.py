@@ -14,14 +14,14 @@ from dataclasses import dataclass
 from typing import Any
 
 try:
-    from claude_code_sdk import ClaudeCodeOptions
-    from claude_code_sdk import ClaudeSDKClient
+    from gemini_code_sdk import GeminiCodeOptions
+    from gemini_code_sdk import GeminiSDKClient
 
-    CLAUDE_SDK_AVAILABLE = True
+    GEMINI_SDK_AVAILABLE = True
 except ImportError:
-    CLAUDE_SDK_AVAILABLE = False
-    ClaudeCodeOptions = None
-    ClaudeSDKClient = None
+    GEMINI_SDK_AVAILABLE = False
+    GeminiCodeOptions = None
+    GeminiSDKClient = None
 
 logger = logging.getLogger(__name__)
 
@@ -41,9 +41,9 @@ class ConceptExtractor:
 
     async def extract(self, text: str, title: str = "", document_type: str = "general") -> FocusedExtractionResult:
         """Extract ONLY concepts from text"""
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             return FocusedExtractionResult(
-                extraction_type="concepts", data=[], extraction_time=0.0, error="Claude SDK not available"
+                extraction_type="concepts", data=[], extraction_time=0.0, error="Gemini SDK not available"
             )
 
         start_time = time.time()
@@ -80,10 +80,10 @@ Return ONLY valid JSON, no other text."""
         try:
             response = ""
             async with asyncio.timeout(120):  # 2 minutes timeout
-                if ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                    raise RuntimeError("Claude SDK not available")
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                if GeminiSDKClient is None or GeminiCodeOptions is None:
+                    raise RuntimeError("Gemini SDK not available")
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are a concept extraction specialist. Extract ONLY concepts from text. Return ONLY valid JSON.",
                         max_turns=1,
                     )
@@ -137,9 +137,9 @@ class RelationshipExtractor:
 
     async def extract(self, text: str, title: str = "", document_type: str = "general") -> FocusedExtractionResult:
         """Extract ONLY relationships from text"""
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             return FocusedExtractionResult(
-                extraction_type="relationships", data=[], extraction_time=0.0, error="Claude SDK not available"
+                extraction_type="relationships", data=[], extraction_time=0.0, error="Gemini SDK not available"
             )
 
         start_time = time.time()
@@ -180,10 +180,10 @@ Return ONLY valid JSON, no other text."""
         try:
             response = ""
             async with asyncio.timeout(120):  # 2 minutes timeout
-                if ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                    raise RuntimeError("Claude SDK not available")
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                if GeminiSDKClient is None or GeminiCodeOptions is None:
+                    raise RuntimeError("Gemini SDK not available")
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are a relationship extraction specialist. Extract ONLY relationships from text. Return ONLY valid JSON.",
                         max_turns=1,
                     )
@@ -239,9 +239,9 @@ class InsightExtractor:
 
     async def extract(self, text: str, title: str = "", document_type: str = "general") -> FocusedExtractionResult:
         """Extract ONLY insights from text"""
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             return FocusedExtractionResult(
-                extraction_type="insights", data=[], extraction_time=0.0, error="Claude SDK not available"
+                extraction_type="insights", data=[], extraction_time=0.0, error="Gemini SDK not available"
             )
 
         start_time = time.time()
@@ -282,10 +282,10 @@ Return ONLY valid JSON, no other text."""
         try:
             response = ""
             async with asyncio.timeout(120):  # 2 minutes timeout
-                if ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                    raise RuntimeError("Claude SDK not available")
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                if GeminiSDKClient is None or GeminiCodeOptions is None:
+                    raise RuntimeError("Gemini SDK not available")
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are an insight extraction specialist. Extract ONLY actionable insights from text. Return ONLY valid JSON.",
                         max_turns=1,
                     )
@@ -339,9 +339,9 @@ class PatternExtractor:
 
     async def extract(self, text: str, title: str = "", document_type: str = "general") -> FocusedExtractionResult:
         """Extract ONLY code patterns from text"""
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             return FocusedExtractionResult(
-                extraction_type="patterns", data=[], extraction_time=0.0, error="Claude SDK not available"
+                extraction_type="patterns", data=[], extraction_time=0.0, error="Gemini SDK not available"
             )
 
         start_time = time.time()
@@ -382,10 +382,10 @@ Return ONLY valid JSON, no other text."""
         try:
             response = ""
             async with asyncio.timeout(120):  # 2 minutes timeout
-                if ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                    raise RuntimeError("Claude SDK not available")
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                if GeminiSDKClient is None or GeminiCodeOptions is None:
+                    raise RuntimeError("Gemini SDK not available")
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are a code pattern extraction specialist. Extract ONLY code patterns from text. Return ONLY valid JSON.",
                         max_turns=1,
                     )

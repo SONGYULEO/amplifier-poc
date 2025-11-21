@@ -15,12 +15,12 @@ class CliTemplate:
 """
 {name} - {description}
 
-A Claude Code SDK powered CLI tool with optional desktop notification support.
+A Gemini CLI SDK powered CLI tool with optional desktop notification support.
 """
 import asyncio
 import click
 from pathlib import Path
-from amplifier.ccsdk_toolkit.core import ClaudeSession, SessionOptions
+from amplifier.ccsdk_toolkit.core import GeminiSession, SessionOptions
 from amplifier.ccsdk_toolkit.logger import ToolkitLogger
 
 
@@ -45,7 +45,7 @@ def main(input: str, output: str, debug: bool, notify: bool):
 
 
 async def process(input_path: str, logger: ToolkitLogger) -> str:
-    """Process input file with Claude."""
+    """Process input file with Gemini."""
     content = Path(input_path).read_text()
 
     options = SessionOptions(
@@ -53,7 +53,7 @@ async def process(input_path: str, logger: ToolkitLogger) -> str:
         max_turns=1
     )
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         response = await session.query(content)
 
         if response.error:
@@ -78,14 +78,14 @@ if __name__ == "__main__":
 """
 {name} - Code Analysis Tool
 
-Analyzes code using Claude Code SDK with optional desktop notification support.
+Analyzes code using Gemini CLI SDK with optional desktop notification support.
 """
 import asyncio
 import click
 import json
 from pathlib import Path
 from typing import List, Dict, Any
-from amplifier.ccsdk_toolkit.core import ClaudeSession, SessionOptions
+from amplifier.ccsdk_toolkit.core import GeminiSession, SessionOptions
 from amplifier.ccsdk_toolkit.logger import ToolkitLogger
 
 
@@ -96,7 +96,7 @@ from amplifier.ccsdk_toolkit.logger import ToolkitLogger
 @click.option("--debug", is_flag=True, help="Enable debug logging")
 @click.option("--notify", is_flag=True, help="Enable desktop notifications")
 def main(paths: tuple, output_format: str, config: str, debug: bool, notify: bool):
-    """Analyze code files with Claude."""
+    """Analyze code files with Gemini."""
     logger = ToolkitLogger(output_format="json" if debug else "text", debug=debug, enable_notifications=notify)
 
     # Load configuration
@@ -131,7 +131,7 @@ async def analyze_files(
 
     options = SessionOptions(system_prompt=system_prompt, max_turns=1)
 
-    async with ClaudeSession(options) as session:
+    async with GeminiSession(options) as session:
         for path in paths:
             logger.info(f"Analyzing {path}")
 

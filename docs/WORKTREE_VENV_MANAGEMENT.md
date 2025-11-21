@@ -33,7 +33,7 @@ The `make check` target now:
 
 ### 3. Make-Check Hook Handles Worktrees
 
-The Claude Code hook (`.claude/tools/make-check.sh`) now:
+The Gemini CLI hook (`.gemini/tools/make-check.sh`) now:
 - Detects when running in a worktree
 - Unsets mismatched `VIRTUAL_ENV` variables
 - Uses the worktree's local `.venv`
@@ -87,7 +87,7 @@ make check
    - `check` target unsets mismatched `VIRTUAL_ENV`
    - Uses `VIRTUAL_ENV=` prefix on `uv run` commands
 
-3. **`.claude/tools/make-check.sh`**:
+3. **`.gemini/tools/make-check.sh`**:
    - Added `setup_worktree_env()` function
    - Unsets `VIRTUAL_ENV` when mismatch detected
 
@@ -100,7 +100,7 @@ make check
 - **No manual venv activation needed** - Each worktree has its own `.venv`
 - **No more VIRTUAL_ENV warnings** - Conflicts are handled automatically
 - **Seamless workflow** - Just `make worktree` and start coding
-- **Claude Code hooks work** - No more make check failures
+- **Gemini CLI hooks work** - No more make check failures
 
 ## Troubleshooting
 
@@ -116,7 +116,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Make sure you're using the updated Makefile. The fix requires:
 - Updated `tools/create_worktree.py`
 - Updated `Makefile` with VIRTUAL_ENV handling
-- Updated `.claude/tools/make-check.sh`
+- Updated `.gemini/tools/make-check.sh`
 
 ### Pyright errors about missing imports
 

@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from amplifier.ccsdk_toolkit import ClaudeSession
+from amplifier.ccsdk_toolkit import GeminiSession
 from amplifier.ccsdk_toolkit import SessionManager
 from amplifier.ccsdk_toolkit import SessionOptions
 from amplifier.ccsdk_toolkit import ToolkitLogger
@@ -265,12 +265,12 @@ class TipsSynthesizer:
                 # Read file content
                 content = file_path.read_text(encoding="utf-8")
 
-                # Extract tips using Claude with defensive retry
+                # Extract tips using Gemini with defensive retry
                 # Use isolate_prompt to prevent context contamination
                 full_prompt = isolate_prompt(prompt=EXTRACTOR_PROMPT, content=content)
 
-                async with ClaudeSession(options=SessionOptions()) as claude:
-                    response = await retry_with_feedback(func=claude.query, prompt=full_prompt, max_retries=3)
+                async with GeminiSession(options=SessionOptions()) as gemini:
+                    response = await retry_with_feedback(func=gemini.query, prompt=full_prompt, max_retries=3)
 
                 # Parse response with defensive default
                 self.logger.debug(f"Raw LLM response: {response.content[:500]}")
@@ -396,7 +396,7 @@ class TipsSynthesizer:
         # Full tips content
         tips_content = json.dumps(all_tips, indent=2)
 
-        # Synthesize using Claude with defensive retry
+        # Synthesize using Gemini with defensive retry
         synthesis_prompt = (
             SYNTHESIZER_PROMPT
             + f"""
@@ -410,8 +410,8 @@ Full tips content:
 Create a cohesive, well-organized document that incorporates all these tips."""
         )
 
-        async with ClaudeSession(options=SessionOptions()) as claude:
-            response = await retry_with_feedback(func=claude.query, prompt=synthesis_prompt, max_retries=3)
+        async with GeminiSession(options=SessionOptions()) as gemini:
+            response = await retry_with_feedback(func=gemini.query, prompt=synthesis_prompt, max_retries=3)
 
         # Store synthesized document
         self.session.context["current_draft"] = response.content
@@ -459,7 +459,7 @@ Create a cohesive, well-organized document that incorporates all these tips."""
             self.logger.info("  🔍 Reviewing document quality...")
             review_prompt = REVIEWER_PROMPT + f"\n\nReview this synthesized tips document:\n\n{current_draft}"
 
-            async with ClaudeSession(options=SessionOptions()) as reviewer:
+            async with GeminiSession(options=SessionOptions()) as reviewer:
                 review_response = await retry_with_feedback(func=reviewer.query, prompt=review_prompt, max_retries=3)
 
             # Parse review response with defensive default
@@ -582,7 +582,7 @@ Create a cohesive, well-organized document that incorporates all these tips."""
         # Refine the document with defensive retry
         refinement_prompt = WRITER_REFINEMENT_PROMPT.format(feedback=feedback_json, document=current_draft)
 
-        async with ClaudeSession(options=SessionOptions()) as writer:
+        async with GeminiSession(options=SessionOptions()) as writer:
             refinement_response = await retry_with_feedback(func=writer.query, prompt=refinement_prompt, max_retries=3)
 
         # Update draft

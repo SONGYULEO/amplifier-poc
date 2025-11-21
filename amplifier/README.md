@@ -22,7 +22,7 @@ The system consists of four independent modules that work together:
 **Contract**: Text → List of categorized memories
 **Key Features**:
 
-- Claude Code SDK integration for AI extraction
+- Gemini CLI SDK integration for AI extraction
 - Categories: learning, decision, issue_solved, preference, pattern
 
 ### 3. Semantic Search (`search/`)
@@ -50,7 +50,7 @@ The system consists of four independent modules that work together:
 ```bash
 # Install optional dependencies for full functionality
 uv add sentence-transformers  # For semantic search
-npm install -g @anthropic-ai/claude-code  # For AI extraction
+npm install -g @anthropic-ai/gemini-code  # For AI extraction
 ```
 
 ## Usage Example

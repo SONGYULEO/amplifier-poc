@@ -1,6 +1,6 @@
 # The Amplifier Way: Effective Strategies for AI-Assisted Development
 
-This guide distills hard-won insights for working effectively with Amplifier and Claude Code. These aren't theoretical best practices—they're battle-tested strategies that transform how you approach complex development challenges.
+This guide distills hard-won insights for working effectively with Amplifier and Gemini CLI. These aren't theoretical best practices—they're battle-tested strategies that transform how you approach complex development challenges.
 
 ## Understanding Capability vs. Context
 
@@ -62,24 +62,24 @@ This transforms one-time debugging into permanent capability improvements.
 
 ### Building Readable Transcripts
 
-You can run `./tools/claude_transcript_builder.py` in your project dir and it'll (by default) create a dir in `./output/<project-dir-name>/<session_id>` that has the original `session.jsonl` for the session.
+You can run `./tools/gemini_transcript_builder.py` in your project dir and it'll (by default) create a dir in `./output/<project-dir-name>/<session_id>` that has the original `session.jsonl` for the session.
 
 **But the real gold** is it also creates (great for both human reading _and_ to feed to Amplifier/assistants for context/analysis/etc.):
 
 - **`transcript.md`** - Reconstructed from across all of your session logs (building from a DAG that understands all the complexity of the CC logging, branching, sidechains, tools calls, etc.). This is the more human readable version that truncates all tool calls/results and sidechains to more easily read/consume the top level conversation.
 
-- **`transcript_extended.md`** - Same as transcript.md except has the full tool calls/results and sidechain conversations (conversation between "Claude" and subagent, as invoked by TaskTool calls). Great for having the full, end-to-end with _all_ the sub-details.
+- **`transcript_extended.md`** - Same as transcript.md except has the full tool calls/results and sidechain conversations (conversation between "Gemini" and subagent, as invoked by TaskTool calls). Great for having the full, end-to-end with _all_ the sub-details.
 
 - **`sidechains/` subdirectory** - Contains subdirs for _each_ subchain, and each of these have their own `transcript.md` which has the full details of that _subchain_, including full tool calls/results, etc.
 
-You can run this command in the same dir you launch Claude Code from and it'll pull in all of the sessions you've _ever_ run in that dir (even non-Amplifier, all the way back to release of CC if you haven't cleared your ~/.claude logs).
+You can run this command in the same dir you launch Gemini CLI from and it'll pull in all of the sessions you've _ever_ run in that dir (even non-Amplifier, all the way back to release of CC if you haven't cleared your ~/.gemini logs).
 
 ### Other Options Available
 
-Including one that will transform _all_ of your Claude Code sessions from _all_ of your dirs you ever ran Claude Code in, storing in `~/.claude/transcripts`:
+Including one that will transform _all_ of your Gemini CLI sessions from _all_ of your dirs you ever ran Gemini CLI in, storing in `~/.gemini/transcripts`:
 
 ```bash
-./tools/claude_transcript_builder.py --help
+./tools/gemini_transcript_builder.py --help
 ```
 
 Available options:
@@ -94,11 +94,11 @@ Available options:
 **Examples:**
 
 ```bash
-claude_transcript_builder.py                     # Process most recent session
-claude_transcript_builder.py --list              # List all projects and sessions
-claude_transcript_builder.py --project amplifier # Process most recent from project
-claude_transcript_builder.py --session UUID      # Process specific session
-claude_transcript_builder.py session.jsonl       # Process specific file
+gemini_transcript_builder.py                     # Process most recent session
+gemini_transcript_builder.py --list              # List all projects and sessions
+gemini_transcript_builder.py --project amplifier # Process most recent from project
+gemini_transcript_builder.py --session UUID      # Process specific session
+gemini_transcript_builder.py session.jsonl       # Process specific file
 ```
 
 ### Practical Use Cases for Transcripts
@@ -115,7 +115,7 @@ This works really well for recovering a conversation that might have been lost t
 
 Use transcripts to have Amplifier analyze and improve itself:
 
-> /ultrathink-task Please analyze @output/transcripts/<path> and then identify where I had to provide you guidance on how to do something that it seems like a bit more metacognitive capability on your part could have allowed you to do without me. Then go read @ai_context/AMPLIFIER_CLAUDE_CODE_LEVERAGE.md and see if you can figure out what improvements could be made across your entire system to move this learning into your capabilities.
+> /ultrathink-task Please analyze @output/transcripts/<path> and then identify where I had to provide you guidance on how to do something that it seems like a bit more metacognitive capability on your part could have allowed you to do without me. Then go read @ai_context/AMPLIFIER_GEMINI_CODE_LEVERAGE.md and see if you can figure out what improvements could be made across your entire system to move this learning into your capabilities.
 
 **This is _one of the ways_** that I have had it take something I helped solve during a session and turning it into something it can now do for me _and everyone else_ when I merged it in.
 

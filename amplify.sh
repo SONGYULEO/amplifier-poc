@@ -78,10 +78,10 @@ else
     print_status "Using existing Docker image: $IMAGE_NAME"
 fi
 
-# Prepare environment variables for Claude Code configuration
+# Prepare environment variables for Gemini CLI configuration
 ENV_ARGS=()
 
-# Critical API keys that Claude Code needs
+# Critical API keys that Gemini CLI needs
 API_KEYS=("ANTHROPIC_API_KEY" "AWS_ACCESS_KEY_ID" "AWS_SECRET_ACCESS_KEY" "AWS_DEFAULT_REGION" "AWS_REGION")
 
 HAS_ANTHROPIC_KEY=false
@@ -106,7 +106,7 @@ done
 if [ "$HAS_ANTHROPIC_KEY" = false ] && [ "$HAS_AWS_KEYS" = false ]; then
     print_error "❌ No valid API configuration found!"
     print_error ""
-    print_error "Claude Code requires one of the following:"
+    print_error "Gemini CLI requires one of the following:"
     print_error "  1. ANTHROPIC_API_KEY environment variable"
     print_error "  2. AWS credentials (AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY)"
     print_error ""
@@ -132,7 +132,7 @@ else
     print_warning "  - Check path exists and has proper permissions"
 fi
 
-# Run the Docker container with Claude Code pre-configured
+# Run the Docker container with Gemini CLI pre-configured
 print_status "🚀 Starting Amplifier Docker container..."
 print_status "📁 Project: $TARGET_PROJECT → /workspace"
 print_status "💾 Data: $DATA_DIR → /app/amplifier-data"
@@ -143,7 +143,7 @@ elif [ "$HAS_AWS_KEYS" = true ]; then
     print_status "🔗 API: AWS Bedrock"
 fi
 
-print_warning "⚠️  IMPORTANT: When Claude starts, send this first message:"
+print_warning "⚠️  IMPORTANT: When Gemini starts, send this first message:"
 echo -e "${YELLOW}===========================================${NC}"
 echo -e "${NC}I'm working in /workspace which contains my project files.${NC}"
 echo -e "${NC}Please cd to /workspace and work there.${NC}"

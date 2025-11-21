@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Reference parser for Claude Code session files.
+Reference parser for Gemini CLI session files.
 
 Handles:
 - Tool invocation and result correlation
@@ -76,8 +76,8 @@ class Message:
     compact_metadata: dict[str, Any] | None = None
 
 
-class ClaudeCodeParser:
-    """Parser for Claude Code session files that builds a complete DAG."""
+class GeminiCodeParser:
+    """Parser for Gemini CLI session files that builds a complete DAG."""
 
     def __init__(self):
         """Initialize the parser."""
@@ -283,7 +283,7 @@ def main():
         sys.exit(1)
 
     # Parse the file
-    parser = ClaudeCodeParser()
+    parser = GeminiCodeParser()
     _ = parser.parse_file(file_path)
 
     # Print statistics

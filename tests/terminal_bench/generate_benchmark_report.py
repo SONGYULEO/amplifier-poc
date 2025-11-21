@@ -9,8 +9,8 @@ import json
 import shutil
 from pathlib import Path
 
-from claude_code_sdk import ClaudeCodeOptions
-from claude_code_sdk import ClaudeSDKClient
+from gemini_code_sdk import GeminiCodeOptions
+from gemini_code_sdk import GeminiSDKClient
 from pydantic import BaseModel
 
 if __package__ in (None, ""):
@@ -150,8 +150,8 @@ def load_test_files(task_result: TaskResult) -> TaskResult:
 
 async def generate_task_report(task_result: TaskResult, run_dir: Path) -> None:
     """
-    Generates a detailed report for a single task using Claude Code SDK.
-    Creates a temporary workspace with task context and uses Claude to analyze the failure.
+    Generates a detailed report for a single task using Gemini CLI SDK.
+    Creates a temporary workspace with task context and uses Gemini to analyze the failure.
     """
 
     temp_dir = Path(f"/tmp/terminal_bench_report_{task_result.task_id}")
@@ -232,7 +232,7 @@ Make sure that your report is factual and accurate. Do not make assumptions that
 
 {context_md}"""
 
-        claude_options = ClaudeCodeOptions(
+        gemini_options = GeminiCodeOptions(
             system_prompt=system_prompt,
             cwd=str(temp_dir),
             allowed_tools=["Read", "Grep", "Write"],
@@ -240,9 +240,9 @@ Make sure that your report is factual and accurate. Do not make assumptions that
             permission_mode="default",
         )
 
-        async with ClaudeSDKClient(options=claude_options) as client:
+        async with GeminiSDKClient(options=gemini_options) as client:
             await client.query(user_prompt)
-            # Claude will create the FAILURE_REPORT.md file via Write tool
+            # Gemini will create the FAILURE_REPORT.md file via Write tool
             async for _message in client.receive_response():
                 continue
 
@@ -261,7 +261,7 @@ Make sure that your report is factual and accurate. Do not make assumptions that
 async def consolidated_report(run_dir: Path) -> None:
     """
     Generate a consolidated report synthesizing all individual task failure reports.
-    Uses Claude Code SDK to analyze patterns and common failure modes across all tasks.
+    Uses Gemini CLI SDK to analyze patterns and common failure modes across all tasks.
     """
     task_reports_dir = run_dir / "task_reports"
     if not task_reports_dir.exists() or not list(task_reports_dir.glob("*_report.md")):
@@ -277,7 +277,7 @@ async def consolidated_report(run_dir: Path) -> None:
         reports_content.append(f"## Report for Task: {task_id}\n\n{content}\n\n{'=' * 80}\n")
     all_reports = "\n".join(reports_content)
 
-    # Create temporary working directory for Claude to write output
+    # Create temporary working directory for Gemini to write output
     temp_dir = Path("/tmp/terminal_bench_consolidated_report")
     temp_dir.mkdir(parents=True, exist_ok=True)
 
@@ -337,7 +337,7 @@ DO NOT add:
 
 {all_reports}"""
 
-        claude_options = ClaudeCodeOptions(
+        gemini_options = GeminiCodeOptions(
             system_prompt=system_prompt,
             cwd=str(temp_dir),
             allowed_tools=["Write"],
@@ -345,7 +345,7 @@ DO NOT add:
             permission_mode="default",
         )
 
-        async with ClaudeSDKClient(options=claude_options) as client:
+        async with GeminiSDKClient(options=gemini_options) as client:
             await client.query(user_prompt)
             async for _ in client.receive_response():
                 continue

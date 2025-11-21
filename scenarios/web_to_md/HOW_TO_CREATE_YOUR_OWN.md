@@ -124,7 +124,7 @@ Not the code, the **what and where**. What should the tool do and how should it 
 In your Amplifier environment:
 
 ```bash
-claude
+gemini
 ```
 
 Then describe your goal using `/ultrathink-task`:
@@ -175,7 +175,7 @@ The tool works in multiple contexts:
 
 - **With Amplifier**: Uses integrated paths, ToolkitLogger, AI enhancement
 - **Without Amplifier**: Falls back to simple logging, current directory
-- **With Claude Code SDK**: Enhances markdown with AI
+- **With Gemini CLI SDK**: Enhances markdown with AI
 - **Without SDK**: Uses basic formatting
 
 ### Error Recovery

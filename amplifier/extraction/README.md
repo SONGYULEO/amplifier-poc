@@ -11,11 +11,11 @@ Extract memories from conversations using AI with pattern fallback
 - **extract_memories**: list[Memory] - extracted memories with categories
 
 ## Side Effects
-- Makes API calls to Claude Code SDK (with 120s timeout)
+- Makes API calls to Gemini CLI SDK (with 120s timeout)
 - Falls back to pattern matching if SDK unavailable
 
 ## Dependencies
-- claude_code_sdk: AI extraction (optional)
+- gemini_code_sdk: AI extraction (optional)
 - re: Pattern matching fallback
 - memory.models: Memory data model
 
@@ -23,7 +23,7 @@ Extract memories from conversations using AI with pattern fallback
 
 The memory extraction system supports configuration via environment variables or `.env` file:
 
-- `MEMORY_EXTRACTION_MODEL`: Model for extraction (default: `claude-3-5-haiku-20241022`)
+- `MEMORY_EXTRACTION_MODEL`: Model for extraction (default: `gemini-3-5-haiku-20241022`)
 - `MEMORY_EXTRACTION_TIMEOUT`: Timeout in seconds (default: `120`)
 - `MEMORY_EXTRACTION_MAX_MESSAGES`: Max messages to process (default: `20`)
 - `MEMORY_EXTRACTION_MAX_CONTENT_LENGTH`: Max characters per message (default: `500`)

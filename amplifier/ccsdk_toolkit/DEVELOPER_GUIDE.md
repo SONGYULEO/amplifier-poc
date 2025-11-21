@@ -1,6 +1,6 @@
-# Claude Code SDK Developer Guide
+# Gemini CLI SDK Developer Guide
 
-_A strategic guide for building AI-native development tools in the Claude Code ecosystem_
+_A strategic guide for building AI-native development tools in the Gemini CLI ecosystem_
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ _A strategic guide for building AI-native development tools in the Claude Code e
 
 ## The Core Idea: Metacognitive Recipes
 
-The Claude Code SDK enables a fundamental shift: **use code for structure, AI for intelligence**.
+The Gemini CLI SDK enables a fundamental shift: **use code for structure, AI for intelligence**.
 
 Instead of trying to get AI to handle complex multi-step reasoning (which often fails), we decompose problems into small, focused AI microtasks orchestrated by deterministic code. Think of it as writing "recipes" where:
 
@@ -76,7 +76,7 @@ AI operations without dependencies can run concurrently. Use `asyncio.gather()` 
    → Amplifier CLI with batch processing and incremental saves
 
 3. Need interactive development?
-   → Slash commands in Claude Code for exploration
+   → Slash commands in Gemini CLI for exploration
 
 4. Complex orchestration with multiple AI steps?
    → Write a Python/JavaScript recipe using the SDK
@@ -154,7 +154,7 @@ The Amplifier pattern represents a hybrid approach where:
 class AmplifiedProcessor:
     def __init__(self):
         self.structure = CodeBasedStructure()  # Deterministic
-        self.intelligence = ClaudeCodeSDK()    # Intelligent
+        self.intelligence = GeminiCodeSDK()    # Intelligent
 
     async def process(self, input):
         # Code handles flow
@@ -500,7 +500,7 @@ plan = await create_improvement_plan(issues, patterns)  # Synthesis
 ```python
 # Using AI for simple string manipulation
 async def capitalize_text(text):
-    response = await claude_sdk.query(f"Capitalize this: {text}")
+    response = await gemini_sdk.query(f"Capitalize this: {text}")
     return response
 ```
 
@@ -658,7 +658,7 @@ cache = {}  # Add complexity only when needed
 
 ## Conclusion
 
-The Claude Code SDK toolkit is about one core insight: **small AI tasks orchestrated by code outperform large ambitious AI operations**.
+The Gemini CLI SDK toolkit is about one core insight: **small AI tasks orchestrated by code outperform large ambitious AI operations**.
 
 ### Quick Reference Card
 

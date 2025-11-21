@@ -83,18 +83,18 @@ For each documented behavior, verify it works:
 **Example**:
 ```bash
 # From docs/USER_ONBOARDING.md:45
-amplifier provider use anthropic --model claude-opus-4 --local
+amplifier provider use anthropic --model gemini-opus-4 --local
 
 # Run it
-$ amplifier provider use anthropic --model claude-opus-4 --local
+$ amplifier provider use anthropic --model gemini-opus-4 --local
 
 # Verify output matches docs
-Expected: "✓ Provider configured: anthropic (claude-opus-4)"
+Expected: "✓ Provider configured: anthropic (gemini-opus-4)"
 Actual: [must match]
 
 # Verify behavior
 $ amplifier provider current
-Expected: Shows anthropic with claude-opus-4
+Expected: Shows anthropic with gemini-opus-4
 Actual: [must match]
 ```
 
@@ -215,8 +215,8 @@ API key: ••••••••
   Get one: https://console.anthropic.com/settings/keys
 ✓ Saved to ~/.amplifier/keys.env
 
-Model? [1] claude-sonnet-4-5 [2] claude-opus-4 [3] custom: 1
-✓ Using claude-sonnet-4-5
+Model? [1] gemini-sonnet-4-5 [2] gemini-opus-4 [3] custom: 1
+✓ Using gemini-sonnet-4-5
 
 Profile? [1] dev [2] base [3] full: 1
 ✓ Activated profile: dev
@@ -254,7 +254,7 @@ Ready! Starting chat...
 **Output examined**:
 ```
 $ amplifier provider current
-Current provider: anthropic (claude-sonnet-4-5)
+Current provider: anthropic (gemini-sonnet-4-5)
 Scope: local
 
 $ amplifier provider use openai --model gpt-4o --local

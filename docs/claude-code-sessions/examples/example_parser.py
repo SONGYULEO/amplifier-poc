@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Simple example parser for Claude Code sessions with auto-discovery.
+Simple example parser for Gemini CLI sessions with auto-discovery.
 
-This demonstrates parsing Claude Code JSONL files from real sessions,
+This demonstrates parsing Gemini CLI JSONL files from real sessions,
 with automatic discovery of projects and sessions.
 """
 
@@ -16,7 +16,7 @@ from pathlib import Path
 
 
 class SimpleParser:
-    """Minimal parser for Claude Code sessions."""
+    """Minimal parser for Gemini CLI sessions."""
 
     def __init__(self):
         self.messages = {}  # uuid -> message dict
@@ -154,12 +154,12 @@ class SimpleParser:
         return "\n".join(lines)
 
 
-def find_claude_projects_dir():
-    """Find the Claude Code projects directory."""
-    claude_dir = Path.home() / ".claude" / "projects"
-    if not claude_dir.exists():
+def find_gemini_projects_dir():
+    """Find the Gemini CLI projects directory."""
+    gemini_dir = Path.home() / ".gemini" / "projects"
+    if not gemini_dir.exists():
         return None
-    return claude_dir
+    return gemini_dir
 
 
 def list_projects(projects_dir: Path):
@@ -193,9 +193,9 @@ def find_default_session(projects_dir: Path):
     # Get current working directory
     cwd = os.getcwd()
 
-    # Convert CWD to Claude Code project directory format
+    # Convert CWD to Gemini CLI project directory format
     # Replace / with - and add leading -
-    # Also replace dots with - as Claude Code does
+    # Also replace dots with - as Gemini CLI does
     cwd_encoded = cwd.replace("/", "-").replace(".", "-")
     if not cwd_encoded.startswith("-"):
         cwd_encoded = "-" + cwd_encoded
@@ -244,7 +244,7 @@ def find_default_session(projects_dir: Path):
 def main():
     """Main entry point with CLI argument parsing."""
     parser = argparse.ArgumentParser(
-        description="Parse Claude Code session files",
+        description="Parse Gemini CLI session files",
         epilog="Examples:\n"
         "  %(prog)s                    # Parse most recent session\n"
         "  %(prog)s --list             # List all projects and sessions\n"
@@ -271,15 +271,15 @@ def main():
 
     args = parser.parse_args()
 
-    # Find Claude projects directory
-    projects_dir = find_claude_projects_dir()
+    # Find Gemini projects directory
+    projects_dir = find_gemini_projects_dir()
     if not projects_dir:
-        print("Error: Claude Code projects directory not found at ~/.claude/projects")
+        print("Error: Gemini CLI projects directory not found at ~/.gemini/projects")
         sys.exit(1)
 
     # Handle --list flag
     if args.list:
-        print("📁 Available Claude Code Projects:\n")
+        print("📁 Available Gemini CLI Projects:\n")
         projects = list_projects(projects_dir)
 
         if not projects:
@@ -401,7 +401,7 @@ def main():
 
     # Save analysis
     analysis_file = output_dir / "analysis.md"
-    analysis_content = "# Claude Code Session Analysis\n\n"
+    analysis_content = "# Gemini CLI Session Analysis\n\n"
     analysis_content += f"**File:** {session_file}\n"
     analysis_content += f"**Project:** {project_name}\n"
     analysis_content += f"**Size:** {file_size:,} bytes\n"

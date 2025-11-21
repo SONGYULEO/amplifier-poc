@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Semantic search interface for the knowledge graph.
-Enables Claude Code to query the graph with natural language.
+Enables Gemini CLI to query the graph with natural language.
 Following ruthless simplicity - direct implementation, no unnecessary abstractions.
 """
 
@@ -193,7 +193,7 @@ class GraphSearch:
 
     def query(self, natural_language_query: str) -> dict[str, Any]:
         """
-        Main entry point for Claude Code to query the graph.
+        Main entry point for Gemini CLI to query the graph.
         Interprets natural language and routes to appropriate method.
         """
         query_lower = natural_language_query.lower()

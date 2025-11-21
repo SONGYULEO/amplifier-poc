@@ -52,7 +52,7 @@ await ai.query("Analyze all these documents and synthesize insights")
 
 # Metacognitive Recipe (Built using CCSDK toolkit components)
 # The toolkit provides the infrastructure to make this reliable:
-async with ClaudeSession(options) as session:  # Toolkit provides session management
+async with GeminiSession(options) as session:  # Toolkit provides session management
     for file in files:
         if file.id in state.processed:  # Toolkit provides state persistence
             continue
@@ -89,7 +89,7 @@ The toolkit follows a clean layered architecture:
 ├─────────────────────────────────────────┤
 │         Core SDK Wrapper Layer           │
 ├─────────────────────────────────────────┤
-│          Claude Code SDK (npm)           │
+│          Gemini CLI SDK (npm)           │
 └─────────────────────────────────────────┘
 ```
 
@@ -130,26 +130,26 @@ The toolkit is the foundation for building tools that implement metacognitive re
    - Pattern detection across files (synthesis)
    - Issue identification and recommendation generation
 
-### Claude Code Integration Artifacts
+### Gemini CLI Integration Artifacts
 
-The toolkit can also generate Claude Code specific components that enhance the AI's capabilities within sessions:
+The toolkit can also generate Gemini CLI specific components that enhance the AI's capabilities within sessions:
 
-- **Agent Definitions**: Specialized sub-agents for specific tasks (.claude/agents/*.md files)
-- **Hooks**: Pre/post processing scripts that run during Claude Code operations
-- **Custom Tools**: Additional capabilities exposed to Claude Code
-- **Context Files**: Philosophical guides and patterns shared with AI (CLAUDE.md, AGENTS.md)
+- **Agent Definitions**: Specialized sub-agents for specific tasks (.gemini/agents/*.md files)
+- **Hooks**: Pre/post processing scripts that run during Gemini CLI operations
+- **Custom Tools**: Additional capabilities exposed to Gemini CLI
+- **Context Files**: Philosophical guides and patterns shared with AI (GEMINI.md, AGENTS.md)
 
 These artifacts themselves become part of the metacognitive recipe infrastructure, enabling more sophisticated AI orchestration patterns.
 
 ## Core Components
 
-### 1. ClaudeSession: The SDK Wrapper
+### 1. GeminiSession: The SDK Wrapper
 
-The `ClaudeSession` class provides a robust wrapper around the Claude Code SDK with critical enhancements:
+The `GeminiSession` class provides a robust wrapper around the Gemini CLI SDK with critical enhancements:
 
 ```python
-class ClaudeSession:
-    """Async context manager for Claude Code SDK sessions."""
+class GeminiSession:
+    """Async context manager for Gemini CLI SDK sessions."""
 
     def __init__(self, options: SessionOptions):
         self.options = options
@@ -157,7 +157,7 @@ class ClaudeSession:
 ```
 
 **Key Features:**
-- **Prerequisite Checking**: Validates Claude CLI installation before attempting operations
+- **Prerequisite Checking**: Validates Gemini CLI installation before attempting operations
 - **Automatic Retry**: Exponential backoff for transient failures
 - **Streaming Support**: Real-time output as AI generates responses
 - **Graceful Degradation**: Returns empty results rather than crashing when SDK unavailable
@@ -376,7 +376,7 @@ Using the toolkit's components, developers can create tools that implement the A
 
 ```python
 # Example: Building an amplified tool using CCSDK toolkit components
-from amplifier.ccsdk_toolkit.core import ClaudeSession
+from amplifier.ccsdk_toolkit.core import GeminiSession
 from amplifier.ccsdk_toolkit.sessions import SessionManager
 
 class MyAmplifiedTool:
@@ -387,7 +387,7 @@ class MyAmplifiedTool:
 
     async def process(self, input_data):
         # Use toolkit's session wrapper with built-in retry and streaming
-        async with ClaudeSession(options) as ai:
+        async with GeminiSession(options) as ai:
             # Code handles structure
             chunks = self.prepare_chunks(input_data)
 
@@ -631,7 +631,7 @@ The CCSDK Toolkit is a comprehensive infrastructure for building AI-powered deve
 
 4. **Captures Best Practices**: Years of discovered patterns for AI integration are captured in reusable code.
 
-5. **Supports the Full Lifecycle**: From creating Claude Code artifacts to managing long-running processes, the toolkit covers the entire development cycle.
+5. **Supports the Full Lifecycle**: From creating Gemini CLI artifacts to managing long-running processes, the toolkit covers the entire development cycle.
 
 ### The Toolkit's True Value
 
@@ -639,7 +639,7 @@ The CCSDK Toolkit's power lies not in what it does, but in what it enables devel
 - Session management with retry and streaming
 - State persistence and re-entrancy
 - Error handling and recovery patterns
-- Integration with Claude Code SDK
+- Integration with Gemini CLI SDK
 
 ...the toolkit removes the infrastructure burden from developers, allowing them to focus on implementing their specific metacognitive recipes.
 

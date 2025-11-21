@@ -10,7 +10,7 @@ This is a sample article used for smoke testing the Amplifier system.
 
 ## Implementation Details
 
-The smoke test system uses AI-driven evaluation to determine if commands succeed. When the Claude Code SDK is unavailable, tests gracefully skip AI evaluation and pass based on exit codes.
+The smoke test system uses AI-driven evaluation to determine if commands succeed. When the Gemini CLI SDK is unavailable, tests gracefully skip AI evaluation and pass based on exit codes.
 
 ## Benefits
 

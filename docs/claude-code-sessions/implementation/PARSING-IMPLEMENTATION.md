@@ -1,6 +1,6 @@
-# Claude Code Session Parsing Implementation
+# Gemini CLI Session Parsing Implementation
 
-This guide provides implementation patterns for parsing Claude Code session files.
+This guide provides implementation patterns for parsing Gemini CLI session files.
 
 ## Core Data Structures
 
@@ -64,7 +64,7 @@ import json
 from pathlib import Path
 
 def parse_session_file(file_path: Path) -> SessionDAG:
-    """Parse a Claude Code session JSONL file."""
+    """Parse a Gemini CLI session JSONL file."""
     dag = SessionDAG()
 
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -390,7 +390,7 @@ def parse_message_safe(line: str, line_num: int) -> Optional[Message]:
 
 ```python
 # Parse session
-session_file = Path("~/.claude/conversations/project/session.jsonl")
+session_file = Path("~/.gemini/conversations/project/session.jsonl")
 dag = parse_session_file(session_file)
 
 # Process relationships

@@ -1,14 +1,14 @@
 # Knowledge Synthesis Module
 
-Simple, direct knowledge extraction from text using Claude Code SDK.
+Simple, direct knowledge extraction from text using Gemini CLI SDK.
 
 ## Overview
 
-This module provides a streamlined approach to extracting structured knowledge from text documents and content files. It extracts concepts, relationships, insights, and patterns in a single pass through Claude.
+This module provides a streamlined approach to extracting structured knowledge from text documents and content files. It extracts concepts, relationships, insights, and patterns in a single pass through Gemini.
 
 ## Key Features
 
-- **Single-pass extraction**: One Claude call extracts everything
+- **Single-pass extraction**: One Gemini call extracts everything
 - **JSON Lines storage**: Simple, incremental, queryable format
 - **Incremental processing**: Tracks what's been processed, skips duplicates
 - **Direct integration**: Works with content from configured directories
@@ -135,7 +135,7 @@ Examples of event types:
 
 ## Dependencies
 
-- `claude-code-sdk`: For Claude integration (requires Claude Code environment)
+- `gemini-code-sdk`: For Gemini integration (requires Gemini CLI environment)
 - `click`: For CLI
 - Standard library only for core functionality
 
@@ -144,14 +144,14 @@ Examples of event types:
 Following the project's ruthless simplicity principle:
 
 - No complex graph databases
-- No unnecessary chunking (Claude handles 100K+ tokens)
+- No unnecessary chunking (Gemini handles 100K+ tokens)
 - No over-engineered abstractions
 - Direct, obvious code paths
 - One way to do things
 
 ## Notes
 
-- Works best within Claude Code environment where SDK is available
-- Outside Claude Code, extraction returns empty results
-- Uses 120-second timeout for Claude operations
+- Works best within Gemini CLI environment where SDK is available
+- Outside Gemini CLI, extraction returns empty results
+- Uses 120-second timeout for Gemini operations
 - Automatically strips markdown formatting from responses

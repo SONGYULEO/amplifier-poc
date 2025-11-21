@@ -1,6 +1,6 @@
 # Knowledge Mining System
 
-Real LLM-powered knowledge extraction from content files using Claude Code SDK.
+Real LLM-powered knowledge extraction from content files using Gemini CLI SDK.
 Extracts semantic patterns and insights to improve AI assistant solutions.
 
 ## Quick Start Commands
@@ -84,7 +84,7 @@ Content → Extract → Store → Find Patterns → Generate Insights → Apply 
 
 ## Implementation Details
 
-- **LLM-Powered**: Uses Claude Code SDK for semantic extraction (falls back to keyword matching if unavailable)
+- **LLM-Powered**: Uses Gemini CLI SDK for semantic extraction (falls back to keyword matching if unavailable)
 - **Storage**: All data stored in `.data/knowledge_mining/` directory
 - **Extraction**: Concepts, relationships, insights, and code patterns
 - **Graph-Based**: NetworkX for relationship tracking

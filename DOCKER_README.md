@@ -29,7 +29,7 @@ chmod +x amplify.sh
 
 1. **Docker**: Install Docker Desktop
 2. **API Keys**: Set one of these environment variables:
-   - `ANTHROPIC_API_KEY` - For Claude API
+   - `ANTHROPIC_API_KEY` - For Gemini API
    - AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`) - For AWS Bedrock
 
 ## What It Does
@@ -37,10 +37,10 @@ chmod +x amplify.sh
 The dockerized Amplifier:
 
 1. **Clones Amplifier**: Downloads the latest Amplifier from GitHub
-2. **Sets up environment**: Installs Python, Node.js, uv, Claude Code, and all dependencies
+2. **Sets up environment**: Installs Python, Node.js, uv, Gemini CLI, and all dependencies
 3. **Mounts your project**: Makes your target directory available as `/workspace`
-4. **Configures Claude Code**: Automatically adds your project directory to Claude Code
-5. **Starts interactive session**: Launches Claude Code with the proper context
+4. **Configures Gemini CLI**: Automatically adds your project directory to Gemini CLI
+5. **Starts interactive session**: Launches Gemini CLI with the proper context
 
 ## Architecture
 
@@ -54,7 +54,7 @@ Docker Container
 ├── /app/amplifier ──────────────────► Cloned Amplifier repository
 ├── /workspace ─────────────────────► Your mounted project
 ├── /app/amplifier-data ────────────► Persistent Amplifier data
-└── Python + Node.js + Claude Code ► Fully configured environment
+└── Python + Node.js + Gemini CLI ► Fully configured environment
 ```
 
 ## Environment Variables

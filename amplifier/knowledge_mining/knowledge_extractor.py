@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Knowledge Extractor - Real LLM-powered extraction using Claude Code SDK.
+Knowledge Extractor - Real LLM-powered extraction using Gemini CLI SDK.
 Simple, direct implementation that actually extracts semantic knowledge.
 """
 
@@ -16,14 +16,14 @@ from typing import Any
 from .config import get_config
 
 try:
-    from claude_code_sdk import ClaudeCodeOptions
-    from claude_code_sdk import ClaudeSDKClient
+    from gemini_code_sdk import GeminiCodeOptions
+    from gemini_code_sdk import GeminiSDKClient
 
-    CLAUDE_SDK_AVAILABLE = True
+    GEMINI_SDK_AVAILABLE = True
 except ImportError:
-    CLAUDE_SDK_AVAILABLE = False
-    ClaudeCodeOptions = None
-    ClaudeSDKClient = None
+    GEMINI_SDK_AVAILABLE = False
+    GeminiCodeOptions = None
+    GeminiSDKClient = None
 
 logger = logging.getLogger(__name__)
 
@@ -62,21 +62,21 @@ class Extraction:
 
 
 class KnowledgeExtractor:
-    """Extract knowledge from text using Claude Code SDK"""
+    """Extract knowledge from text using Gemini CLI SDK"""
 
     def __init__(self):
-        """Initialize the extractor and REQUIRE Claude Code SDK"""
-        # Check if claude CLI is installed - FAIL if not found
+        """Initialize the extractor and REQUIRE Gemini CLI SDK"""
+        # Check if gemini CLI is installed - FAIL if not found
         try:
-            result = subprocess.run(["which", "claude"], capture_output=True, text=True, timeout=2)
+            result = subprocess.run(["which", "gemini"], capture_output=True, text=True, timeout=2)
             if result.returncode != 0:
                 raise RuntimeError(
                     "\n\n"
                     + "=" * 60
                     + "\n"
-                    + "FATAL: Claude CLI not found!\n"
-                    + "The Claude Code SDK is REQUIRED for knowledge extraction.\n"
-                    + "Install with: npm install -g @anthropic-ai/claude-code\n"
+                    + "FATAL: Gemini CLI not found!\n"
+                    + "The Gemini CLI SDK is REQUIRED for knowledge extraction.\n"
+                    + "Install with: npm install -g @anthropic-ai/gemini-code\n"
                     + "=" * 60
                     + "\n"
                 )
@@ -85,28 +85,28 @@ class KnowledgeExtractor:
                 "\n\n"
                 + "=" * 60
                 + "\n"
-                + "FATAL: Could not check for Claude CLI!\n"
-                + "Install with: npm install -g @anthropic-ai/claude-code\n"
+                + "FATAL: Could not check for Gemini CLI!\n"
+                + "Install with: npm install -g @anthropic-ai/gemini-code\n"
                 + "=" * 60
                 + "\n"
             )
 
         # Also check Python SDK is available
-        if not CLAUDE_SDK_AVAILABLE:
+        if not GEMINI_SDK_AVAILABLE:
             raise RuntimeError(
                 "\n\n"
                 + "=" * 60
                 + "\n"
-                + "FATAL: Claude Code SDK Python package not found!\n"
-                + "Install with: pip install claude-code-sdk\n"
+                + "FATAL: Gemini CLI SDK Python package not found!\n"
+                + "Install with: pip install gemini-code-sdk\n"
                 + "=" * 60
                 + "\n"
             )
 
-        logger.debug("Claude Code SDK verified and ready")
+        logger.debug("Gemini CLI SDK verified and ready")
 
     def classify_document(self, text: str, title: str = "") -> str:
-        """Classify document type using Claude Code SDK - REQUIRED
+        """Classify document type using Gemini CLI SDK - REQUIRED
 
         Args:
             text: The text content to classify (first 1500 chars used)
@@ -123,7 +123,7 @@ class KnowledgeExtractor:
             raise RuntimeError(f"FATAL: Document classification failed: {e}") from e
 
     async def _classify_document_async(self, text: str, title: str = "") -> str:
-        """Async document classification using Claude Haiku"""
+        """Async document classification using Gemini Haiku"""
         config = get_config()
         # Use configured chars for fast classification
         sample_text = text[: config.knowledge_mining_classification_chars]
@@ -152,14 +152,14 @@ Respond with ONLY the category name, nothing else."""
 
         try:
             # Check if SDK is available (should never happen since we check in __init__)
-            if not CLAUDE_SDK_AVAILABLE or ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                raise RuntimeError("FATAL: Claude Code SDK not available for classification")
+            if not GEMINI_SDK_AVAILABLE or GeminiSDKClient is None or GeminiCodeOptions is None:
+                raise RuntimeError("FATAL: Gemini CLI SDK not available for classification")
 
             # Use 10-minute timeout for SDK operations (600 seconds)
             async with asyncio.timeout(600):
                 # Use configured model for fast classification with minimal turns
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are a document classifier. Respond with only the category name.",
                         max_turns=1,
                         model=config.knowledge_mining_model,  # Fast, efficient model for classification
@@ -188,8 +188,8 @@ Respond with ONLY the category name, nothing else."""
                     return "general"
 
         except TimeoutError:
-            logger.error("Claude Code SDK timed out after 600 seconds for classification")
-            raise RuntimeError("FATAL: Classification timeout - Claude Code SDK not responding")
+            logger.error("Gemini CLI SDK timed out after 600 seconds for classification")
+            raise RuntimeError("FATAL: Classification timeout - Gemini CLI SDK not responding")
         except Exception as e:
             logger.error(f"Error during classification: {e}")
             raise RuntimeError(f"FATAL: Classification failed: {e}") from e
@@ -198,7 +198,7 @@ Respond with ONLY the category name, nothing else."""
         raise RuntimeError("FATAL: Unexpected classification failure")
 
     def extract(self, text: str, title: str = "", source: str = "", document_type: str = "general") -> Extraction:
-        """Extract knowledge from text - REQUIRES Claude Code SDK
+        """Extract knowledge from text - REQUIRES Gemini CLI SDK
 
         Args:
             text: The text content to extract from
@@ -229,30 +229,30 @@ Respond with ONLY the category name, nothing else."""
             prompt = self._build_extraction_prompt(text, title, document_type)
 
             # Check if SDK is available
-            if not CLAUDE_SDK_AVAILABLE or ClaudeSDKClient is None or ClaudeCodeOptions is None:
-                logger.error("Claude Code SDK not available - cannot extract knowledge")
-                raise RuntimeError("Claude Code SDK is required for knowledge extraction")
+            if not GEMINI_SDK_AVAILABLE or GeminiSDKClient is None or GeminiCodeOptions is None:
+                logger.error("Gemini CLI SDK not available - cannot extract knowledge")
+                raise RuntimeError("Gemini CLI SDK is required for knowledge extraction")
 
-            # Use Claude Code SDK to extract knowledge
-            logger.info("Initializing Claude Code SDK client...")
+            # Use Gemini CLI SDK to extract knowledge
+            logger.info("Initializing Gemini CLI SDK client...")
 
             response = ""  # Initialize response before the async with block
 
             # Use 10-minute timeout for SDK operations (600 seconds)
             async with asyncio.timeout(600):
-                async with ClaudeSDKClient(
-                    options=ClaudeCodeOptions(
+                async with GeminiSDKClient(
+                    options=GeminiCodeOptions(
                         system_prompt="You are a knowledge extraction expert. Extract structured knowledge from articles. Return ONLY valid JSON with no other text.",
                         max_turns=1,
                         model=config.knowledge_mining_extraction_model,  # More powerful model for extraction
                     )
                 ) as client:
                     # Send query
-                    logger.info("Sending query to Claude Code SDK...")
+                    logger.info("Sending query to Gemini CLI SDK...")
                     await client.query(prompt)
 
                     # Collect response - trust the SDK to work
-                    logger.info("Waiting for Claude Code SDK response...")
+                    logger.info("Waiting for Gemini CLI SDK response...")
                     async for message in client.receive_response():
                         if hasattr(message, "content"):
                             content = getattr(message, "content", [])
@@ -339,9 +339,9 @@ Respond with ONLY the category name, nothing else."""
         except TimeoutError:
             # Handles both asyncio.TimeoutError and builtin TimeoutError (asyncio.TimeoutError is a subclass in Python 3.11+)
             elapsed = time.time() - start_time
-            logger.error(f"Claude Code SDK timed out after 600 seconds for extraction (total time: {elapsed:.1f}s)")
-            logger.error("FATAL: Extraction timeout - Claude Code SDK not responding")
-            raise RuntimeError("FATAL: Claude Code SDK timeout - extraction cannot continue")
+            logger.error(f"Gemini CLI SDK timed out after 600 seconds for extraction (total time: {elapsed:.1f}s)")
+            logger.error("FATAL: Extraction timeout - Gemini CLI SDK not responding")
+            raise RuntimeError("FATAL: Gemini CLI SDK timeout - extraction cannot continue")
         except Exception as e:
             elapsed = time.time() - start_time
             logger.error(f"Error during LLM extraction after {elapsed:.1f}s: {e}")
@@ -814,6 +814,6 @@ if __name__ == "__main__":
 
     except RuntimeError as e:
         print(f"Error: {e}")
-        print("\nThis tool requires Claude Code SDK to function.")
-        print("Install with: pip install claude-code-sdk")
-        print("And: npm install -g @anthropic-ai/claude-code")
+        print("\nThis tool requires Gemini CLI SDK to function.")
+        print("Install with: pip install gemini-code-sdk")
+        print("And: npm install -g @anthropic-ai/gemini-code")

@@ -14,7 +14,7 @@ from ..models import ExpandedIdea
 from ..models import FileSummary
 from ..models import SourceFile
 from ..models import SynthesisState
-from ..utils import query_claude_with_timeout
+from ..utils import query_gemini_with_timeout
 
 
 class ExpanderStage:
@@ -133,7 +133,7 @@ Return JSON:
     "action_items": ["action 1", "action 2", "action 3"]
 }}"""
 
-        response = await query_claude_with_timeout(prompt=prompt, system_prompt=system_prompt, parse_json=True)
+        response = await query_gemini_with_timeout(prompt=prompt, system_prompt=system_prompt, parse_json=True)
 
         # Handle both dict and list responses
         if isinstance(response, dict):
